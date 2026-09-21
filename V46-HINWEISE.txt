@@ -1,0 +1,10 @@
+V46
+
+- Hauptliste von 63 auf 100 Filme erweitert.
+- 37 neue Titel wurden am 21.09.2026 gegen offizielle Netflix-Deutschland-Seiten geprüft.
+- Prime-Buttons verwenden jetzt primevideo.com statt amazon.de, damit Smartphones nicht bevorzugt die Shopping-App öffnen.
+- Der automatische GitHub-Workflow sucht künftig gemischt nach gut bewerteten Geheimtipps und populären/aktuellen Blockbuster-Kandidaten.
+- TMDB-Vorschläge sind KEINE Garantie für Netflix-/Prime-Abo-Verfügbarkeit.
+
+WICHTIG BEIM UPDATE:
+Die bestehende suggestions.json im GitHub-Repository NICHT ersetzen. Sie wird vom Workflow gepflegt und ist deshalb absichtlich nicht in diesem Update-Paket enthalten.

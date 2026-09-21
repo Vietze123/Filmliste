@@ -676,6 +676,421 @@
         "Komödie"
       ],
       "description": ""
+    },
+    {
+      "id": "dune-part-two-2024",
+      "title": "Dune: Part Two",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Science-Fiction"
+      ],
+      "description": "Paul Atreides verbündet sich mit den Fremen und stellt sich einer Entscheidung zwischen Liebe, Rache und dem Schicksal des Universums."
+    },
+    {
+      "id": "mission-impossible-dead-reckoning-2023",
+      "title": "Mission: Impossible – Dead Reckoning",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "description": "Ethan Hunt jagt eine gefährliche neue Technologie, während alte Gegner und neue Allianzen seine Mission erschweren."
+    },
+    {
+      "id": "gladiator-ii-2024",
+      "title": "Gladiator II",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Drama"
+      ],
+      "description": "Jahre nach Maximus gerät Lucius in die Machtkämpfe Roms und muss sich in der Arena behaupten."
+    },
+    {
+      "id": "godzilla-x-kong-the-new-empire-2024",
+      "title": "Godzilla x Kong: The New Empire",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Science-Fiction"
+      ],
+      "description": "Godzilla und Kong treffen auf eine neue Bedrohung, die beide Titanen zu einem ungewöhnlichen Bündnis zwingt."
+    },
+    {
+      "id": "sonic-the-hedgehog-3-2024",
+      "title": "Sonic the Hedgehog 3",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Action"
+      ],
+      "description": "Sonic, Tails und Knuckles bekommen es mit Shadow zu tun, einem Gegner mit außergewöhnlichen Kräften."
+    },
+    {
+      "id": "joker-2019",
+      "title": "Joker",
+      "year": "2019",
+      "platform": "Netflix",
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "description": "Ein isolierter Mann in Gotham gerät immer tiefer in eine Spirale aus Kränkung, Gewalt und öffentlicher Inszenierung."
+    },
+    {
+      "id": "prisoners-2013",
+      "title": "Prisoners",
+      "year": "2013",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "Nach dem Verschwinden zweier Kinder geraten ein verzweifelter Vater und ein Ermittler auf unterschiedliche Wege zur Wahrheit."
+    },
+    {
+      "id": "tenet-2020",
+      "title": "Tenet",
+      "year": "2020",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Science-Fiction",
+        "Thriller"
+      ],
+      "description": "Ein Agent stößt auf eine Technologie, mit der sich die Richtung der Zeit umkehren lässt."
+    },
+    {
+      "id": "the-creator-2023",
+      "title": "The Creator",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Science-Fiction",
+        "Action",
+        "Drama"
+      ],
+      "description": "In einem Krieg zwischen Menschen und künstlicher Intelligenz soll ein Ex-Agent eine mächtige neue Waffe finden."
+    },
+    {
+      "id": "carry-on-2024",
+      "title": "Carry-On",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Action"
+      ],
+      "description": "Ein Sicherheitsmitarbeiter am Flughafen wird erpresst, ein gefährliches Gepäckstück durch die Kontrolle zu lassen."
+    },
+    {
+      "id": "leave-the-world-behind-2023",
+      "title": "Leave the World Behind",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Ein Familienurlaub kippt in Unsicherheit, als Kommunikationsnetze ausfallen und Fremde vor einer größeren Krise warnen."
+    },
+    {
+      "id": "reptile-2023",
+      "title": "Reptile",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "Ein hartnäckiger Detective untersucht einen Mordfall, bei dem hinter jeder Spur ein neues Geheimnis wartet."
+    },
+    {
+      "id": "the-killer-2023",
+      "title": "The Killer",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "Nach einem missglückten Auftrag gerät ein methodischer Auftragskiller in einen persönlichen Konflikt mit seinen Auftraggebern."
+    },
+    {
+      "id": "the-good-nurse-2022",
+      "title": "The Good Nurse",
+      "year": "2022",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi",
+        "Drama"
+      ],
+      "description": "Eine Krankenschwester schöpft Verdacht gegen einen Kollegen, während Ermittler eine Reihe rätselhafter Todesfälle untersuchen."
+    },
+    {
+      "id": "the-little-things-2021",
+      "title": "The Little Things",
+      "year": "2021",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "Zwei Ermittler verfolgen einen möglichen Serienmörder und geraten dabei zunehmend unter psychischen Druck."
+    },
+    {
+      "id": "nocturnal-animals-2016",
+      "title": "Nocturnal Animals",
+      "year": "2016",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Eine Galeristin erhält das verstörende Manuskript ihres Ex-Mannes, das Erinnerungen und Schuldgefühle aufreißt."
+    },
+    {
+      "id": "the-sixth-sense-1999",
+      "title": "The Sixth Sense",
+      "year": "1999",
+      "platform": "Netflix",
+      "genres": [
+        "Mystery",
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Ein Kinderpsychologe versucht einem Jungen zu helfen, der behauptet, Verstorbene sehen zu können."
+    },
+    {
+      "id": "juror-2-2024",
+      "title": "Juror #2",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Ein Geschworener erkennt während eines Mordprozesses, dass er selbst entscheidend mit dem Fall verbunden sein könnte."
+    },
+    {
+      "id": "companion-2025",
+      "title": "Companion",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Science-Fiction"
+      ],
+      "description": "Ein Wochenendausflug entwickelt sich zu einem gefährlichen Spiel um Kontrolle, Identität und künstliche Nähe."
+    },
+    {
+      "id": "caddo-lake-2024",
+      "title": "Caddo Lake",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Mystery",
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Das Verschwinden eines Kindes führt zu rätselhaften Zusammenhängen rund um einen abgelegenen See."
+    },
+    {
+      "id": "wake-up-dead-man-a-knives-out-mystery-2025",
+      "title": "Wake Up Dead Man: A Knives Out Mystery",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Mystery",
+        "Krimi"
+      ],
+      "description": "Benoit Blanc nimmt einen neuen rätselhaften Mordfall auf, bei dem zahlreiche Geheimnisse ans Licht kommen."
+    },
+    {
+      "id": "a-house-of-dynamite-2025",
+      "title": "A House of Dynamite",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Eine akute nationale Krise setzt Entscheidungsträger unter extremen Zeitdruck und zwingt sie zu folgenreichen Entscheidungen."
+    },
+    {
+      "id": "the-woman-in-cabin-10-2025",
+      "title": "The Woman in Cabin 10",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Mystery"
+      ],
+      "description": "Eine Journalistin glaubt auf einer luxuriösen Schiffsreise einen Mord beobachtet zu haben, doch niemand scheint ihr zu glauben."
+    },
+    {
+      "id": "dangerous-animals-2025",
+      "title": "Dangerous Animals",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Horror"
+      ],
+      "description": "Eine junge Frau gerät in die Gewalt eines gefährlichen Mannes und muss einen Weg finden, seinem perfiden Plan zu entkommen."
+    },
+    {
+      "id": "the-watchers-2024",
+      "title": "The Watchers",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Horror",
+        "Mystery"
+      ],
+      "description": "Eine Frau strandet in einem Wald und findet Schutz bei Fremden, die nachts von unbekannten Wesen beobachtet werden."
+    },
+    {
+      "id": "smile-2-2024",
+      "title": "Smile 2",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "description": "Ein Popstar erlebt kurz vor einer großen Tour zunehmend verstörende Ereignisse und muss sich ihrer Vergangenheit stellen."
+    },
+    {
+      "id": "the-platform-2-2024",
+      "title": "The Platform 2",
+      "year": "2024",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Science-Fiction"
+      ],
+      "description": "Das brutale vertikale Gefängnissystem kehrt zurück und stellt seine Bewohner erneut vor moralische Grenzentscheidungen."
+    },
+    {
+      "id": "brick-2025",
+      "title": "Brick",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Science-Fiction",
+        "Mystery"
+      ],
+      "description": "Ein Paar entdeckt, dass sein Wohnhaus plötzlich von einer rätselhaften Barriere eingeschlossen ist."
+    },
+    {
+      "id": "havoc-2025",
+      "title": "Havoc",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "description": "Ein angeschlagener Ermittler kämpft sich durch die kriminelle Unterwelt, um den Sohn eines Politikers zu retten."
+    },
+    {
+      "id": "exterritorial-2025",
+      "title": "Exterritorial",
+      "year": "2025",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "description": "Eine ehemalige Soldatin sucht in einem US-Konsulat nach ihrem verschwundenen Sohn und stößt auf ein undurchsichtiges Komplott."
+    },
+    {
+      "id": "luther-the-fallen-sun-2023",
+      "title": "Luther: The Fallen Sun",
+      "year": "2023",
+      "platform": "Netflix",
+      "genres": [
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "John Luther bricht aus dem Gefängnis aus, um einen sadistischen Serienmörder aufzuhalten."
+    },
+    {
+      "id": "the-gray-man-2022",
+      "title": "The Gray Man",
+      "year": "2022",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "description": "Ein CIA-Söldner wird selbst zum Ziel, nachdem er belastende Geheimnisse seiner Auftraggeber entdeckt."
+    },
+    {
+      "id": "extraction-2020",
+      "title": "Extraction",
+      "year": "2020",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "description": "Ein Söldner soll den entführten Sohn eines Gangsterbosses aus einer abgeriegelten Stadt retten."
+    },
+    {
+      "id": "triple-frontier-2019",
+      "title": "Triple Frontier",
+      "year": "2019",
+      "platform": "Netflix",
+      "genres": [
+        "Action",
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Ehemalige Elitesoldaten planen einen Raubzug gegen einen Drogenboss und unterschätzen die Folgen ihrer Entscheidung."
+    },
+    {
+      "id": "bird-box-schliesse-deine-augen-2018",
+      "title": "Bird Box – Schließe deine Augen",
+      "year": "2018",
+      "platform": "Netflix",
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Science-Fiction"
+      ],
+      "description": "Eine Mutter versucht mit zwei Kindern eine Welt zu durchqueren, in der ein Blick auf unbekannte Wesen tödlich sein kann."
+    },
+    {
+      "id": "1922-2017",
+      "title": "1922",
+      "year": "2017",
+      "platform": "Netflix",
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Drama"
+      ],
+      "description": "Ein Farmer gesteht eine schreckliche Tat und wird anschließend von Schuld und unheimlichen Folgen verfolgt."
+    },
+    {
+      "id": "creep-2014",
+      "title": "Creep",
+      "year": "2014",
+      "platform": "Netflix",
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "description": "Ein Videofilmer nimmt einen scheinbar harmlosen Auftrag in einer abgelegenen Hütte an, der zunehmend verstörend wird."
     }
   ]
 }

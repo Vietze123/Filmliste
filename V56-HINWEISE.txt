@@ -1,0 +1,11 @@
+Version 56 – drei Designs
+
+In Einstellungen gibt es jetzt drei getrennte Darstellungen:
+- ☀️ Hell: das klassische helle Design von vor dem Cinematic-Umbau
+- 🌙 Dunkel: das klassische dunkle Design
+- 🌸 Mausig: das neue cinematische Blumen-/Glassmorphism-Layout
+
+Die Auswahl wird lokal gespeichert. Die persönliche Tageszeit-Begrüßung bleibt erhalten.
+Der Mausig-Modus aktiviert die v51–v55-Cinematic-Styles; Hell/Dunkel deaktivieren diese Styles und verwenden wieder die klassische Oberfläche.
+
+suggestions.json ist absichtlich nicht Bestandteil des Pakets.

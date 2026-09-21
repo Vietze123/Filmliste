@@ -1,4 +1,4 @@
-const CACHE='maeuse-filmliste-v42';
+const CACHE='maeuse-filmliste-v44';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png','./movies.json','./suggestions.json'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('activate',e=>e.waitUntil(

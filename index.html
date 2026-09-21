@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fff8f0"><title>Filmliste gegen Mäuse-Langweiligekeit</title>
+<meta name="theme-color" content="#fff8f0"><title>Filmliste gegen Mäuse-Langweiligkeit</title>
 <style>
 :root{--bg:#fff8f0;--ink:#302d36;--muted:#77717d;--pink:#f4a6bd;--pink2:#ffe0e9;--cream:#fffdf9;--line:#eadfe0}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#ffe9ef 0 15%,transparent 36%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -2265,7 +2265,7 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
   <button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button>
   <button type="button" id="v42-open-suggestions" class="v35-recent-launch">✨ Neue Filme <span id="v42-badge"></span></button>
 </div>
-<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
+<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligkeit“</h1>
 <p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
 <section class="controls"><div class="inner">
 <input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
@@ -2273,26 +2273,33 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 <button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
 </div></section>
 
-<section class="v6-panel">
-  <div class="v6-box">
-    <div class="v6-row">
+<section class="v6-panel" aria-label="Filmsteuerung">
+  <div class="v6-box v44-control-center">
+    <div class="v44-section-label">Filme entdecken</div>
+    <div class="v6-row v44-primary-tools">
       <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
       <button data-v6-platform="all" class="active">Alle</button>
       <button data-v6-platform="Netflix">Netflix</button>
       <button data-v6-platform="Amazon Prime Video">Prime</button>
       <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
       <button id="v6-hide">👁️ Angeschaute ausblenden</button>
-      <button id="v6-surprise">🎲 Überrasche mich!</button>
+    </div>
+    <div class="v44-main-actions">
+      <button id="v6-surprise" class="v44-surprise">🎲 Überrasche mich!</button>
       <button id="v6-dark">🌙 Dunkel</button>
     </div>
-    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
+    <details class="v44-filter-box">
+      <summary>🎨 Filter &amp; Sortierung</summary>
+      <div class="v44-filter-inner"><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>Genres auswählen</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
+    </details>
     <div id="v6-stats" class="v6-stats"></div>
-    <div class="v6-row" style="margin-top:9px">
+    <details class="v44-data-box"><summary>⚙️ Daten &amp; Einstellungen</summary>
+    <div class="v6-row v44-data-actions" style="margin-top:9px">
       <button id="v6-export">💾 Daten exportieren</button>
       <button id="v6-import-btn">📂 Daten importieren</button>
       <input id="v6-import" type="file" accept=".json" hidden>
       <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
-    </div>
+    </div></details>
   </div>
 </section>
 
@@ -3307,4 +3314,141 @@ body.v6-dark .v42-meta,body.v6-dark .v42-card p,body.v6-dark .v42-intro{color:#e
 </script>
 <!-- V42 AUTO END -->
 
+
+<style id="v43-accessible-dark-floral">
+/* v43 – barriereärmerer Dunkelmodus + floraler Hintergrund in beiden Modi */
+:root{color-scheme:light dark}
+
+/* Rein dekorative Blumen als CSS-Hintergrund: keine zusätzlichen Inhalte für Screenreader. */
+body{
+  background-color:#f7f4ff!important;
+  background-image:
+    radial-gradient(circle at 20px 20px,#fff8fc 0 5px,transparent 6px),
+    radial-gradient(ellipse at 20px 10px,rgba(237,106,167,.18) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 20px 30px,rgba(237,106,167,.18) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 10px 20px,rgba(114,87,217,.13) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 30px 20px,rgba(77,143,232,.12) 0 7px,transparent 8px),
+    radial-gradient(circle at 20px 20px,rgba(242,189,77,.30) 0 3px,transparent 4px),
+    linear-gradient(180deg,#f8f5ff 0%,#fff8fc 52%,#f6f3ff 100%)!important;
+  background-size:120px 120px,120px 120px,120px 120px,120px 120px,120px 120px,120px 120px,auto!important;
+  background-attachment:fixed!important;
+}
+/* alte Emoji-Blumen entfernen; das Muster bleibt dekorativ und ruhiger */
+body::before,body::after,body>main::before,body>main::after,header::before,header::after,.controls::after,.v6-panel::before,
+.movie:nth-child(4n+1)::after,.movie-card:nth-child(4n+1)::after,.movie:nth-child(4n+3)::after,.movie-card:nth-child(4n+3)::after{content:none!important}
+
+/* WCAG-orientierter Dunkelmodus: klare Flächen, helle Schrift, deutlich sichtbare Zustände. */
+body.v6-dark{
+  color-scheme:dark;
+  background-color:#090a0f!important;
+  background-image:
+    radial-gradient(circle at 20px 20px,#17141f 0 5px,transparent 6px),
+    radial-gradient(ellipse at 20px 10px,rgba(255,137,198,.17) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 20px 30px,rgba(255,137,198,.17) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 10px 20px,rgba(185,162,255,.18) 0 7px,transparent 8px),
+    radial-gradient(ellipse at 30px 20px,rgba(122,183,255,.15) 0 7px,transparent 8px),
+    radial-gradient(circle at 20px 20px,rgba(255,218,126,.30) 0 3px,transparent 4px),
+    linear-gradient(180deg,#090a0f 0%,#100d16 55%,#090a0f 100%)!important;
+  background-size:120px 120px,120px 120px,120px 120px,120px 120px,120px 120px,120px 120px,auto!important;
+  color:#fff!important;
+}
+body.v6-dark header,body.v6-dark .controls,body.v6-dark .v6-panel,body.v6-dark .filter-panel,body.v6-dark .toolbar,
+body.v6-dark .stats,body.v6-dark .stat,body.v6-dark .stat-card{
+  background:#14151d!important;color:#fff!important;border:2px solid #737789!important;box-shadow:none!important
+}
+body.v6-dark .movie,body.v6-dark .movie-card{
+  background:#181922!important;color:#fff!important;border:2px solid #737789!important;box-shadow:0 4px 14px rgba(0,0,0,.32)!important
+}
+body.v6-dark .movie p,body.v6-dark .movie span,body.v6-dark .movie div,body.v6-dark .movie-card p,body.v6-dark .movie-card span,body.v6-dark .movie-card div,
+body.v6-dark .meta,body.v6-dark .muted,body.v6-dark .movie-meta,body.v6-dark label,body.v6-dark .v42-meta,body.v6-dark .v42-card p,body.v6-dark .v42-intro{
+  color:#f0f1f5!important
+}
+body.v6-dark .movie h1,body.v6-dark .movie h2,body.v6-dark .movie h3,body.v6-dark .movie-card h1,body.v6-dark .movie-card h2,body.v6-dark .movie-card h3,
+body.v6-dark strong{color:#fff!important}
+body.v6-dark input,body.v6-dark select,body.v6-dark textarea{
+  background:#0d0e14!important;color:#fff!important;border:2px solid #9da2b3!important;caret-color:#fff!important
+}
+body.v6-dark input::placeholder,body.v6-dark textarea::placeholder{color:#c8cbd4!important;opacity:1!important}
+body.v6-dark button,body.v6-dark .btn{
+  background:#282a36!important;color:#fff!important;border:2px solid #aeb3c5!important;text-decoration:none!important
+}
+body.v6-dark button:hover,body.v6-dark .btn:hover{background:#373a49!important;border-color:#fff!important}
+body.v6-dark button.primary,body.v6-dark .surprise-btn{background:#6f4bd8!important;border-color:#d7ccff!important;color:#fff!important}
+body.v6-dark .genre-chip,body.v6-dark [class*="chip"]{background:#20212b!important;color:#fff!important;border:2px solid #9da2b3!important}
+body.v6-dark .genre-chip.active,body.v6-dark .genre-chip[aria-pressed="true"]{background:#7447a0!important;color:#fff!important;border-color:#fff!important}
+body.v6-dark .v29-time-message{background:#20192a!important;color:#fff!important;border:2px solid #c5a7e4!important}
+body.v6-dark .v35-recent-dialog,body.v6-dark .v35-recent-head,body.v6-dark .v35-recent-body,
+body.v6-dark #v7-overlay .v7-present,body.v6-dark #v7-overlay .v7-present-head,body.v6-dark #v7-overlay .v7-present-body,body.v6-dark #v7-overlay .v7-present-actions,
+body.v6-dark .v42-dialog,body.v6-dark .v42-head{background:#111219!important;color:#fff!important;border-color:#85899a!important}
+body.v6-dark .v42-card,body.v6-dark #v7-overlay .movie,body.v6-dark #v7-overlay .movie-card{background:#191a23!important;color:#fff!important;border:2px solid #b58ad0!important}
+body.v6-dark a{color:#d9c5ff!important;text-decoration:underline;text-underline-offset:3px}
+
+/* Fokus ist in beiden Modi deutlich und nicht nur über Farbe erkennbar. */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid #2f67d8!important;outline-offset:3px!important;box-shadow:0 0 0 2px #fff!important
+}
+body.v6-dark button:focus-visible,body.v6-dark input:focus-visible,body.v6-dark select:focus-visible,body.v6-dark textarea:focus-visible,body.v6-dark a:focus-visible,body.v6-dark [tabindex]:focus-visible{
+  outline:4px solid #ffd86b!important;outline-offset:3px!important;box-shadow:0 0 0 2px #090a0f!important
+}
+button,input,select{min-height:44px}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+@media (prefers-contrast:more){
+ body.v6-dark .movie,body.v6-dark .movie-card,body.v6-dark button,body.v6-dark input,body.v6-dark select{border-color:#fff!important}
+ body.v6-dark{background-image:none!important}
+}
+@media (forced-colors:active){button,input,select,.movie,.movie-card{forced-color-adjust:auto!important}}
+@media(max-width:700px){body,body.v6-dark{background-size:96px 96px,96px 96px,96px 96px,96px 96px,96px 96px,96px 96px,auto!important}}
+
+/* ===== v44: aufgeräumtes, florales Hauptlayout ===== */
+.controls{display:none!important} /* alte doppelte Steuerleiste bleibt nur für bestehende JS-Hooks im DOM */
+.v35-recent-launch-wrap{display:none!important}
+.v44-control-center{padding:16px!important;display:grid;gap:12px}
+.v44-section-label{font-size:.78rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#6d3f73;padding:0 3px}
+.v44-primary-tools{display:grid!important;grid-template-columns:minmax(220px,1fr) repeat(3,auto) auto;gap:8px!important}
+.v44-primary-tools .v6-search{min-width:0;width:100%;grid-column:1/-1;font-size:16px!important;min-height:48px}
+.v44-primary-tools button,.v44-primary-tools select{min-height:44px}
+.v44-main-actions{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:8px}
+.v44-main-actions button{min-height:48px;border:1px solid #d9cbdc;background:#fff;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer;color:#2b2030}
+.v44-main-actions .v44-surprise{background:linear-gradient(135deg,#70407c,#a4457a);color:#fff;border-color:#70407c}
+.v44-main-actions .v35-recent-launch{width:auto;margin:0;box-shadow:none}
+.v44-filter-box,.v44-data-box{border:1px solid #dfd2e2;border-radius:16px;background:rgba(255,255,255,.72);overflow:hidden}
+.v44-filter-box>summary,.v44-data-box>summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:900;min-height:44px;display:flex;align-items:center}
+.v44-filter-box>summary::-webkit-details-marker,.v44-data-box>summary::-webkit-details-marker{display:none}
+.v44-filter-box>summary::after,.v44-data-box>summary::after{content:'＋';margin-left:auto;font-size:1.15rem}
+.v44-filter-box[open]>summary::after,.v44-data-box[open]>summary::after{content:'−'}
+.v44-filter-inner{padding:0 10px 10px}.v44-data-actions{padding:0 10px 10px}
+.v44-filter-inner .v7-filter-toggle{margin-top:0}
+.v6-stats{margin-top:0!important;justify-content:center}
+/* Blumen als Seitenrahmen: sichtbar, aber außerhalb der Leseflächen */
+body:before,body:after{content:'🌸  ·  🌷  ·  🌼  ·  ✿  ·  🌸  ·  ❀  ·  🌷';position:fixed;z-index:-1;top:13vh;bottom:8vh;width:58px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:mixed;font-size:21px;line-height:2.15;opacity:.34;pointer-events:none;filter:saturate(.9)}
+body:before{left:5px}body:after{right:5px;transform:rotate(180deg)}
+.grid{position:relative}.movie{border-width:1.5px!important}.movie h2{line-height:1.18;margin-bottom:9px!important}.movie p{line-height:1.55}.platform{margin-bottom:9px}.genre{margin-bottom:8px}
+body.v6-dark .v44-section-label{color:#f1b8ff}
+body.v6-dark .v44-filter-box,body.v6-dark .v44-data-box{background:#17151c!important;border-color:#62546a!important;color:#fff!important}
+body.v6-dark .v44-main-actions button{background:#211d27;color:#fff;border-color:#77677f}
+body.v6-dark .v44-main-actions .v44-surprise{background:#a957b4!important;border-color:#d894e2!important;color:#fff!important}
+body.v6-dark:before,body.v6-dark:after{opacity:.24;filter:saturate(.75) brightness(1.2)}
+@media(max-width:700px){
+ .v44-primary-tools{grid-template-columns:repeat(3,1fr)!important}.v44-primary-tools .v6-search{grid-column:1/-1}.v44-primary-tools select{grid-column:1/2}.v44-primary-tools #v6-hide{grid-column:2/-1}
+ .v44-main-actions{grid-template-columns:1fr 1fr}.v44-main-actions .v44-surprise{grid-column:1/-1}
+ body:before,body:after{width:26px;font-size:15px;opacity:.18}.v6-panel{padding:0 10px!important}.v44-control-center{padding:12px!important}
+}
+@media(max-width:430px){.v44-primary-tools{grid-template-columns:repeat(3,1fr)!important}.v44-primary-tools button{padding:9px 6px!important}.v44-main-actions{grid-template-columns:1fr}.v44-main-actions .v44-surprise{grid-column:auto}}
+</style>
+
+
+<script>
+(function(){
+ function v44Arrange(){
+   var actions=document.querySelector('.v44-main-actions');
+   var recent=document.getElementById('v35-open-recent');
+   var suggestions=document.getElementById('v42-open-suggestions');
+   if(actions){ if(recent) actions.appendChild(recent); if(suggestions) actions.appendChild(suggestions); }
+   if(recent) recent.classList.add('v44-secondary-action');
+   if(suggestions) suggestions.classList.add('v44-secondary-action');
+ }
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',v44Arrange); else v44Arrange();
+})();
+</script>
 </body></html>

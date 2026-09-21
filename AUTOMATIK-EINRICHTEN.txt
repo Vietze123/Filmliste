@@ -1,0 +1,22 @@
+V42 – AUTOMATISCHE FILMVORSCHLÄGE
+
+Die Seite sucht über einen GitHub-Workflow einmal pro Woche neue Kandidaten.
+Genres: Thriller, Action, Drama, Krimi, Mystery, Horror und Science-Fiction.
+Mindestfilter: TMDB-Bewertung 6,5 und mindestens 250 Stimmen.
+Bereits in movies.json vorhandene Titel werden ausgeschlossen.
+Die Kandidaten erscheinen zuerst unter „✨ Neue Filme“ und werden NICHT ungeprüft
+in die Hauptliste gemischt.
+
+EINMALIGE EINRICHTUNG:
+1. Bei TMDB einen API Key erstellen.
+2. GitHub-Repository öffnen.
+3. Settings > Secrets and variables > Actions.
+4. New repository secret.
+5. Name exakt: TMDB_API_KEY
+6. Den TMDB API Key als Wert eintragen.
+7. Actions > „Neue Filmvorschlaege suchen“ > Run workflow.
+Danach läuft die Suche automatisch jeden Montag.
+
+WICHTIG:
+Die Automatik behauptet NICHT, dass ein Film aktuell bei Netflix oder Prime Deutschland
+ohne Aufpreis verfügbar ist. Dafür ist eine separate Streaming-Verfügbarkeitsquelle nötig.

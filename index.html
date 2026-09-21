@@ -2263,6 +2263,7 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 <section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
 <div class="v35-recent-launch-wrap">
   <button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button>
+  <button type="button" id="v42-open-suggestions" class="v35-recent-launch">✨ Neue Filme <span id="v42-badge"></span></button>
 </div>
 <header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
 <p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
@@ -3236,5 +3237,74 @@ window.addEventListener('mousemoviesloaded',function(e){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeRecent();});
 })();
 </script>
+
+
+<!-- V42 AUTO START -->
+<style>
+/* v42 – automatische Vorschläge, ohne die v41-Startseite umzubauen */
+.v35-recent-launch-wrap{display:flex;gap:10px;flex-wrap:wrap}
+#v42-badge:not(:empty){display:inline-block;min-width:20px;margin-left:5px;padding:1px 6px;border-radius:999px;background:#8d4fb8;color:#fff;font-size:.8em}
+.v42-overlay{position:fixed;inset:0;z-index:10020;background:rgba(7,5,11,.78);padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));box-sizing:border-box}
+.v42-overlay[hidden]{display:none!important}.v42-overlay:not([hidden]){display:flex;align-items:center;justify-content:center}
+.v42-dialog{width:min(850px,100%);max-height:calc(100dvh - 20px);overflow:auto;background:#fffdf9;border:2px solid rgba(190,100,255,.55);border-radius:22px;box-shadow:0 22px 70px rgba(30,10,50,.3)}
+.v42-head{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;background:#fffdf9;border-bottom:1px solid rgba(130,80,190,.18)}
+.v42-head h2{margin:0}.v42-head button{min-height:44px}
+.v42-body{padding:18px}.v42-intro{line-height:1.55;margin-top:0}.v42-status{font-weight:800;margin:12px 0}
+.v42-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.v42-card{padding:16px;border:2px solid rgba(178,104,225,.38);border-radius:18px;background:rgba(255,255,255,.72)}
+.v42-card h3{margin:0 0 7px}.v42-meta{font-size:.92em;opacity:.82;margin-bottom:9px}.v42-card p{line-height:1.5}
+.v42-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.v42-actions button{min-height:44px;flex:1 1 150px}
+.v42-empty{padding:24px;text-align:center;border:1px dashed rgba(150,90,190,.45);border-radius:16px}
+body.v6-dark .v42-dialog,body.v6-dark .v42-head{background:#111015!important;color:#fff!important}
+body.v6-dark .v42-card{background:#19151f!important;color:#f5eff8!important;border-color:#80608e!important}
+body.v6-dark .v42-meta,body.v6-dark .v42-card p,body.v6-dark .v42-intro{color:#e9e0ee!important}
+@media(max-width:700px){.v35-recent-launch-wrap{display:grid;grid-template-columns:1fr}.v42-overlay{align-items:stretch}.v42-dialog{height:100%;max-height:100%}.v42-head{flex-direction:column;align-items:stretch}.v42-head button{width:100%}}
+</style>
+
+<div id="v42-overlay" class="v42-overlay" hidden aria-hidden="true">
+ <section class="v42-dialog" role="dialog" aria-modal="true" aria-labelledby="v42-title">
+  <div class="v42-head"><h2 id="v42-title">✨ Neue Filme für die Maus</h2><button type="button" id="v42-close">← Zurück zur Filmliste</button></div>
+  <div class="v42-body">
+   <p class="v42-intro">Neue Kandidaten werden automatisch gesucht und erscheinen zuerst hier. Bereits vorhandene Filme werden herausgefiltert. Streaming-Verfügbarkeit wird nicht geraten.</p>
+   <div id="v42-status" class="v42-status" aria-live="polite"></div>
+   <div id="v42-list" class="v42-grid"></div>
+  </div>
+ </section>
+</div>
+<script>
+(function(){
+ const open=document.getElementById('v42-open-suggestions'), close=document.getElementById('v42-close'), overlay=document.getElementById('v42-overlay'), list=document.getElementById('v42-list'), status=document.getElementById('v42-status'), badge=document.getElementById('v42-badge');
+ if(!open||!close||!overlay)return;
+ const KEY='mouseMovieSuggestionChoicesV42';
+ let choice={accepted:{},dismissed:{}};
+ try{choice=Object.assign(choice,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+ const save=()=>localStorage.setItem(KEY,JSON.stringify(choice));
+ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let cache=[];
+ function render(){
+  const pending=cache.filter(x=>!choice.accepted[x.id]&&!choice.dismissed[x.id]);
+  badge.textContent=pending.length?pending.length:'';
+  status.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';
+  list.innerHTML='';
+  if(!pending.length){list.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald der GitHub-Workflow neue Kandidaten findet.</div>';return}
+  pending.forEach(x=>{
+   const el=document.createElement('article');el.className='v42-card';
+   el.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button data-keep="'+esc(x.id)+'">💜 Merken</button><button data-hide="'+esc(x.id)+'">Nicht interessant</button></div>';
+   list.appendChild(el);
+  });
+  list.querySelectorAll('[data-keep]').forEach(b=>b.onclick=()=>{const x=cache.find(i=>i.id===b.dataset.keep);if(x){choice.accepted[x.id]=x;save();render()}});
+  list.querySelectorAll('[data-hide]').forEach(b=>b.onclick=()=>{choice.dismissed[b.dataset.hide]=true;save();render()});
+ }
+ async function load(){
+  try{const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();cache=Array.isArray(d.movies)?d.movies:[];render()}
+  catch(e){status.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';list.innerHTML='<div class="v42-empty">Die normale Filmliste funktioniert weiterhin.</div>'}
+ }
+ function show(){overlay.hidden=false;overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';load()}
+ function hide(){overlay.hidden=true;overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+ open.addEventListener('click',show);close.addEventListener('click',hide);overlay.addEventListener('click',e=>{if(e.target===overlay)hide()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)hide()});
+ load();
+})();
+</script>
+<!-- V42 AUTO END -->
 
 </body></html>

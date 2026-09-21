@@ -1,5 +1,5 @@
-const CACHE='maeuse-filmliste-v41';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png','./movies.json'];
+const CACHE='maeuse-filmliste-v42';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png','./movies.json','./suggestions.json'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('activate',e=>e.waitUntil(
   caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))

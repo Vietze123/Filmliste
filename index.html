@@ -1209,6 +1209,192 @@ main {
   }
 }
 
+
+/* ===== v32: Dark Mode – hoher Kontrast und bessere Lesbarkeit ===== */
+body.v6-dark {
+  background: #12101a !important;
+  color: #f7f3ff !important;
+}
+body.v6-dark header,
+body.v6-dark .controls,
+body.v6-dark .v29-time-message {
+  color: #f7f3ff !important;
+}
+body.v6-dark .controls {
+  background: rgba(24, 20, 34, .96) !important;
+  border-color: rgba(220, 190, 255, .22) !important;
+}
+body.v6-dark .movie,
+body.v6-dark .movie-card,
+body.v6-dark #v7-overlay .movie,
+body.v6-dark #v7-overlay .movie-card {
+  background: #211c2d !important;
+  color: #f8f5ff !important;
+  border-color: rgba(218, 153, 255, .62) !important;
+}
+body.v6-dark .movie h1,
+body.v6-dark .movie h2,
+body.v6-dark .movie h3,
+body.v6-dark .movie .title,
+body.v6-dark .movie-card h1,
+body.v6-dark .movie-card h2,
+body.v6-dark .movie-card h3 {
+  color: #ffffff !important;
+}
+body.v6-dark .movie p,
+body.v6-dark .movie-card p,
+body.v6-dark .movie .desc,
+body.v6-dark .movie-card .desc,
+body.v6-dark .movie .meta,
+body.v6-dark .movie-card .meta,
+body.v6-dark .muted {
+  color: #e6deef !important;
+}
+body.v6-dark label,
+body.v6-dark .stats,
+body.v6-dark .v6-stats,
+body.v6-dark .genre-label {
+  color: #eee7f8 !important;
+}
+body.v6-dark input,
+body.v6-dark select {
+  background: #2c2638 !important;
+  color: #ffffff !important;
+  border-color: #81728f !important;
+}
+body.v6-dark input::placeholder {
+  color: #c8bdcf !important;
+  opacity: 1 !important;
+}
+body.v6-dark option {
+  background: #2c2638 !important;
+  color: #ffffff !important;
+}
+body.v6-dark button,
+body.v6-dark .btn {
+  color: #ffffff !important;
+  border-color: rgba(230, 202, 255, .55) !important;
+}
+body.v6-dark .genre-chip {
+  background: #30283e !important;
+  color: #f5efff !important;
+  border-color: #756681 !important;
+}
+body.v6-dark .genre-chip.active,
+body.v6-dark .genre-chip[aria-pressed="true"] {
+  background: #7043a5 !important;
+  color: #ffffff !important;
+  border-color: #c89cf5 !important;
+}
+body.v6-dark .v29-time-message {
+  background: linear-gradient(135deg, rgba(111,67,165,.42), rgba(188,69,147,.28)) !important;
+  border-color: rgba(218,153,255,.55) !important;
+}
+body.v6-dark #v7-overlay.v7-present-overlay {
+  background: rgba(7, 5, 11, .82) !important;
+}
+body.v6-dark #v7-overlay .v7-present {
+  background: #17131f !important;
+  color: #f8f5ff !important;
+  border-color: rgba(218,153,255,.55) !important;
+}
+body.v6-dark #v7-overlay .v7-present-head {
+  background: #17131f !important;
+  color: #ffffff !important;
+  border-bottom-color: rgba(255,255,255,.12) !important;
+}
+body.v6-dark #v7-overlay .v7-present-body,
+body.v6-dark #v7-overlay .v7-present-actions {
+  color: #f8f5ff !important;
+}
+body.v6-dark #v7-overlay .v7-present-body .movie {
+  background: #24202f !important;
+}
+body.v6-dark #v7-overlay .v7-present-body p,
+body.v6-dark #v7-overlay .v7-present-body span,
+body.v6-dark #v7-overlay .v7-present-body div {
+  color: #eee8f6;
+}
+body.v6-dark #v7-overlay .v7-present-body h1,
+body.v6-dark #v7-overlay .v7-present-body h2,
+body.v6-dark #v7-overlay .v7-present-body h3,
+body.v6-dark #v7-overlay .v7-present-body strong {
+  color: #ffffff !important;
+}
+body.v6-dark a {
+  color: #e0b7ff !important;
+}
+body.v6-dark hr {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+/* iPhone: dark-mode form controls should use the dark native appearance too. */
+body.v6-dark {
+  color-scheme: dark;
+}
+
+
+/* ===== v33: persönliche Nachricht oben + eigener Tab für zuletzt angesehen ===== */
+.v29-time-message {
+  position: relative;
+  z-index: 20;
+  margin-top: max(10px, env(safe-area-inset-top)) !important;
+}
+.v33-tabs {
+  max-width: 1180px;
+  margin: 14px auto 8px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  border-radius: 18px;
+  background: rgba(116,76,255,.08);
+  box-sizing: border-box;
+}
+.v33-tab {
+  min-height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(130,80,190,.24);
+  background: transparent;
+  font-weight: 800;
+}
+.v33-tab.active {
+  background: linear-gradient(135deg, rgba(116,76,255,.20), rgba(238,92,190,.18));
+  border-color: rgba(166,91,230,.55);
+}
+.v33-tab-panel {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px max(16px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  box-sizing: border-box;
+}
+.v33-tab-panel[hidden] { display: none !important; }
+
+body.v6-dark .v33-tabs {
+  background: rgba(255,255,255,.07);
+}
+body.v6-dark .v33-tab {
+  color: #f8f5ff !important;
+  border-color: rgba(218,153,255,.30) !important;
+}
+body.v6-dark .v33-tab.active {
+  background: linear-gradient(135deg, rgba(111,67,165,.55), rgba(188,69,147,.34)) !important;
+  border-color: rgba(218,153,255,.62) !important;
+}
+body.v6-dark .v33-tab-panel {
+  color: #f8f5ff !important;
+}
+@media (max-width:700px) {
+  .v29-time-message {
+    margin-top: max(8px, env(safe-area-inset-top)) !important;
+  }
+  .v33-tabs {
+    margin-left: max(12px, env(safe-area-inset-left));
+    margin-right: max(12px, env(safe-area-inset-right));
+  }
+  .v33-tab { font-size: 14px; }
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
@@ -1512,43 +1698,15 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 <link rel="apple-touch-icon" href="icon-180.png">
 
 </head><body>
-<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
-<p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
-<section class="controls"><div class="inner">
-<input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
-<button class="active" data-filter="all">Alle</button><button data-filter="Netflix">Netflix</button><button data-filter="Amazon Prime Video">Prime</button>
-<button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
-</div></section>
 
-<section class="v6-panel">
-  <div class="v6-box">
-    <div class="v6-row">
-      <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
-      <button data-v6-platform="all" class="active">Alle</button>
-      <button data-v6-platform="Netflix">Netflix</button>
-      <button data-v6-platform="Amazon Prime Video">Prime</button>
-      <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
-      <button id="v6-hide">👁️ Angeschaute ausblenden</button>
-      <button id="v6-surprise">🎲 Überrasche mich!</button>
-      <button id="v6-dark">🌙 Dunkel</button>
-    </div>
-    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
-    <div id="v6-stats" class="v6-stats"></div>
-    <div class="v6-row" style="margin-top:9px">
-      <button id="v6-export">💾 Daten exportieren</button>
-      <button id="v6-import-btn">📂 Daten importieren</button>
-      <input id="v6-import" type="file" accept=".json" hidden>
-      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
-    </div>
-  </div>
-</section>
-<section id="v10-recent" aria-label="Zuletzt angesehen">
-  <div class="recent-title">Zuletzt angesehen, Maus 💜</div>
-  <div class="recent-list" id="v10-recent-list"></div>
-</section>
 <div class="v12-maus-note"><span class="maus-symbol">🐭</span> Für dich, Maus – damit Langeweile gar nicht erst aufkommt. 💜</div>
-<section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
-<main><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
+
+<nav class="v33-tabs" aria-label="Bereiche">
+  <button type="button" class="v33-tab active" data-tab="movies" aria-selected="true">🎬 Filmliste</button>
+  <button type="button" class="v33-tab" data-tab="recent" aria-selected="false">🐭 Zuletzt angesehen</button>
+</nav>
+
+<main id="v33-movies-panel"><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
       <div class="platform netflix"><span>N</span>Netflix</div>
       <h2>Verirrte Kugel (Lost Bullet, 2020)</h2>
       <div class="genre genre-action">Action / Auto-Thriller</div>
@@ -2057,6 +2215,43 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
       <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=A+Simple+Favor+(2018)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
     </article></div>
 <div class="note"> <strong>Stand: 21.09.2026.</strong> Streaming-Kataloge ändern sich. Vor dem Start bitte kurz prüfen, ob der Titel noch im Abo enthalten ist. <strong>Die neu ergänzten Prime-Thriller wurden nur aufgenommen, wenn die Recherche eine Prime-Abo-Verfügbarkeit in Deutschland ergeben hat.</strong></div></main>
+<section id="v33-recent-panel" class="v33-tab-panel" hidden>
+<section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
+<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
+<p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
+<section class="controls"><div class="inner">
+<input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
+<button class="active" data-filter="all">Alle</button><button data-filter="Netflix">Netflix</button><button data-filter="Amazon Prime Video">Prime</button>
+<button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
+</div></section>
+
+<section class="v6-panel">
+  <div class="v6-box">
+    <div class="v6-row">
+      <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
+      <button data-v6-platform="all" class="active">Alle</button>
+      <button data-v6-platform="Netflix">Netflix</button>
+      <button data-v6-platform="Amazon Prime Video">Prime</button>
+      <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
+      <button id="v6-hide">👁️ Angeschaute ausblenden</button>
+      <button id="v6-surprise">🎲 Überrasche mich!</button>
+      <button id="v6-dark">🌙 Dunkel</button>
+    </div>
+    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
+    <div id="v6-stats" class="v6-stats"></div>
+    <div class="v6-row" style="margin-top:9px">
+      <button id="v6-export">💾 Daten exportieren</button>
+      <button id="v6-import-btn">📂 Daten importieren</button>
+      <input id="v6-import" type="file" accept=".json" hidden>
+      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
+    </div>
+  </div>
+</section>
+<section id="v10-recent" aria-label="Zuletzt angesehen">
+  <div class="recent-title">Zuletzt angesehen, Maus 💜</div>
+  <div class="recent-list" id="v10-recent-list"></div>
+</section>
+</section>
 <footer>Mit Liebe gegen Langeweile · Stand 21.09.2026</footer>
 <script>
 const cards=[...document.querySelectorAll('.movie')],buttons=[...document.querySelectorAll('button[data-filter]')],search=document.querySelector('#search'),watchedToggle=document.querySelector('#watchedToggle');
@@ -2416,6 +2611,30 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 
   updateGreeting();
   setInterval(updateGreeting, 60000);
+})();
+</script>
+
+
+<script>
+/* v33 – tabs */
+(function(){
+  const buttons = Array.from(document.querySelectorAll('.v33-tab'));
+  const movies = document.getElementById('v33-movies-panel');
+  const recent = document.getElementById('v33-recent-panel');
+  if (!buttons.length || !movies || !recent) return;
+
+  function show(name) {
+    const isRecent = name === 'recent';
+    movies.hidden = isRecent;
+    recent.hidden = !isRecent;
+    buttons.forEach(b => {
+      const active = b.dataset.tab === name;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+  buttons.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
 })();
 </script>
 

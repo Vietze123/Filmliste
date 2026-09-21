@@ -1,0 +1,2383 @@
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff8f0"><title>Filmliste gegen Mäuse-Langweiligekeit</title>
+<style>
+:root{--bg:#fff8f0;--ink:#302d36;--muted:#77717d;--pink:#f4a6bd;--pink2:#ffe0e9;--cream:#fffdf9;--line:#eadfe0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#ffe9ef 0 15%,transparent 36%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:38px 20px 24px;text-align:center;max-width:900px;margin:auto}.mascot{font-size:44px;animation:wobble 3s ease-in-out infinite;display:inline-block}
+h1{font-size:clamp(30px,8vw,56px);line-height:1.02;margin:8px 0 10px;letter-spacing:-1.8px}.subtitle{margin:0 auto;color:var(--muted);max-width:650px;font-size:15px;line-height:1.5}
+.controls{position:sticky;top:0;z-index:5;padding:12px 16px;background:#fff8f0dd;backdrop-filter:blur(14px);border-bottom:1px solid #eadfe080}
+.inner{max-width:900px;margin:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}input{flex:1;min-width:220px;border:1px solid var(--line);background:var(--cream);border-radius:18px;padding:12px 15px;font-size:16px;outline:none}
+button{border:1px solid var(--line);background:var(--cream);border-radius:18px;padding:11px 13px;font-size:14px;cursor:pointer}button.active{background:var(--ink);color:white;border-color:var(--ink)}
+main{max-width:900px;margin:18px auto 55px;padding:0 16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.movie{background:rgba(255,253,249,.94);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 5px 18px #5c43520b;transition:.18s}.movie:hover{transform:translateY(-2px)}
+.platform{display:inline-flex;gap:7px;align-items:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;margin-bottom:11px}.netflix{background:#ffe0e6;color:#a3213a}.prime{background:#e4f1fc;color:#22618e}
+.platform span{font-weight:900}h2{font-size:20px;line-height:1.15;margin:0 0 7px;letter-spacing:-.3px}
+.genre{display:inline-block;border-radius:9px;padding:4px 7px;font-size:12px;margin-bottom:8px;font-weight:700}
+.genre-action{background:#ffd6dc;color:#9c3148}.genre-thriller{background:#dfe2ff;color:#4b4f9b}.genre-heist{background:#ffe4b8;color:#93601a}
+.genre-drama{background:#e7d9f7;color:#704d8e}.genre-comedy{background:#fff0b8;color:#8a6b00}.genre-scifi{background:#d5edff;color:#25618b}
+.genre-crime{background:#e2d8d5;color:#65504a}.genre-western{background:#ead6bd;color:#77532d}.genre-racing{background:#d5f0df;color:#27704a}
+.genre-adventure{background:#d7eee9;color:#286b61}.genre-war{background:#dddeda;color:#555852}.genre-court{background:#e0e8f2;color:#4b5d70}
+.genre-survival{background:#dff0c9;color:#557535}.genre-psycho{background:#ead9ec;color:#714c76}.genre-mystery{background:#dfe8da;color:#4d6745}.genre-default{background:#f5eef0;color:#6e626a}
+.movie p{font-size:14px;line-height:1.48;color:#625c64;margin:3px 0 15px}.card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.watch,.watched-btn{display:inline-block;text-decoration:none;padding:10px 12px;border-radius:13px;font-size:13px;font-weight:700}.watch{color:var(--ink);background:var(--pink2);border:0}
+.watched-btn{background:#fff;color:#756a71}.movie.is-watched{opacity:.55}.movie.is-watched h2{text-decoration:line-through;text-decoration-thickness:2px}.movie.is-watched .watched-btn{background:#e5f4e9;border-color:#c9e4d0;color:#397049}
+.note{margin-top:22px;background:#fff3d9;border:1px solid #eed9a7;border-radius:18px;padding:13px 15px;font-size:12px;line-height:1.45;color:#665b47}
+footer{text-align:center;color:#99919a;font-size:12px;padding:10px 20px 35px}.hidden{display:none!important}
+@keyframes wobble{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-2px)}}
+@media(max-width:520px){input{flex-basis:100%;min-width:0}button{flex:1}.grid{grid-template-columns:1fr}}
+
+/* Erweiterte Film-App v6 */
+:root{--v6-bg:#fffaf2;--v6-card:#fff;--v6-ink:#25232a}
+.genre{border:3px solid currentColor!important;box-shadow:0 0 0 2px rgba(255,255,255,.8),0 3px 10px rgba(0,0,0,.10);font-weight:900!important}
+.genre-action{background:#ff4d5e!important;color:#fff!important}.genre-thriller{background:#7047ff!important;color:#fff!important}
+.genre-heist{background:#d99a00!important;color:#fff!important}.genre-drama{background:#9b59d0!important;color:#fff!important}
+.genre-comedy{background:#ffad00!important;color:#fff!important}.genre-scifi{background:#00a978!important;color:#fff!important}
+.genre-crime{background:#7a6257!important;color:#fff!important}.genre-western{background:#a9682e!important;color:#fff!important}
+.genre-racing{background:#d92d78!important;color:#fff!important}.genre-adventure{background:#008f83!important;color:#fff!important}
+.genre-war{background:#65733d!important;color:#fff!important}.genre-court{background:#526b87!important;color:#fff!important}
+.genre-survival{background:#008da0!important;color:#fff!important}.genre-psycho{background:#b83c77!important;color:#fff!important}
+.genre-mystery{background:#556fc4!important;color:#fff!important}.genre-default{background:#777!important;color:#fff!important}
+.v6-panel{max-width:900px;margin:12px auto;padding:0 16px}
+.v6-box{background:rgba(255,253,249,.96);border:1px solid #eadfe0;border-radius:20px;padding:12px;box-shadow:0 5px 18px #5c43520b}
+.v6-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.v6-row button,.v6-row select{border:1px solid #eadfe0;background:#fffdf9;border-radius:14px;padding:9px 11px;font-size:13px;cursor:pointer}
+.v6-row button.active{background:#302d36;color:#fff}.v6-search{flex:1;min-width:210px;border:1px solid #eadfe0;background:#fffdf9;border-radius:14px;padding:10px 12px;font-size:15px}
+.v6-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.v6-chip{border:3px solid var(--gc);color:var(--gc);background:#fff;border-radius:999px;padding:6px 9px;font-weight:900;font-size:12px;cursor:pointer}.v6-chip.active{background:var(--gc);color:#fff}
+.v6-stats{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.v6-stat{padding:6px 9px;background:#f5eef0;border-radius:999px;font-size:12px;font-weight:800}
+.v6-card-extra{margin-top:9px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}.v6-stars{color:#f2a900;font-size:20px;letter-spacing:1px;cursor:pointer;user-select:none}.v6-fav{border:0!important;background:#fff0a8!important}
+.movie.v6-watched{opacity:.55}.movie.v6-watched h2{text-decoration:line-through;text-decoration-thickness:2px}.movie.v6-favorite{box-shadow:0 0 0 3px #ffd43b,0 5px 18px #5c43520b}
+.v6-empty{grid-column:1/-1;text-align:center;padding:35px;background:#fffdf9;border:1px solid #eadfe0;border-radius:22px}
+body.v6-dark{--bg:#151515;--ink:#f5f2ed;background:#151515!important;color:#f5f2ed}
+body.v6-dark .v6-box,body.v6-dark .movie,body.v6-dark .v6-search,body.v6-dark .v6-row button,body.v6-dark .v6-row select,body.v6-dark .v6-chip{background:#222!important;color:#f5f2ed;border-color:#444}
+body.v6-dark .v6-stat{background:#333}.body.v6-dark{}
+@media(max-width:520px){.v6-search{flex-basis:100%}.v6-row button,.v6-row select{flex:1}}
+
+/* v7: Präsentationsmodus + ausklappbarer Genrefilter */
+.v7-filter-toggle{display:flex;justify-content:space-between;align-items:center;width:100%;font-weight:900;text-align:left}
+.v7-filter-toggle .arrow{font-size:1.15rem;transition:transform .2s}
+.v7-filter-toggle.open .arrow{transform:rotate(180deg)}
+#v6-genres{display:none}
+#v6-genres.v7-open{display:flex}
+.v7-present-overlay{position:fixed;inset:0;z-index:9999;background:rgba(20,18,22,.82);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:18px}
+.v7-present-overlay.open{display:flex}
+.v7-present{width:min(720px,100%);max-height:92vh;overflow:auto;background:#fffdf9;color:#25232a;border-radius:30px;box-shadow:0 25px 80px rgba(0,0,0,.4);position:relative}
+.v7-present-head{padding:20px 22px 8px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.v7-present-title{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:950;line-height:1.05;margin:0}
+.v7-present-body{padding:0 22px 22px}
+.v7-present-body .movie{display:block!important;opacity:1!important;box-shadow:none!important;border:0!important;padding:0!important;background:transparent!important}
+.v7-present-body .movie h2{text-decoration:none!important;font-size:1.7rem}
+.v7-present-body .movie .v6-card-extra{display:flex}
+.v7-present-actions{display:flex;gap:9px;flex-wrap:wrap;padding:0 22px 22px}
+.v7-present-actions button{border:0;border-radius:15px;padding:12px 15px;font-weight:900;cursor:pointer}
+.v7-next{background:#ffb13b}.v7-close{background:#eee}.v7-watch{background:#dff2e3}
+.v7-counter{font-size:.85rem;font-weight:800;color:#777}
+body.v6-dark .v7-present{background:#222;color:#f5f2ed}
+body.v6-dark .v7-close{background:#444;color:#fff}
+body.v6-dark .v7-present-body .movie{color:#f5f2ed}
+
+/* ===== Präsentationsmodus: eigenes, sauberes Layout ===== */
+#presentationModal {
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+#presentationModal .modal-content,
+#presentationModal .modal-card,
+#presentationModal .presentation-card {
+  width: min(760px, 100%);
+  max-width: 760px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+/* Falls die Präsentation den normalen Movie-Card-Inhalt klont:
+   im Modal werden Layout-Regeln der Listenansicht neutralisiert. */
+#presentationModal .movie,
+#presentationModal .movie-card,
+#presentationModal .movie-content {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#presentationModal .movie {
+  display: block;
+  text-align: left;
+  transform: none !important;
+  overflow: visible;
+}
+
+#presentationModal .movie:hover {
+  transform: none !important;
+}
+
+/* Bilder/Poster dürfen im Präsentationsmodus nicht aus dem Container laufen. */
+#presentationModal img,
+#presentationModal .poster,
+#presentationModal .movie-poster {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+/* Lange Titel und Beschreibungen bleiben innerhalb der Karte. */
+#presentationModal h1,
+#presentationModal h2,
+#presentationModal h3,
+#presentationModal h4,
+#presentationModal p {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Auf kleinen iPhone-Breiten: kompakter und ohne horizontales Scrollen. */
+@media (max-width: 600px) {
+  #presentationModal {
+    padding: 10px;
+  }
+  #presentationModal .modal-content,
+  #presentationModal .modal-card,
+  #presentationModal .presentation-card {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+  }
+  #presentationModal .movie {
+    padding: 18px !important;
+  }
+}
+
+/* Sehr schmale Geräte */
+@media (max-width: 380px) {
+  #presentationModal {
+    padding: 6px;
+  }
+  #presentationModal .movie {
+    padding: 14px !important;
+  }
+}
+
+
+/* ===== v17: Smartphone-optimierter Überraschungs-/Präsentationsmodus ===== */
+@media (max-width: 700px) {
+  body.v7-lock { overflow: hidden !important; }
+
+  #v7Presentation {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-shell {
+    width: 100% !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-topbar {
+    flex: 0 0 auto !important;
+    padding: max(12px, env(safe-area-inset-top)) 14px 10px !important;
+    gap: 8px !important;
+  }
+
+  #v7Presentation .v7-topbar h2,
+  #v7Presentation .v7-title {
+    font-size: clamp(1.05rem, 5vw, 1.35rem) !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  #v7Presentation .v7-close {
+    min-width: 42px !important;
+    min-height: 42px !important;
+    flex: 0 0 42px !important;
+  }
+
+  #v7Presentation .v7-stage {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 10px 12px 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .movie,
+  #v7Presentation .movie-card,
+  #v7Presentation .v7-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    border-radius: 18px !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  #v7Presentation .movie h2,
+  #v7Presentation .movie h3 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  #v7Presentation .movie p,
+  #v7Presentation .movie .description {
+    font-size: 0.96rem !important;
+    line-height: 1.48 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  #v7Presentation .movie img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 34dvh !important;
+    object-fit: cover !important;
+    border-radius: 14px !important;
+  }
+
+  #v7Presentation .movie .actions,
+  #v7Presentation .movie .movie-actions,
+  #v7Presentation .movie .buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  #v7Presentation .v7-actions {
+    flex: 0 0 auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-actions button,
+  #v7Presentation .v7-action,
+  #v7Presentation button {
+    min-height: 46px !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    touch-action: manipulation !important;
+  }
+}
+
+/* Noch kompakter für sehr kleine Smartphones */
+@media (max-width: 390px) {
+  #v7Presentation .v7-stage { padding: 8px 9px 10px !important; }
+  #v7Presentation .movie,
+  #v7Presentation .movie-card,
+  #v7Presentation .v7-card {
+    padding: 13px !important;
+    border-radius: 15px !important;
+  }
+  #v7Presentation .movie p,
+  #v7Presentation .movie .description {
+    font-size: 0.91rem !important;
+  }
+}
+
+
+/* ===== v18: Smartphone-Abstände im Überraschungsmodus ===== */
+@media (max-width: 700px) {
+  #v7Presentation .v7-shell {
+    padding-left: max(16px, env(safe-area-inset-left)) !important;
+    padding-right: max(16px, env(safe-area-inset-right)) !important;
+  }
+
+  #v7Presentation .v7-topbar {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  #v7Presentation .v7-stage {
+    width: 100% !important;
+    padding: 14px 4px 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-stage > *,
+  #v7Presentation .movie,
+  #v7Presentation .movie-card,
+  #v7Presentation .v7-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .movie,
+  #v7Presentation .movie-card,
+  #v7Presentation .v7-card {
+    padding: 18px !important;
+  }
+
+  #v7Presentation .movie > *,
+  #v7Presentation .movie-card > * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-actions {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7Presentation .v7-shell {
+    padding-left: max(12px, env(safe-area-inset-left)) !important;
+    padding-right: max(12px, env(safe-area-inset-right)) !important;
+  }
+
+  #v7Presentation .movie,
+  #v7Presentation .movie-card,
+  #v7Presentation .v7-card {
+    padding: 15px !important;
+  }
+}
+
+
+/* ===== v19: echter Innenabstand für Text im Überraschungsmodus ===== */
+@media (max-width: 700px) {
+  #v7Presentation {
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-shell {
+    width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-stage {
+    width: 100% !important;
+    padding: 14px 0 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Der geklonte Film selbst bekommt einen eigenen sicheren Innenrand. */
+  #v7Presentation .v7-stage .movie,
+  #v7Presentation .v7-stage .movie-card,
+  #v7Presentation .v7-stage .v7-card,
+  #v7Presentation .v7-stage > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Auch direkte Textelemente können durch alte Desktop-Regeln negative
+     Margins/Positionierungen erben – diese werden im Modal neutralisiert. */
+  #v7Presentation .v7-stage h1,
+  #v7Presentation .v7-stage h2,
+  #v7Presentation .v7-stage h3,
+  #v7Presentation .v7-stage h4,
+  #v7Presentation .v7-stage p,
+  #v7Presentation .v7-stage .platform,
+  #v7Presentation .v7-stage .genre,
+  #v7Presentation .v7-stage .description,
+  #v7Presentation .v7-stage .actions,
+  #v7Presentation .v7-stage .movie-actions,
+  #v7Presentation .v7-stage .rating {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7Presentation .v7-topbar,
+  #v7Presentation .v7-actions {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7Presentation .v7-shell {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  #v7Presentation .v7-stage .movie,
+  #v7Presentation .v7-stage .movie-card,
+  #v7Presentation .v7-stage .v7-card,
+  #v7Presentation .v7-stage > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  #v7Presentation .v7-topbar,
+  #v7Presentation .v7-actions {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+
+/* ===== v20: Korrektur am TATSÄCHLICHEN Überraschungs-Modal ===== */
+@media (max-width: 700px) {
+  #v7-overlay.v7-present-overlay {
+    padding: 10px !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7-overlay .v7-present {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(100dvh - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    margin: 0 !important;
+    border-radius: 22px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Kopfzeile */
+  #v7-overlay .v7-present-head {
+    padding: 20px 24px 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Hier sitzt der geklonte Film – genau dieser Bereich war zu nah am Rand. */
+  #v7-overlay .v7-present-body {
+    padding: 8px 24px 24px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  #v7-overlay .v7-present-body .movie {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7-overlay .v7-present-body .movie > * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7-overlay .v7-present-body .movie h2,
+  #v7-overlay .v7-present-body .movie p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* Untere Aktionen mit gleichem Rand wie der Filminhalt */
+  #v7-overlay .v7-present-actions {
+    padding: 0 24px calc(20px + env(safe-area-inset-bottom)) !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  #v7-overlay .v7-present-actions button {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7-overlay.v7-present-overlay {
+    padding: 6px !important;
+  }
+
+  #v7-overlay .v7-present {
+    height: calc(100dvh - 12px) !important;
+    max-height: calc(100dvh - 12px) !important;
+    border-radius: 18px !important;
+  }
+
+  #v7-overlay .v7-present-head {
+    padding: 18px 20px 10px !important;
+  }
+
+  #v7-overlay .v7-present-body {
+    padding: 8px 20px 22px !important;
+  }
+
+  #v7-overlay .v7-present-actions {
+    padding: 0 20px calc(18px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+
+/* ===== v21: störenden linken Karten-Balken im Überraschungsmodus entfernen ===== */
+/* Die Filmkarten der normalen Liste behalten ihren farbigen linken Akzent.
+   Nur im Präsentations-/Überraschungsmodus wird er vollständig entfernt. */
+#v7-overlay .v7-present-body .movie,
+#v7-overlay .v7-present-body .movie-card {
+  border-left: 0 !important;
+  border-inline-start: 0 !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+
+/* Manche Karten erzeugen den Farbbalken über ein Pseudoelement. */
+#v7-overlay .v7-present-body .movie::before,
+#v7-overlay .v7-present-body .movie-card::before,
+#v7-overlay .v7-present-body .movie::after,
+#v7-overlay .v7-present-body .movie-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Genügend Abstand für die eigentlichen Filminformationen. */
+@media (max-width: 700px) {
+  #v7-overlay .v7-present-body {
+    padding: 12px 26px 26px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie,
+  #v7-overlay .v7-present-body .movie-card {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #v7-overlay .v7-present-body .movie h2,
+  #v7-overlay .v7-present-body .movie h3,
+  #v7-overlay .v7-present-body .movie p,
+  #v7-overlay .v7-present-body .movie .genre,
+  #v7-overlay .v7-present-body .movie .platform,
+  #v7-overlay .v7-present-body .movie .description {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7-overlay .v7-present-body {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+}
+
+
+/* ===== v22: farbige Umrandung statt Balken im Überraschungsmodus ===== */
+#v7-overlay .v7-present-body .movie,
+#v7-overlay .v7-present-body .movie-card {
+  /* Der alte linke Balken bleibt aus. Stattdessen läuft der Akzent außen herum. */
+  border: 3px solid rgba(210, 92, 255, 0.82) !important;
+  border-left: 3px solid rgba(210, 92, 255, 0.82) !important;
+  border-inline-start: 3px solid rgba(210, 92, 255, 0.82) !important;
+  border-radius: 20px !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+  background-clip: padding-box !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 126, 203, 0.16),
+    0 8px 26px rgba(112, 55, 180, 0.13) !important;
+}
+
+/* Pseudoelemente des ursprünglichen Seitenbalkens bleiben deaktiviert. */
+#v7-overlay .v7-present-body .movie::before,
+#v7-overlay .v7-present-body .movie-card::before,
+#v7-overlay .v7-present-body .movie::after,
+#v7-overlay .v7-present-body .movie-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Text sitzt klar innerhalb der Umrandung und kann sie nicht überlappen. */
+#v7-overlay .v7-present-body .movie > *,
+#v7-overlay .v7-present-body .movie-card > * {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 700px) {
+  #v7-overlay .v7-present-body {
+    padding: 12px 18px 24px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie,
+  #v7-overlay .v7-present-body .movie-card {
+    padding: 18px !important;
+    border-radius: 18px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7-overlay .v7-present-body {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie,
+  #v7-overlay .v7-present-body .movie-card {
+    padding: 16px !important;
+    border-width: 2px !important;
+  }
+}
+
+
+/* ===== v23: Text im Überraschungsfenster entzerren ===== */
+#v7-overlay .v7-present-body .movie,
+#v7-overlay .v7-present-body .movie-card {
+  line-height: 1.55 !important;
+}
+
+/* Titel bekommt klaren Abstand zum restlichen Inhalt. */
+#v7-overlay .v7-present-body .movie h2,
+#v7-overlay .v7-present-body .movie h3,
+#v7-overlay .v7-present-body .movie-card h2,
+#v7-overlay .v7-present-body .movie-card h3 {
+  line-height: 1.22 !important;
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+/* Metadaten/Genre etwas vom Titel und Beschreibung trennen. */
+#v7-overlay .v7-present-body .movie .genre,
+#v7-overlay .v7-present-body .movie .platform,
+#v7-overlay .v7-present-body .movie .meta,
+#v7-overlay .v7-present-body .movie-card .genre,
+#v7-overlay .v7-present-body .movie-card .platform,
+#v7-overlay .v7-present-body .movie-card .meta {
+  line-height: 1.45 !important;
+  margin-top: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+/* Beschreibung mit mehr Zeilenhöhe und Luft nach oben/unten. */
+#v7-overlay .v7-present-body .movie p,
+#v7-overlay .v7-present-body .movie .description,
+#v7-overlay .v7-present-body .movie-card p,
+#v7-overlay .v7-present-body .movie-card .description {
+  line-height: 1.62 !important;
+  margin-top: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+/* Bedienelemente deutlich von der Beschreibung absetzen. */
+#v7-overlay .v7-present-body .movie .actions,
+#v7-overlay .v7-present-body .movie .movie-actions,
+#v7-overlay .v7-present-body .movie .buttons,
+#v7-overlay .v7-present-body .movie-card .actions,
+#v7-overlay .v7-present-body .movie-card .movie-actions,
+#v7-overlay .v7-present-body .movie-card .buttons {
+  margin-top: 18px !important;
+  margin-bottom: 14px !important;
+  gap: 10px !important;
+}
+
+/* Bewertung bekommt einen eigenen optischen Abschnitt. */
+#v7-overlay .v7-present-body .movie .rating,
+#v7-overlay .v7-present-body .movie .stars,
+#v7-overlay .v7-present-body .movie-card .rating,
+#v7-overlay .v7-present-body .movie-card .stars {
+  margin-top: 16px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(170, 110, 220, 0.18) !important;
+}
+
+/* Auch die drei großen Präsentationsbuttons bekommen mehr Abstand. */
+#v7-overlay .v7-present-actions {
+  gap: 12px !important;
+  padding-top: 8px !important;
+}
+
+@media (max-width: 700px) {
+  #v7-overlay .v7-present-body .movie,
+  #v7-overlay .v7-present-body .movie-card {
+    padding: 20px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie h2,
+  #v7-overlay .v7-present-body .movie h3 {
+    margin-bottom: 16px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie p,
+  #v7-overlay .v7-present-body .movie .description {
+    line-height: 1.65 !important;
+    margin-top: 14px !important;
+    margin-bottom: 18px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7-overlay .v7-present-body .movie,
+  #v7-overlay .v7-present-body .movie-card {
+    padding: 17px !important;
+  }
+
+  #v7-overlay .v7-present-body .movie p,
+  #v7-overlay .v7-present-body .movie .description {
+    line-height: 1.58 !important;
+  }
+}
+
+
+/* ===== v24: Überschrift des Überraschungsfensters deutlich entzerren ===== */
+#v7-overlay .v7-present-head {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  column-gap: 18px !important;
+  row-gap: 10px !important;
+}
+
+#v7-overlay .v7-present-head h1,
+#v7-overlay .v7-present-head h2,
+#v7-overlay .v7-present-head h3,
+#v7-overlay .v7-present-head .v7-present-title {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.32 !important;
+  letter-spacing: 0.01em !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+}
+
+/* Schließen-Button bekommt seinen eigenen Platz und liegt nie über der Überschrift. */
+#v7-overlay .v7-present-head button,
+#v7-overlay .v7-present-close {
+  position: static !important;
+  align-self: start !important;
+  justify-self: end !important;
+  margin: 0 !important;
+  flex: none !important;
+}
+
+@media (max-width: 700px) {
+  #v7-overlay .v7-present-head {
+    padding: 22px 24px 18px !important;
+    column-gap: 16px !important;
+  }
+
+  #v7-overlay .v7-present-head h1,
+  #v7-overlay .v7-present-head h2,
+  #v7-overlay .v7-present-head h3,
+  #v7-overlay .v7-present-head .v7-present-title {
+    font-size: clamp(1.18rem, 5.3vw, 1.5rem) !important;
+    line-height: 1.38 !important;
+  }
+
+  /* Zusätzliche Luft zwischen Fensterüberschrift und Filmkarte. */
+  #v7-overlay .v7-present-body {
+    padding-top: 16px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #v7-overlay .v7-present-head {
+    padding: 20px 20px 16px !important;
+    column-gap: 12px !important;
+  }
+
+  #v7-overlay .v7-present-head h1,
+  #v7-overlay .v7-present-head h2,
+  #v7-overlay .v7-present-head h3,
+  #v7-overlay .v7-present-head .v7-present-title {
+    font-size: 1.18rem !important;
+    line-height: 1.42 !important;
+  }
+}
+
+
+/* ===== v25: iPhone/Safari – Buttons im Überraschungsmodus klickbar ===== */
+#v7-overlay {
+  pointer-events: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#v7-overlay .v7-present {
+  position: relative !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Dekoration darf auf iOS keine Touch-Ereignisse abfangen. */
+#v7-overlay .v7-present::before,
+#v7-overlay .v7-present::after,
+#v7-overlay .v7-present-body::before,
+#v7-overlay .v7-present-body::after,
+#v7-overlay .movie::before,
+#v7-overlay .movie::after {
+  pointer-events: none !important;
+}
+
+/* Alle interaktiven Elemente liegen garantiert oberhalb der Karte. */
+#v7-overlay button,
+#v7-overlay .btn,
+#v7-overlay [role="button"],
+#v7-overlay .v7-present-actions,
+#v7-overlay .v7-present-actions button {
+  position: relative !important;
+  z-index: 50 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+}
+
+/* Safari: Buttons nicht durch transformierte Eltern/Overlays unanklickbar machen. */
+#v7-overlay .v7-present-body,
+#v7-overlay .v7-present-actions,
+#v7-overlay .v7-present-head {
+  position: relative !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 700px) {
+  #v7-overlay .v7-present-actions {
+    position: relative !important;
+    z-index: 100 !important;
+  }
+
+  #v7-overlay button {
+    min-height: 48px !important;
+    cursor: pointer !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+
+/* ===== v26: vollständiger iPhone/Safari-Kompatibilitäts-Pass ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select {
+  font-family: inherit;
+}
+button, [role="button"], select {
+  touch-action: manipulation;
+}
+button {
+  min-height: 44px;
+}
+input[type="search"], input[type="text"], select {
+  font-size: 16px !important; /* verhindert Safari-Autozoom beim Fokussieren */
+}
+.controls {
+  top: 0;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  -webkit-backdrop-filter: blur(14px);
+}
+main {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.v7-present-overlay {
+  -webkit-backdrop-filter: blur(14px);
+  overscroll-behavior: contain;
+}
+#v7-overlay .v7-present {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+#v7-overlay button {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 48px;
+  pointer-events: auto !important;
+}
+#v7-overlay .v7-present-actions,
+#v7-overlay .v7-present-head,
+#v7-overlay .v7-present-body {
+  pointer-events: auto !important;
+}
+#v7-overlay .v7-present::before,
+#v7-overlay .v7-present::after,
+#v7-overlay .v7-present-body::before,
+#v7-overlay .v7-present-body::after,
+#v7-overlay .movie::before,
+#v7-overlay .movie::after {
+  pointer-events: none !important;
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .movie {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .v6-row {
+    width: 100%;
+  }
+  .v6-row button,
+  .v6-row select {
+    min-height: 46px;
+  }
+
+  #v7-overlay.v7-present-overlay {
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(8px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left)) !important;
+  }
+  #v7-overlay .v7-present {
+    height: auto !important;
+    max-height: calc(100vh - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  #v7-overlay .v7-present-head {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background: #fffdf9;
+  }
+  body.v6-dark #v7-overlay .v7-present-head {
+    background: #222;
+  }
+  #v7-overlay .v7-present-actions {
+    padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+  }
+  #v7-overlay .v7-present-actions button {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+}
+
+/* iPhone landscape / niedrige Viewports */
+@media (max-height: 500px) and (orientation: landscape) {
+  #v7-overlay.v7-present-overlay {
+    align-items: stretch !important;
+    padding: 6px max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left)) !important;
+  }
+  #v7-overlay .v7-present {
+    max-height: calc(100dvh - 12px) !important;
+    border-radius: 16px !important;
+  }
+  #v7-overlay .v7-present-head {
+    padding-top: 12px !important;
+    padding-bottom: 10px !important;
+  }
+}
+
+/* Geräte ohne dvh-Unterstützung behalten 100vh als Fallback. */
+@supports not (height: 100dvh) {
+  #v7-overlay .v7-present {
+    max-height: calc(100vh - 16px) !important;
+  }
+}
+
+
+/* ===== v27: iPhone/Safari compatibility ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+button, input, select, textarea {
+  font: inherit;
+}
+button, a, [role="button"], select, label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(120,70,180,.15);
+}
+button {
+  min-height: 44px;
+  cursor: pointer;
+}
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Normal page controls */
+.controls, main, header {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+main {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: max(18px, env(safe-area-inset-bottom));
+}
+.movie, .movie-card {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Surprise modal: only real modal elements may receive touches. */
+#v7-overlay {
+  pointer-events: none !important;
+}
+#v7-overlay.open {
+  pointer-events: auto !important;
+}
+#v7-overlay .v7-present {
+  pointer-events: auto !important;
+  position: relative !important;
+  isolation: isolate;
+}
+#v7-overlay .v7-present-head,
+#v7-overlay .v7-present-body,
+#v7-overlay .v7-present-actions {
+  pointer-events: auto !important;
+  position: relative !important;
+}
+#v7-overlay .v7-present::before,
+#v7-overlay .v7-present::after,
+#v7-overlay .v7-present-head::before,
+#v7-overlay .v7-present-head::after,
+#v7-overlay .v7-present-body::before,
+#v7-overlay .v7-present-body::after,
+#v7-overlay .movie::before,
+#v7-overlay .movie::after {
+  pointer-events: none !important;
+}
+#v7-overlay button,
+#v7-overlay a,
+#v7-overlay [role="button"] {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 1000 !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* No invisible cloned/card layer may sit over controls. */
+#v7-overlay .v7-present-actions {
+  z-index: 100 !important;
+}
+#v7-overlay .v7-present-head {
+  z-index: 100 !important;
+}
+#v7-overlay .v7-present-body {
+  z-index: 1 !important;
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+  .controls {
+    width: 100%;
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .controls button,
+  .controls select,
+  .controls input,
+  .v6-row button,
+  .v6-row select {
+    min-height: 46px !important;
+    max-width: 100%;
+  }
+
+  #v7-overlay.v7-present-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(8px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left)) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  #v7-overlay .v7-present {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+  #v7-overlay .v7-present-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+  }
+  #v7-overlay .v7-present-actions button {
+    width: 100% !important;
+    min-height: 50px !important;
+  }
+}
+
+</style>
+<style id="v9-accent-design">
+/* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
+:root{
+  --v9-bg:#f6f3ff;
+  --v9-card:#ffffff;
+  --v9-text:#25233a;
+  --v9-muted:#77748a;
+  --v9-purple:#7257d9;
+  --v9-purple-dark:#5b43bd;
+  --v9-pink:#ed6aa7;
+  --v9-blue:#4d8fe8;
+  --v9-green:#43aa86;
+  --v9-yellow:#f2bd4d;
+  --v9-line:#e7e2f4;
+  --v9-shadow:0 8px 24px rgba(73,54,135,.10);
+}
+
+html{
+  -webkit-text-size-adjust:100%;
+  background:var(--v9-bg);
+}
+body{
+  background:
+    radial-gradient(circle at 5% 0%,rgba(114,87,217,.12),transparent 25%),
+    radial-gradient(circle at 96% 7%,rgba(237,106,167,.10),transparent 22%),
+    var(--v9-bg);
+  color:var(--v9-text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+}
+
+/* Kopfbereich */
+header,.hero,.top{
+  background:linear-gradient(135deg,#ffffff 0%,#faf8ff 68%,#fff8fc 100%);
+  border:1px solid var(--v9-line);
+  box-shadow:var(--v9-shadow);
+  border-radius:24px;
+  position:relative;
+  overflow:hidden;
+}
+header:before,.hero:before,.top:before{
+  content:"";
+  position:absolute;
+  left:0;top:0;right:0;
+  height:5px;
+  background:linear-gradient(90deg,var(--v9-purple),var(--v9-pink),var(--v9-blue));
+}
+header h1,.hero h1,.top h1{
+  letter-spacing:-.035em;
+}
+header p,.hero p,.top p{color:var(--v9-muted)}
+
+/* Bedienelemente */
+.controls,.toolbar,.filters,.actions{
+  background:rgba(255,255,255,.90);
+  border:1px solid var(--v9-line);
+  box-shadow:0 6px 20px rgba(73,54,135,.07);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-radius:18px;
+}
+input[type="search"],input[type="text"],select{
+  background:#fff;
+  border:1px solid var(--v9-line);
+  color:var(--v9-text);
+  border-radius:13px;
+}
+input:focus,select:focus{
+  border-color:var(--v9-purple);
+  box-shadow:0 0 0 3px rgba(114,87,217,.12);
+}
+button{
+  border:1px solid var(--v9-line);
+  background:#fff;
+  color:var(--v9-text);
+  border-radius:12px;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+}
+button:hover{
+  box-shadow:0 4px 12px rgba(73,54,135,.10);
+}
+button:active{transform:scale(.97)}
+button.primary,.surprise-btn{
+  background:linear-gradient(135deg,var(--v9-purple),var(--v9-purple-dark));
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 6px 15px rgba(114,87,217,.25);
+}
+
+/* Genre-Auswahl */
+.v7-genre-toggle{
+  background:linear-gradient(90deg,#f6f2ff,#fff8fc);
+  border:1px solid #ded6f5;
+  color:var(--v9-purple-dark);
+  font-weight:750;
+}
+#v6-genres button{
+  border-radius:999px;
+  background:#faf9ff;
+}
+#v6-genres button:hover{
+  background:#f0ebff;
+}
+
+/* Karten */
+.movie{
+  background:var(--v9-card)!important;
+  border:1px solid var(--v9-line)!important;
+  border-radius:18px!important;
+  box-shadow:var(--v9-shadow)!important;
+  position:relative;
+}
+.movie:after{
+  content:"";
+  position:absolute;
+  top:0;left:0;
+  width:4px;
+  height:100%;
+  background:linear-gradient(180deg,var(--v9-purple),var(--v9-pink));
+  opacity:.8;
+}
+.movie h2,.movie h3{
+  color:var(--v9-text);
+  letter-spacing:-.02em;
+}
+.movie .genre{
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);
+  font-weight:750;
+}
+.movie button{
+  min-height:42px;
+}
+
+/* Akzente für übliche Film-Metadaten */
+.movie .platform,.movie .netflix,.movie .prime{
+  font-weight:750;
+}
+.movie .favorite,.movie .fav-btn{
+  background:#fff5fa;
+  border-color:#f5d4e4;
+}
+.movie .watched,.movie .watch-btn{
+  background:#f5f4f9;
+}
+
+/* Statistik */
+.stat,.stat-card{
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--v9-line);
+  box-shadow:0 4px 14px rgba(73,54,135,.06);
+  border-radius:15px;
+}
+.stat strong,.stat-card strong{color:var(--v9-purple-dark)}
+.stat span,.stat-card span{color:var(--v9-muted)}
+
+/* Präsentationsmodus */
+#v7-modal .v7-content,.v7-modal .v7-content{
+  border:1px solid #e3dcf4!important;
+  box-shadow:0 24px 70px rgba(49,38,91,.30)!important;
+  border-radius:25px!important;
+}
+#v7-modal,.v7-modal{
+  background:rgba(37,28,67,.58)!important;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+/* iPhone-Feinschliff, ohne das Farbschema zu verändern */
+@media (max-width:700px){
+  body{font-size:15px}
+  header,.hero,.top{margin:10px;border-radius:21px}
+  header{padding:20px 17px}
+  .controls,.toolbar,.filters,.actions{margin:0 10px 9px;border-radius:17px}
+  #movies,.movies,.movie-grid,.grid{margin:0 10px;gap:10px!important}
+  .movie{border-radius:17px!important}
+  button{min-height:44px}
+  input[type="search"],input[type="text"],select{min-height:47px}
+  .v7-genre-toggle{min-height:47px}
+}
+
+/* Dark mode: vorhandene App-Logik bleibt funktionsfähig */
+body.dark,body.dark-mode,.dark{
+  --v9-bg:#171525;
+  --v9-card:#211f31;
+  --v9-text:#f4f1ff;
+  --v9-muted:#aaa5bb;
+  --v9-line:#38334d;
+}
+</style>
+
+
+<style id="v10-mouse-design">
+:root{
+  --mouse-cream:#fffaf2;
+  --mouse-cheese:#f4c95d;
+  --mouse-cheese-soft:#fff2c9;
+  --mouse-lav:#eee9ff;
+  --mouse-pink-soft:#fff0f7;
+  --mouse-brown:#765b50;
+}
+body{
+  background:
+    radial-gradient(circle at 8% 3%,rgba(244,201,93,.17),transparent 19%),
+    radial-gradient(circle at 94% 11%,rgba(237,106,167,.10),transparent 20%),
+    radial-gradient(circle at 50% 100%,rgba(114,87,217,.08),transparent 28%),
+    var(--v9-bg);
+}
+header,.hero,.top{
+  background:linear-gradient(135deg,#fff 0%,var(--mouse-cream) 58%,#fff6fb 100%);
+}
+.v7-genre-toggle{
+  background:linear-gradient(90deg,var(--mouse-lav),var(--mouse-pink-soft),var(--mouse-cheese-soft));
+}
+.movie{
+  background:linear-gradient(145deg,#fff 0%,#fffdfb 78%,#fff8fb 100%)!important;
+}
+.movie:before{
+  content:"";
+  position:absolute;
+  right:13px;top:11px;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--mouse-cheese);
+  box-shadow:0 0 0 4px rgba(244,201,93,.14);
+  opacity:.85;
+}
+.movie:after{
+  width:5px!important;
+  background:linear-gradient(180deg,var(--v9-purple),var(--v9-pink),var(--mouse-cheese))!important;
+}
+.v6-stats{
+  position:relative;
+}
+#v10-recent{
+  margin-top:10px;
+  padding:11px 12px;
+  border:1px solid #eadfc8;
+  border-radius:17px;
+  background:linear-gradient(100deg,#fffaf0,#fff7fb);
+}
+#v10-recent .recent-title{
+  font-weight:800;
+  color:var(--mouse-brown);
+  margin-bottom:8px;
+}
+#v10-recent .recent-list{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:2px;
+}
+#v10-recent .recent-list::-webkit-scrollbar{display:none}
+#v10-recent .recent-item{
+  flex:0 0 auto;
+  border:1px solid #eadfc8;
+  background:#fff;
+  color:var(--v9-text);
+  border-radius:999px;
+  padding:8px 11px;
+  min-height:38px;
+  font-size:13px;
+  white-space:nowrap;
+}
+#v10-recent .recent-item:active{
+  background:var(--mouse-cheese-soft);
+}
+@media(max-width:700px){
+  #v10-recent{margin-left:10px;margin-right:10px}
+}
+</style>
+
+
+<style id="v11-personal-address">
+#v10-recent .recent-title{
+  color:var(--v9-purple-dark);
+  letter-spacing:-.01em;
+}
+#v10-recent .recent-title::first-letter{
+  color:var(--v9-pink);
+}
+</style>
+
+
+<style id="v12-maus-personal">
+.v12-maus-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:6px;font-size:.9em}
+header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;vertical-align:.12em}
+#v10-recent .recent-title:before{content:"🐭 ";}
+.v12-maus-note{margin:0 10px 12px;padding:11px 14px;border:1px solid #ddd4f5;border-radius:16px;background:linear-gradient(100deg,#f3efff,#fff3f8);color:var(--v9-purple-dark);font-weight:700;box-shadow:0 4px 13px rgba(73,54,135,.06)}
+.v12-maus-note .maus-symbol{font-size:1.2em;margin-right:4px}
+@media(min-width:701px){.v12-maus-note{max-width:1076px;margin-left:auto;margin-right:auto}}
+</style>
+
+
+<meta name="theme-color" content="#6d3cff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mäuse-Filmliste">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+
+</head><body>
+<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
+<p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
+<section class="controls"><div class="inner">
+<input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
+<button class="active" data-filter="all">Alle</button><button data-filter="Netflix">Netflix</button><button data-filter="Amazon Prime Video">Prime</button>
+<button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
+</div></section>
+
+<section class="v6-panel">
+  <div class="v6-box">
+    <div class="v6-row">
+      <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
+      <button data-v6-platform="all" class="active">Alle</button>
+      <button data-v6-platform="Netflix">Netflix</button>
+      <button data-v6-platform="Amazon Prime Video">Prime</button>
+      <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
+      <button id="v6-hide">👁️ Angeschaute ausblenden</button>
+      <button id="v6-surprise">🎲 Überrasche mich!</button>
+      <button id="v6-dark">🌙 Dunkel</button>
+    </div>
+    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
+    <div id="v6-stats" class="v6-stats"></div>
+    <div class="v6-row" style="margin-top:9px">
+      <button id="v6-export">💾 Daten exportieren</button>
+      <button id="v6-import-btn">📂 Daten importieren</button>
+      <input id="v6-import" type="file" accept=".json" hidden>
+      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
+    </div>
+  </div>
+</section>
+<section id="v10-recent" aria-label="Zuletzt angesehen">
+  <div class="recent-title">Zuletzt angesehen, Maus 💜</div>
+  <div class="recent-list" id="v10-recent-list"></div>
+</section>
+<div class="v12-maus-note"><span class="maus-symbol">🐭</span> Für dich, Maus – damit Langeweile gar nicht erst aufkommt. 💜</div>
+<main><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Verirrte Kugel (Lost Bullet, 2020)</h2>
+      <div class="genre genre-action">Action / Auto-Thriller</div>
+      <p>Mechaniker wird des Mordes beschuldigt und jagt das Auto mit dem Beweis seiner Unschuld. Viel echte Stunt-Action, Stil wie Fast &amp; Furious.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Verirrte+Kugel+(Lost+Bullet,+2020)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="verirrte kugel 2 (2022) action / auto-thriller fortsetzung mit praktischen effekten statt cgi, autos krachen und fliegen durch die luft.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Verirrte Kugel 2 (2022)</h2>
+      <div class="genre genre-action">Action / Auto-Thriller</div>
+      <p>Fortsetzung mit praktischen Effekten statt CGI, Autos krachen und fliegen durch die Luft.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Verirrte+Kugel+2+(2022)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="verirrte kugel 3 (last bullet, 2025) action / auto-thriller finale der trilogie, lino beendet seine rache.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Verirrte Kugel 3 (Last Bullet, 2025)</h2>
+      <div class="genre genre-action">Action / Auto-Thriller</div>
+      <p>Finale der Trilogie, Lino beendet seine Rache.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Verirrte+Kugel+3+(Last+Bullet,+2025)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="rebel ridge (2024) action-thriller realistische action, mehr spannung als explosionen.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Rebel Ridge (2024)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Realistische Action, mehr Spannung als Explosionen.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Rebel+Ridge+(2024)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="wheelman (2017) action-thriller fluchtfahrer-thriller mit frank grillo.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Wheelman (2017)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Fluchtfahrer-Thriller mit Frank Grillo.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Wheelman+(2017)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="drive (2019, indien) action / heist ein dieb tut sich mit einem straßenrennfahrer für einen großen überfall zusammen.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Drive (2019, Indien)</h2>
+      <div class="genre genre-action">Action / Heist</div>
+      <p>Ein Dieb tut sich mit einem Straßenrennfahrer für einen großen Überfall zusammen.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Drive+(2019,+Indien)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="need for speed action / autorennen videospielverfilmung mit aaron paul, als konkurrenz zu fast &amp; furious gedacht.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Need for Speed</h2>
+      <div class="genre genre-action">Action / Autorennen</div>
+      <p>Videospielverfilmung mit Aaron Paul, als Konkurrenz zu Fast &amp; Furious gedacht.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Need+for+Speed" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="steig. nicht. aus! thriller / action deutscher thriller: bombe im auto auf dem weg zur schule der kinder.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Steig. Nicht. Aus!</h2>
+      <div class="genre genre-action">Thriller / Action</div>
+      <p>Deutscher Thriller: Bombe im Auto auf dem Weg zur Schule der Kinder.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Steig.+Nicht.+Aus!" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="criminal squad 2 action / heist gerard butler jagt einen dieb nach europa, wo ein diamantenraub ansteht.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Criminal Squad 2</h2>
+      <div class="genre genre-action">Action / Heist</div>
+      <p>Gerard Butler jagt einen Dieb nach Europa, wo ein Diamantenraub ansteht.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Criminal+Squad+2" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="players (indien) heist / action meisterdieb plant den überfall auf einen goldtransport zwischen russland und rumänien.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Players (Indien)</h2>
+      <div class="genre genre-action">Heist / Action</div>
+      <p>Meisterdieb plant den Überfall auf einen Goldtransport zwischen Russland und Rumänien.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Players+(Indien)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="army of thieves heist-komödie prequel zu army of the dead über den safeknacker ludwig dieter.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Army of Thieves</h2>
+      <div class="genre genre-heist">Heist-Komödie</div>
+      <p>Prequel zu Army of the Dead über den Safeknacker Ludwig Dieter.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Army+of+Thieves" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="bajocero (unter null) action-thriller spanischer film: polizist überlebt den überfall auf einen gefangenentransport und ist auf der flucht.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Bajocero (Unter Null)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Spanischer Film: Polizist überlebt den Überfall auf einen Gefangenentransport und ist auf der Flucht.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Bajocero+(Unter+Null)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="aka (frankreich) action / krimi auftragskiller schleust sich bei einem kriminellen ein. imdb 6,6.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>AKA (Frankreich)</h2>
+      <div class="genre genre-action">Action / Krimi</div>
+      <p>Auftragskiller schleust sich bei einem Kriminellen ein. IMDb 6,6.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=AKA+(Frankreich)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="30 minutes or less action-komödie pizzabote mit bombenweste soll eine bank ausrauben. gilt als unterschätzt.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>30 Minutes or Less</h2>
+      <div class="genre genre-action">Action-Komödie</div>
+      <p>Pizzabote mit Bombenweste soll eine Bank ausrauben. Gilt als unterschätzt.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=30+Minutes+or+Less" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="apex (2026) survival-thriller charlize theron wird in der australischen wildnis gejagt, duell statt explosionen.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Apex (2026)</h2>
+      <div class="genre genre-thriller">Survival-Thriller</div>
+      <p>Charlize Theron wird in der australischen Wildnis gejagt, Duell statt Explosionen.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Apex+(2026)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="dreiländereck (triple frontier, 2019) heist / militär-action raubüberfall mit militärischem hintergrund und menschlichen geschichten.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Dreiländereck (Triple Frontier, 2019)</h2>
+      <div class="genre genre-action">Heist / Militär-Action</div>
+      <p>Raubüberfall mit militärischem Hintergrund und menschlichen Geschichten.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Dreiländereck+(Triple+Frontier,+2019)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="ad vitam (2025, frankreich) action-thriller verschwörung und menschenjagd.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Ad Vitam (2025, Frankreich)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Verschwörung und Menschenjagd.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Ad+Vitam+(2025,+Frankreich)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="systemsprenger (2019) drama vielfach ausgezeichnetes drama über ein wütendes mädchen (helena zengel), das alle an ihre grenzen bringt.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Systemsprenger (2019)</h2>
+      <div class="genre genre-drama">Drama</div>
+      <p>Vielfach ausgezeichnetes Drama über ein wütendes Mädchen (Helena Zengel), das alle an ihre Grenzen bringt.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Systemsprenger+(2019)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="the power of the dog (2021) western-drama herrischer rancher (benedict cumberbatch) gegen seine schwägerin und deren sohn.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Power of the Dog (2021)</h2>
+      <div class="genre genre-drama">Western-Drama</div>
+      <p>Herrischer Rancher (Benedict Cumberbatch) gegen seine Schwägerin und deren Sohn.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=The+Power+of+the+Dog+(2021)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="facing el chapo (2026) drama / crime spanischsprachiger netflix-film, ganz neu.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Facing El Chapo (2026)</h2>
+      <div class="genre genre-drama">Drama / Crime</div>
+      <p>Spanischsprachiger Netflix-Film, ganz neu.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Facing+El+Chapo+(2026)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="the secret woman (2026) psycho-thriller dänischer netflix-film, ganz neu.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Secret Woman (2026)</h2>
+      <div class="genre genre-thriller">Psycho-Thriller</div>
+      <p>Dänischer Netflix-Film, ganz neu.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=The+Secret+Woman+(2026)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="4 blocks (serie) crime-drama arabischer clan in berlin-neukölln, drei staffeln.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>4 Blocks (Serie)</h2>
+      <div class="genre genre-drama">Crime-Drama</div>
+      <p>Arabischer Clan in Berlin-Neukölln, drei Staffeln.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=4+Blocks+(Serie)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="calibre – weidmannsunheil (2018) psychologischer thriller zwei freunde machen einen jagdausflug in schottland. ein schockierender vorfall stellt ihre nerven und ihre moral auf die probe. imdb 6,8.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Calibre – Weidmannsunheil (2018)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller</div>
+      <p>Zwei Freunde machen einen Jagdausflug in Schottland. Ein schockierender Vorfall stellt ihre Nerven und ihre Moral auf die Probe. IMDb 6,8.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Calibre+–+Weidmannsunheil+(2018)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="forgotten (2017) psychologischer thriller / mystery ein entführter bruder kehrt ohne erinnerungen an die vergangenen 19 tage zurück. sein bruder versucht herauszufinden, was wirklich passiert ist. imdb 7,4.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Forgotten (2017)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Mystery</div>
+      <p>Ein entführter Bruder kehrt ohne Erinnerungen an die vergangenen 19 Tage zurück. Sein Bruder versucht herauszufinden, was wirklich passiert ist. IMDb 7,4.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=Forgotten+(2017)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="the call (2020) psychologischer thriller eine serienmörderin setzt per telefon das leben und die vergangenheit einer frau aufs spiel, die 20 jahre später im selben haus lebt.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Call (2020)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller</div>
+      <p>Eine Serienmörderin setzt per Telefon das Leben und die Vergangenheit einer Frau aufs Spiel, die 20 Jahre später im selben Haus lebt.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=The+Call+(2020)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="the guilty (2021) psychologischer thriller / drama ein polizist in der notrufzentrale versucht, eine anruferin in gefahr zu retten – und entdeckt, dass nichts so ist, wie es zunächst scheint. imdb 6,3.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Guilty (2021)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Drama</div>
+      <p>Ein Polizist in der Notrufzentrale versucht, eine Anruferin in Gefahr zu retten – und entdeckt, dass nichts so ist, wie es zunächst scheint. IMDb 6,3.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.netflix.com/search?q=The+Guilty+(2021)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the runner (2026) action-thriller prime-original, „speed trifft taken“, nur 84 minuten.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Runner (2026)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Prime-Original, „Speed trifft Taken“, nur 84 Minuten.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=The+Runner+(2026)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="bastille day action-thriller idris elba als cia-agent nach einem anschlag in paris, packende verfolgungsjagd.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Bastille Day</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Idris Elba als CIA-Agent nach einem Anschlag in Paris, packende Verfolgungsjagd.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Bastille+Day&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="gemini man sci-fi-action will smith als auftragskiller, der gegen seinen jüngeren klon antritt.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Gemini Man</h2>
+      <div class="genre genre-action">Sci-Fi-Action</div>
+      <p>Will Smith als Auftragskiller, der gegen seinen jüngeren Klon antritt.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Gemini+Man&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="steal (serie, 2026) heist-thriller prime-original-serie.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Steal (Serie, 2026)</h2>
+      <div class="genre genre-thriller">Heist-Thriller</div>
+      <p>Prime-Original-Serie.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Steal+(Serie,+2026)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="free fire (2016) gangster-actionkomödie waffendeal in einer lagerhalle eskaliert zur dauer-schießerei, viel schwarzer humor.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Free Fire (2016)</h2>
+      <div class="genre genre-action">Gangster-Actionkomödie</div>
+      <p>Waffendeal in einer Lagerhalle eskaliert zur Dauer-Schießerei, viel schwarzer Humor.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Free+Fire+(2016)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="upgrade (2018) cyberpunk-action ein gelähmter jagt dank ki-implantat die mörder seiner frau. b-movie-charme.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Upgrade (2018)</h2>
+      <div class="genre genre-action">Cyberpunk-Action</div>
+      <p>Ein Gelähmter jagt dank KI-Implantat die Mörder seiner Frau. B-Movie-Charme.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Upgrade+(2018)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="boss level (2021) action-komödie zeitschleife im videospiel-stil mit frank grillo.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Boss Level (2021)</h2>
+      <div class="genre genre-action">Action-Komödie</div>
+      <p>Zeitschleife im Videospiel-Stil mit Frank Grillo.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Boss+Level+(2021)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the courier (2019) action-thriller olga kurylenko als motorrad-botin, die einen kronzeugen rettet.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Courier (2019)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Olga Kurylenko als Motorrad-Botin, die einen Kronzeugen rettet.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=The+Courier+(2019)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="blood father (2016) action-thriller / drama mel gibson beschützt seine tochter vor drogendealern.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Blood Father (2016)</h2>
+      <div class="genre genre-action">Action-Thriller / Drama</div>
+      <p>Mel Gibson beschützt seine Tochter vor Drogendealern.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Blood+Father+(2016)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the wrecking crew (2026) buddy-actionkomödie dave bautista und jason momoa als brüder, die den tod ihres vaters aufklären.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Wrecking Crew (2026)</h2>
+      <div class="genre genre-action">Buddy-Actionkomödie</div>
+      <p>Dave Bautista und Jason Momoa als Brüder, die den Tod ihres Vaters aufklären.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=The+Wrecking+Crew+(2026)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="criminal squad (2018) action / heist bankräuber-team plant überfall auf die federal reserve, gerard butler jagt es.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Criminal Squad (2018)</h2>
+      <div class="genre genre-action">Action / Heist</div>
+      <p>Bankräuber-Team plant Überfall auf die Federal Reserve, Gerard Butler jagt es.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Criminal+Squad+(2018)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the ministry of ungentlemanly warfare (2024) kriegs-action / abenteuer guy ritchie über eine geheime britische spezialeinheit im zweiten weltkrieg.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Ministry of Ungentlemanly Warfare (2024)</h2>
+      <div class="genre genre-action">Kriegs-Action / Abenteuer</div>
+      <p>Guy Ritchie über eine geheime britische Spezialeinheit im Zweiten Weltkrieg.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=The+Ministry+of+Ungentlemanly+Warfare+(2024)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="plane (2023) action-thriller notlandung auf einer rebelleninsel, gerard butler und ein häftling müssen zusammenarbeiten.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Plane (2023)</h2>
+      <div class="genre genre-action">Action-Thriller</div>
+      <p>Notlandung auf einer Rebelleninsel, Gerard Butler und ein Häftling müssen zusammenarbeiten.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Plane+(2023)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="anatomie eines falls (2023) gerichtsdrama frau wird des mordes an ihrem mann angeklagt. imdb 7,7.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Anatomie eines Falls (2023)</h2>
+      <div class="genre genre-drama">Gerichtsdrama</div>
+      <p>Frau wird des Mordes an ihrem Mann angeklagt. IMDb 7,7.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Anatomie+eines+Falls+(2023)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="ein freund von mir (2006) drama zwei gegensätzliche freunde (daniel brühl, jürgen vogel), 80 minuten. imdb 6,8.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Ein Freund von mir (2006)</h2>
+      <div class="genre genre-drama">Drama</div>
+      <p>Zwei gegensätzliche Freunde (Daniel Brühl, Jürgen Vogel), 80 Minuten. IMDb 6,8.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Ein+Freund+von+mir+(2006)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="sneaky pete (serie) crime-drama trickbetrüger schleicht sich als verlorener sohn in eine familie ein.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Sneaky Pete (Serie)</h2>
+      <div class="genre genre-drama">Crime-Drama</div>
+      <p>Trickbetrüger schleicht sich als verlorener Sohn in eine Familie ein.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=Sneaky+Pete+(Serie)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the endless (2017) mystery / sci-fi-thriller zwei brüder kehren zu einer sekte zurück, der sie vor jahren entkommen sind. unheimlich, langsam und zunehmend rätselhaft. imdb 6,5; justwatch 80%.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Endless (2017)</h2>
+      <div class="genre genre-thriller">Mystery / Sci-Fi-Thriller</div>
+      <p>Zwei Brüder kehren zu einer Sekte zurück, der sie vor Jahren entkommen sind. Unheimlich, langsam und zunehmend rätselhaft. IMDb 6,5; JustWatch 80%.</p>
+      <div class="card-actions">
+        <button class="watched-btn" type="button">✓ Angeschaut</button>
+        <a class="watch" href="https://www.amazon.de/s?k=The+Endless+(2017)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a>
+      </div>
+    </article><article class="movie" data-platform="Netflix" data-search="the stranger (2022) psychologischer thriller / drama ein undercover-ermittler nähert sich einem mordverdächtigen an. ruhiger, düsterer thriller mit starkem fokus auf spannung und psychologie.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Stranger (2022)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Drama</div>
+      <p>Ein Undercover-Ermittler nähert sich einem Mordverdächtigen an. Ruhiger, düsterer Thriller mit starkem Fokus auf Spannung und Psychologie.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Stranger+(2022)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the night comes for us (2018) action / thriller brutaler indonesischer action-thriller über einen ehemaligen vollstrecker, der ein kleines mädchen beschützen will.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Night Comes for Us (2018)</h2>
+      <div class="genre genre-action">Action / Thriller</div>
+      <p>Brutaler indonesischer Action-Thriller über einen ehemaligen Vollstrecker, der ein kleines Mädchen beschützen will.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Night+Comes+for+Us+(2018)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="i don&#x27;t feel at home in this world anymore (2017) thriller / komödie / drama eine frustrierte frau jagt mit ihrem nachbarn die einbrecher, die sie bestohlen haben – und gerät immer tiefer ins chaos.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>I Don&#x27;t Feel at Home in This World Anymore (2017)</h2>
+      <div class="genre genre-thriller">Thriller / Komödie / Drama</div>
+      <p>Eine frustrierte Frau jagt mit ihrem Nachbarn die Einbrecher, die sie bestohlen haben – und gerät immer tiefer ins Chaos.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=I+Don't+Feel+at+Home+in+This+World+Anymore+(2017)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the platform (2019) psychologischer thriller / sci-fi / drama in einem vertikalen gefängnis entscheidet eine plattform mit essen darüber, wer etwas bekommt. beklemmende gesellschaftsparabel.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Platform (2019)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Sci-Fi / Drama</div>
+      <p>In einem vertikalen Gefängnis entscheidet eine Plattform mit Essen darüber, wer etwas bekommt. Beklemmende Gesellschaftsparabel.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Platform+(2019)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the clovehitch killer (2018) thriller / mystery ein teenager beginnt zu vermuten, dass sein scheinbar perfekter vater ein serienmörder sein könnte.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Clovehitch Killer (2018)</h2>
+      <div class="genre genre-thriller">Thriller / Mystery</div>
+      <p>Ein Teenager beginnt zu vermuten, dass sein scheinbar perfekter Vater ein Serienmörder sein könnte.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Clovehitch+Killer+(2018)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the guilty (2018) thriller / krimi / drama ein dänischer polizist arbeitet in der notrufzentrale und versucht, eine entführte frau allein am telefon zu retten.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Guilty (2018)</h2>
+      <div class="genre genre-thriller">Thriller / Krimi / Drama</div>
+      <p>Ein dänischer Polizist arbeitet in der Notrufzentrale und versucht, eine entführte Frau allein am Telefon zu retten.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Guilty+(2018)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the invisible guest (2016) mystery-thriller / krimi ein unternehmer wacht neben der leiche seiner geliebten auf. eine anwältin versucht, in wenigen stunden die wahrheit zu rekonstruieren.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Invisible Guest (2016)</h2>
+      <div class="genre genre-thriller">Mystery-Thriller / Krimi</div>
+      <p>Ein Unternehmer wacht neben der Leiche seiner Geliebten auf. Eine Anwältin versucht, in wenigen Stunden die Wahrheit zu rekonstruieren.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Invisible+Guest+(2016)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the call (2020) psychologischer thriller / mystery eine frau erhält anrufe von einer fremden, die im selben haus lebt – allerdings 20 jahre in der vergangenheit.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Call (2020)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Mystery</div>
+      <p>Eine Frau erhält Anrufe von einer Fremden, die im selben Haus lebt – allerdings 20 Jahre in der Vergangenheit.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Call+(2020)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="the devil all the time (2020) crime-drama / thriller mehrere schicksale kreuzen sich in einer düsteren kleinstadt im amerikanischen hinterland.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>The Devil All the Time (2020)</h2>
+      <div class="genre genre-thriller">Crime-Drama / Thriller</div>
+      <p>Mehrere Schicksale kreuzen sich in einer düsteren Kleinstadt im amerikanischen Hinterland.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=The+Devil+All+the+Time+(2020)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Netflix" data-search="calibre – weidmannsunheil (2018) psychologischer thriller / drama zwei freunde machen einen jagdausflug in schottland. nach einem schrecklichen unfall geraten sie in eine spirale aus angst und schuld.">
+      <div class="platform netflix"><span>N</span>Netflix</div>
+      <h2>Calibre – Weidmannsunheil (2018)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Drama</div>
+      <p>Zwei Freunde machen einen Jagdausflug in Schottland. Nach einem schrecklichen Unfall geraten sie in eine Spirale aus Angst und Schuld.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.netflix.com/search?q=Calibre+–+Weidmannsunheil+(2018)" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the vast of night (2019) sci-fi / mystery-thriller in einer kleinstadt der 1950er entdecken eine telefonistin und ein radiomoderator ein rätselhaftes signal.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Vast of Night (2019)</h2>
+      <div class="genre genre-thriller">Sci-Fi / Mystery-Thriller</div>
+      <p>In einer Kleinstadt der 1950er entdecken eine Telefonistin und ein Radiomoderator ein rätselhaftes Signal.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=The+Vast+of+Night+(2019)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the invitation (2015) psychologischer thriller / mystery ein mann besucht ein abendessen bei seiner ex-frau und merkt zunehmend, dass mit der einladung etwas nicht stimmt.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Invitation (2015)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Mystery</div>
+      <p>Ein Mann besucht ein Abendessen bei seiner Ex-Frau und merkt zunehmend, dass mit der Einladung etwas nicht stimmt.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=The+Invitation+(2015)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="coherence (2013) sci-fi / mystery-thriller während eines abendessens zieht ein komet vorbei – und plötzlich scheint die realität selbst aus den fugen zu geraten.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Coherence (2013)</h2>
+      <div class="genre genre-thriller">Sci-Fi / Mystery-Thriller</div>
+      <p>Während eines Abendessens zieht ein Komet vorbei – und plötzlich scheint die Realität selbst aus den Fugen zu geraten.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=Coherence+(2013)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="heist – der letzte coup (2001) heist / krimi / thriller gene hackman plant einen letzten großen coup, doch verrat und misstrauen machen den raub immer komplizierter.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Heist – Der letzte Coup (2001)</h2>
+      <div class="genre genre-thriller">Heist / Krimi / Thriller</div>
+      <p>Gene Hackman plant einen letzten großen Coup, doch Verrat und Misstrauen machen den Raub immer komplizierter.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=Heist+–+Der+letzte+Coup+(2001)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="die entführung von bus 657 (2015) action / heist / thriller ein ex-gangster raubt einen casino-bus aus und gerät mit seinem komplizen zwischen polizei und unterwelt.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Die Entführung von Bus 657 (2015)</h2>
+      <div class="genre genre-action">Action / Heist / Thriller</div>
+      <p>Ein Ex-Gangster raubt einen Casino-Bus aus und gerät mit seinem Komplizen zwischen Polizei und Unterwelt.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=Die+Entführung+von+Bus+657+(2015)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the instigators (2024) action / heist / komödie / drama zwei ungleiche männer geraten nach einem missglückten raubüberfall in eine turbulente flucht.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Instigators (2024)</h2>
+      <div class="genre genre-action">Action / Heist / Komödie / Drama</div>
+      <p>Zwei ungleiche Männer geraten nach einem missglückten Raubüberfall in eine turbulente Flucht.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=The+Instigators+(2024)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="blue ruin (2013) thriller / drama ein heruntergekommener einzelgänger kehrt für rache in seine heimat zurück. ruhig, roh und ungewöhnlich.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>Blue Ruin (2013)</h2>
+      <div class="genre genre-thriller">Thriller / Drama</div>
+      <p>Ein heruntergekommener Einzelgänger kehrt für Rache in seine Heimat zurück. Ruhig, roh und ungewöhnlich.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=Blue+Ruin+(2013)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the gift (2015) psychologischer thriller / drama ein ehepaar wird von einem alten bekannten aus der vergangenheit heimgesucht, der immer mehr über ihr leben preisgibt.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Gift (2015)</h2>
+      <div class="genre genre-thriller">Psychologischer Thriller / Drama</div>
+      <p>Ein Ehepaar wird von einem alten Bekannten aus der Vergangenheit heimgesucht, der immer mehr über ihr Leben preisgibt.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=The+Gift+(2015)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="the report (2019) politisches drama / thriller ein ermittler versucht, die wahrheit über ein geheimes verhörprogramm ans licht zu bringen.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>The Report (2019)</h2>
+      <div class="genre genre-thriller">Politisches Drama / Thriller</div>
+      <p>Ein Ermittler versucht, die Wahrheit über ein geheimes Verhörprogramm ans Licht zu bringen.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=The+Report+(2019)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article><article class="movie" data-platform="Amazon Prime Video" data-search="a simple favor (2018) mystery / thriller / komödie eine bloggerin versucht herauszufinden, warum ihre mysteriöse freundin plötzlich verschwunden ist.">
+      <div class="platform prime"><span>▶</span>Amazon Prime Video</div>
+      <h2>A Simple Favor (2018)</h2>
+      <div class="genre genre-thriller">Mystery / Thriller / Komödie</div>
+      <p>Eine Bloggerin versucht herauszufinden, warum ihre mysteriöse Freundin plötzlich verschwunden ist.</p>
+      <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=A+Simple+Favor+(2018)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
+    </article></div>
+<div class="note"> <strong>Stand: 21.09.2026.</strong> Streaming-Kataloge ändern sich. Vor dem Start bitte kurz prüfen, ob der Titel noch im Abo enthalten ist. <strong>Die neu ergänzten Prime-Thriller wurden nur aufgenommen, wenn die Recherche eine Prime-Abo-Verfügbarkeit in Deutschland ergeben hat.</strong></div></main>
+<footer>Mit Liebe gegen Langeweile · Stand 21.09.2026</footer>
+<script>
+const cards=[...document.querySelectorAll('.movie')],buttons=[...document.querySelectorAll('button[data-filter]')],search=document.querySelector('#search'),watchedToggle=document.querySelector('#watchedToggle');
+let filter='all',hideWatched=JSON.parse(localStorage.getItem('mouseMovieHideWatched')||'false');
+function getWatched(){try{return JSON.parse(localStorage.getItem('mouseMovieWatched')||'{}')}catch(e){return {}}}
+function saveWatched(x){localStorage.setItem('mouseMovieWatched',JSON.stringify(x))}
+function render(){const q=search.value.toLowerCase().trim(),watched=getWatched();
+cards.forEach(c=>{const title=c.querySelector('h2').textContent,isWatched=!!watched[title];c.classList.toggle('is-watched',isWatched);
+c.classList.toggle('hidden',!( (filter==='all'||c.dataset.platform===filter) && (!q||c.dataset.search.includes(q)) && (!hideWatched||!isWatched) ));});
+watchedToggle.classList.toggle('active',hideWatched);watchedToggle.textContent=hideWatched?'👁️ Angeschaute einblenden':'👁️ Angeschaut ausblenden';}
+buttons.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;buttons.forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}));
+watchedToggle.addEventListener('click',()=>{hideWatched=!hideWatched;localStorage.setItem('mouseMovieHideWatched',JSON.stringify(hideWatched));render()});
+document.querySelectorAll('.watched-btn').forEach(btn=>btn.addEventListener('click',()=>{const card=btn.closest('.movie'),title=card.querySelector('h2').textContent,w=getWatched();if(w[title])delete w[title];else w[title]=true;saveWatched(w);render()}));
+search.addEventListener('input',render);render();
+</script>
+<script>
+(function(){
+const STORE='mouseMovieAppV6';
+let s=JSON.parse(localStorage.getItem(STORE)||'{}');
+s.watched=s.watched||{}; s.favs=s.favs||{}; s.ratings=s.ratings||{};
+s.genres=s.genres||[]; s.platform='all'; s.hide=!!s.hide; s.dark=!!s.dark; s.sort=s.sort||'default';
+const cards=[...document.querySelectorAll('.movie')];
+const esc=x=>String(x||'').toLowerCase();
+const key=t=>t.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+const colors={'action':'#ff4d5e','thriller':'#7047ff','heist':'#d99a00','drama':'#9b59d0','komödie':'#ffad00','comedy':'#ffad00','sci-fi':'#00a978','krimi':'#e91e63','crime':'#7a6257','western':'#a9682e','racing':'#d92d78','adventure':'#008f83','war':'#65733d','court':'#526b87','survival':'#008da0','psycho':'#b83c77','mystery':'#556fc4'};
+function save(){localStorage.setItem(STORE,JSON.stringify(s))}
+function cardData(c){
+ const title=c.querySelector('h2')?.textContent.trim()||'';
+ const platform=c.dataset.platform||'';
+ const search=(c.dataset.search||'')+' '+title+' '+(c.querySelector('.genre')?.textContent||'');
+ const genreText=(c.querySelector('.genre')?.textContent||'');
+ const gs=genreText.split('/').map(x=>x.trim()).filter(Boolean);
+ return {c,title,platform,search:esc(search),genres:gs};
+}
+const data=cards.map(cardData);
+const genres=[...new Set(data.flatMap(x=>x.genres))].sort((a,b)=>a.localeCompare(b,'de'));
+function genreColor(g){let n=esc(g); for(const k in colors)if(n.includes(k))return colors[k]; return '#777'}
+function renderGenres(){
+ document.getElementById('v6-genres').innerHTML=genres.map(g=>`<button class="v6-chip ${s.genres.includes(g)?'active':''}" style="--gc:${genreColor(g)}" data-v6-genre="${g.replace(/"/g,'&quot;')}">${g}</button>`).join('');
+ document.querySelectorAll('[data-v6-genre]').forEach(b=>b.onclick=()=>{const g=b.dataset.v6Genre,i=s.genres.indexOf(g);i>=0?s.genres.splice(i,1):s.genres.push(g);save();render()});
+}
+function filtered(){
+ const q=esc(document.getElementById('v6-search').value.trim());
+ let a=data.filter(x=>{
+   const id=key(x.title), okQ=!q||x.search.includes(q), okP=s.platform==='all'||x.platform===s.platform;
+   const okG=!s.genres.length||s.genres.some(g=>x.genres.includes(g));
+   return okQ&&okP&&okG&&(!s.hide||!s.watched[id]);
+ });
+ if(s.sort==='title')a.sort((x,y)=>x.title.localeCompare(y.title,'de'));
+ if(s.sort==='rating')a.sort((x,y)=>(s.ratings[key(y.title)]||0)-(s.ratings[key(x.title)]||0));
+ if(s.sort==='genre')a.sort((x,y)=>(x.genres[0]||'').localeCompare(y.genres[0]||'','de'));
+ return a;
+}
+function render(){
+ document.body.classList.toggle('v6-dark',s.dark);
+ renderGenres();
+ const a=filtered();
+ data.forEach(x=>{
+   const id=key(x.title),r=s.ratings[id]||0;
+   x.c.classList.toggle('v6-watched',!!s.watched[id]);
+   x.c.classList.toggle('v6-favorite',!!s.favs[id]);
+   let ex=x.c.querySelector('.v6-card-extra');
+   if(!ex){ex=document.createElement('div');ex.className='v6-card-extra';x.c.appendChild(ex)}
+   ex.innerHTML=`<span class="v6-stars" title="Persönliche Bewertung">${[1,2,3,4,5].map(n=>`<span data-rate="${n}">${n<=r?'★':'☆'}</span>`).join('')}</span><button class="v6-fav">${s.favs[id]?'💛 Favorit':'♡ Favorit'}</button>`;
+   ex.querySelectorAll('[data-rate]').forEach(st=>st.onclick=()=>{s.ratings[id]=+st.dataset.rate;save();render()});
+   ex.querySelector('.v6-fav').onclick=()=>{s.favs[id]=!s.favs[id];save();render()};
+   x.c.style.display=a.includes(x)?'':'none';
+   const old=x.c.querySelector('.watched-btn'); if(old) old.textContent=s.watched[id]?'↩️ Ungesehen':'✓ Angeschaut';
+   if(old)old.onclick=()=>{s.watched[id]=!s.watched[id];save();render()};
+ });
+ document.getElementById('v6-hide').textContent=s.hide?'👁️ Alle Filme zeigen':'👁️ Angeschaute ausblenden';
+ document.getElementById('v6-dark').textContent=s.dark?'☀️ Hell':'🌙 Dunkel';
+ const watched=Object.values(s.watched).filter(Boolean).length,favs=Object.values(s.favs).filter(Boolean).length,rated=Object.keys(s.ratings).length;
+ document.getElementById('v6-stats').innerHTML=`<span class="v6-stat">🎬 ${cards.length} Filme</span><span class="v6-stat">👀 ${Math.max(0,cards.length-watched)} ungesehen</span><span class="v6-stat">💛 ${favs} Favoriten</span><span class="v6-stat">⭐ ${rated} bewertet</span><span class="v6-stat">🔎 ${a.length} angezeigt</span>`;
+ if(!a.length&&!document.getElementById('v6-empty')){const e=document.createElement('div');e.id='v6-empty';e.className='v6-empty';e.innerHTML='<h2>Keine passenden Filme</h2><p>Hm, Maus – hier haben wir leider nichts gefunden. Versuch einen anderen Filter oder die Suche.</p>';document.getElementById('grid').appendChild(e)}
+ const e=document.getElementById('v6-empty'); if(e)e.style.display=a.length?'none':'block';
+}
+document.getElementById('v6-search').oninput=render;
+document.querySelectorAll('[data-v6-platform]').forEach(b=>b.onclick=()=>{s.platform=b.dataset.v6Platform;document.querySelectorAll('[data-v6-platform]').forEach(x=>x.classList.toggle('active',x===b));save();render()});
+document.getElementById('v6-sort').onchange=e=>{s.sort=e.target.value;save();render()};
+document.getElementById('v6-hide').onclick=()=>{s.hide=!s.hide;save();render()};
+document.getElementById('v6-dark').onclick=()=>{s.dark=!s.dark;save();render()};
+document.getElementById('v6-surprise').onclick=()=>{const a=filtered().filter(x=>!s.watched[key(x.title)]);if(!a.length){alert(' Keine passenden ungesehenen Filme!');return}const x=a[Math.floor(Math.random()*a.length)];x.c.scrollIntoView({behavior:'smooth',block:'center'});x.c.animate([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],700)};
+document.getElementById('v6-export').onclick=()=>{const b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='film-liste-persoenliche-daten.json';a.click()};
+document.getElementById('v6-import-btn').onclick=()=>document.getElementById('v6-import').click();
+document.getElementById('v6-import').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{s=JSON.parse(r.result);save();render()}catch{alert('Import nicht möglich.')}};r.readAsText(f)};
+document.getElementById('v6-reset').onclick=()=>{if(confirm('Persönliche Bewertungen, Favoriten und Gesehen-Status löschen?')){localStorage.removeItem(STORE);location.reload()}};
+render();
+})();
+</script>
+
+<div id="v7-overlay" class="v7-present-overlay" aria-hidden="true">
+  <div class="v7-present">
+    <div class="v7-present-head">
+      <div>
+        <div class="v7-counter" id="v7-counter"></div>
+        <h2 class="v7-present-title">🎬 Deine Film-Überraschung</h2>
+      </div>
+      <button class="v7-close" id="v7-close">✕</button>
+    </div>
+    <div class="v7-present-body" id="v7-present-body"></div>
+    <div class="v7-present-actions">
+      <button class="v7-next" id="v7-next">🎲 Noch einmal überraschen</button>
+      <button class="v7-watch" id="v7-mark">✓ Als angeschaut markieren</button>
+      <button class="v7-close" id="v7-close2">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const overlay=document.getElementById('v7-overlay');
+  const body=document.getElementById('v7-present-body');
+  const counter=document.getElementById('v7-counter');
+  const filterBtn=document.getElementById('v7-filter-toggle');
+  const genres=document.getElementById('v6-genres');
+  let current=null;
+
+  filterBtn.addEventListener('click',()=>{
+    const open=genres.classList.toggle('v7-open');
+    filterBtn.classList.toggle('open',open);
+  });
+
+  function currentCandidates(){
+    const cards=[...document.querySelectorAll('.movie')].filter(c=>c.style.display!=='none');
+    const s=JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}');
+    const watched=s.watched||{};
+    return cards.filter(c=>{
+      const title=c.querySelector('h2')?.textContent.trim()||'';
+      const id=title.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+      return !watched[id];
+    });
+  }
+
+  
+const V10_STORE='mouseMovieAppV6';
+const V10_RECENT_LIMIT=8;
+function v10Id(title){
+  return String(title||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+}
+function v10Read(){
+  try{return JSON.parse(localStorage.getItem(V10_STORE)||'{}')}catch(e){return {}}
+}
+function v10Write(state){
+  localStorage.setItem(V10_STORE,JSON.stringify(state));
+}
+function v10Remember(title){
+  if(!title)return;
+  const state=v10Read();
+  state.lastViewed=Array.isArray(state.lastViewed)?state.lastViewed:[];
+  const id=v10Id(title);
+  state.lastViewed=state.lastViewed.filter(x=>x.id!==id);
+  state.lastViewed.unshift({id,title:String(title),time:Date.now()});
+  state.lastViewed=state.lastViewed.slice(0,V10_RECENT_LIMIT);
+  v10Write(state);
+  v10RenderRecent();
+}
+function v10RenderRecent(){
+  const box=document.getElementById('v10-recent-list');
+  if(!box)return;
+  const state=v10Read();
+  const items=Array.isArray(state.lastViewed)?state.lastViewed:[];
+  box.innerHTML='';
+  if(!items.length){
+    const empty=document.createElement('span');
+    empty.textContent='Noch keine Filme angesehen – such dir deinen nächsten Film aus, Maus 💜';
+    empty.style.color='var(--v9-muted)';
+    empty.style.fontSize='13px';
+    box.appendChild(empty);
+    return;
+  }
+  items.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='recent-item';
+    b.type='button';
+    b.textContent='🎬 '+item.title;
+    b.onclick=()=>{
+      const card=[...document.querySelectorAll('.movie')].find(c=>
+        (c.querySelector('h2')?.textContent.trim()||'')===item.title
+      );
+      if(card){
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+        card.style.boxShadow='0 0 0 3px rgba(244,201,93,.65), var(--v9-shadow)';
+        setTimeout(()=>card.style.boxShadow='',900);
+      }
+    };
+    box.appendChild(b);
+  });
+}
+v10RenderRecent();
+
+function showRandom(){
+    const candidates=currentCandidates();
+    if(!candidates.length){
+      alert(' Keine passenden ungesehenen Filme mehr. Maus, hier ist noch nichts Passendes dabei.');
+      return;
+    }
+    current=candidates[Math.floor(Math.random()*candidates.length)];
+    body.innerHTML='';
+    const clone=current.cloneNode(true);
+    clone.style.display='block';
+    clone.classList.remove('v6-watched');
+    body.appendChild(clone);
+
+    // Make the card's own watched button update the main list as well.
+    const originalTitle=current.querySelector('h2')?.textContent.trim()||'';
+    const clonedWatch=clone.querySelector('.watched-btn');
+    if(clonedWatch){
+      clonedWatch.onclick=()=>{
+        const s=JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}');
+        s.watched=s.watched||{};
+        const id=originalTitle.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+        s.watched[id]=true;
+        localStorage.setItem('mouseMovieAppV6',JSON.stringify(s));
+        v10Remember(originalTitle);
+        current.classList.add('v6-watched');
+        showRandom();
+      };
+    }
+    counter.textContent='🐭 Überraschung für dich, Maus';
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.classList.add('v7-lock');
+  }
+
+  function close(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.classList.remove('v7-lock');
+    current=null;
+  }
+  document.getElementById('v6-surprise').onclick=showRandom;
+  document.getElementById('v7-next').onclick=showRandom;
+  document.getElementById('v7-close').onclick=close;
+  document.getElementById('v7-close2').onclick=close;
+  overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+  document.addEventListener('keydown',e=>{
+    if(!overlay.classList.contains('open'))return;
+    const tag=(e.target && e.target.tagName || '').toLowerCase();
+    if(tag==='input'||tag==='select'||tag==='textarea'||tag==='button')return;
+    if(e.key==='Escape')close();
+  });
+
+  document.getElementById('v7-mark').onclick=()=>{
+    if(!current)return;
+    const title=current.querySelector('h2')?.textContent.trim()||'';
+    const id=title.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+    const s=JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}');
+    s.watched=s.watched||{};s.watched[id]=true;
+    localStorage.setItem('mouseMovieAppV6',JSON.stringify(s));
+    v10Remember(title);
+    current.classList.add('v6-watched');
+    showRandom();
+  };
+})();
+</script>
+
+<script>
+(function () {
+  const migrationKey = 'mouseMovieLastViewedFixV14';
+  if (localStorage.getItem(migrationKey)) return;
+  try {
+    const key = 'mouseMovieAppV6';
+    const state = JSON.parse(localStorage.getItem(key) || '{}');
+    if (Array.isArray(state.lastViewed)) {
+      state.lastViewed = [];
+      localStorage.setItem(key, JSON.stringify(state));
+    }
+    localStorage.setItem(migrationKey, '1');
+  } catch (e) {
+    localStorage.setItem(migrationKey, '1');
+  }
+})();
+</script>
+
+
+<script>
+(function () {
+  const key = 'mouseMovieAppV6';
+  const fixKey = 'mouseMovieLastViewedFixV15';
+
+  function cleanLastViewed() {
+    try {
+      const state = JSON.parse(localStorage.getItem(key) || '{}');
+      const watched = state.watched || {};
+      const watchedIds = Array.isArray(watched)
+        ? watched
+        : Object.keys(watched).filter(id => watched[id]);
+
+      if (!Array.isArray(state.lastViewed)) state.lastViewed = [];
+
+      /* Nur Filme behalten, die wirklich als "angeschaut" markiert wurden. */
+      state.lastViewed = state.lastViewed.filter(id => watchedIds.includes(id));
+
+      localStorage.setItem(key, JSON.stringify(state));
+      localStorage.setItem(fixKey, '1');
+    } catch (e) {}
+  }
+
+  cleanLastViewed();
+})();
+</script>
+
+
+<script>
+(function(){
+  const fixKey='mouseMovieLastViewedFixV16';
+  if(localStorage.getItem(fixKey)) return;
+  try{
+    const key='mouseMovieAppV6';
+    const state=JSON.parse(localStorage.getItem(key)||'{}');
+    state.lastViewed=[];
+    localStorage.setItem(key,JSON.stringify(state));
+    localStorage.setItem(fixKey,'1');
+  }catch(e){}
+  if(typeof v10RenderRecent==='function') v10RenderRecent();
+})();
+</script>
+
+
+
+
+
+<script>
+/* ===== v27: native delegated iPhone button handling ===== */
+(function () {
+  function activate(el) {
+    if (!el || el.disabled) return false;
+
+    /* Standard controls keep their existing native click handlers. */
+    const id = el.id || '';
+
+    if (id === 'v7-again' && typeof showRandom === 'function') {
+      showRandom();
+      return true;
+    }
+
+    if ((id === 'v7-close' || id === 'v7-close-x') && typeof close === 'function') {
+      close();
+      return true;
+    }
+
+    if (id === 'v7-watched') {
+      /* Let the existing click listener handle watched state if present. */
+      return false;
+    }
+
+    return false;
+  }
+
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest && e.target.closest('#v7-overlay button');
+    if (!btn) return;
+    if (activate(btn)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, false);
+
+  /* Do not synthesize click on touchend: Safari already generates native clicks. */
+})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+</body></html>

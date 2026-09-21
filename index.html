@@ -2260,6 +2260,24 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 
 </head><body>
 
+<button type="button" id="v47-settings-open" class="v47-settings-open" aria-label="Einstellungen öffnen" title="Einstellungen">⚙️</button>
+<div id="v47-settings-overlay" class="v47-settings-overlay" hidden>
+  <section class="v47-settings-sheet" role="dialog" aria-modal="true" aria-labelledby="v47-settings-title">
+    <div class="v47-settings-head">
+      <h2 id="v47-settings-title">⚙️ Einstellungen</h2>
+      <button type="button" id="v47-settings-close" class="v47-settings-close">← Zurück</button>
+    </div>
+    <div class="v47-settings-body">
+      <button id="v6-dark" type="button">🌙 Dunkel</button>
+      <div class="v47-settings-separator" aria-hidden="true"></div>
+      <button id="v6-export" type="button">💾 Daten exportieren</button>
+      <button id="v6-import-btn" type="button">📂 Daten importieren</button>
+      <input id="v6-import" type="file" accept=".json" hidden>
+      <button id="v6-reset" type="button" class="v47-reset">♻️ Persönliche Daten zurücksetzen</button>
+    </div>
+  </section>
+</div>
+
 <section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
 <div class="v35-recent-launch-wrap">
   <button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button>
@@ -2286,20 +2304,12 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
     </div>
     <div class="v44-main-actions">
       <button id="v6-surprise" class="v44-surprise">🎲 Überrasche mich!</button>
-      <button id="v6-dark">🌙 Dunkel</button>
     </div>
     <details class="v44-filter-box">
       <summary>🎨 Filter &amp; Sortierung</summary>
       <div class="v44-filter-inner"><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>Genres auswählen</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
     </details>
     <div id="v6-stats" class="v6-stats"></div>
-    <details class="v44-data-box"><summary>⚙️ Daten &amp; Einstellungen</summary>
-    <div class="v6-row v44-data-actions" style="margin-top:9px">
-      <button id="v6-export">💾 Daten exportieren</button>
-      <button id="v6-import-btn">📂 Daten importieren</button>
-      <input id="v6-import" type="file" accept=".json" hidden>
-      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
-    </div></details>
   </div>
 </section>
 
@@ -3807,6 +3817,34 @@ body.v6-dark:before,body.v6-dark:after{opacity:.24;filter:saturate(.75) brightne
 @media(max-width:430px){.v44-primary-tools{grid-template-columns:repeat(3,1fr)!important}.v44-primary-tools button{padding:9px 6px!important}.v44-main-actions{grid-template-columns:1fr}.v44-main-actions .v44-surprise{grid-column:auto}}
 </style>
 
+
+<style id="v47-settings-style">
+.v47-settings-open{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:1200;width:48px;height:48px;border-radius:50%;border:2px solid #6f3b82;background:#fff;color:#4b245b;font-size:23px;display:grid;place-items:center;box-shadow:0 4px 16px rgba(43,20,55,.18);cursor:pointer;padding:0}
+.v47-settings-open:hover{transform:translateY(-1px)}
+.v47-settings-open:focus-visible,.v47-settings-close:focus-visible,.v47-settings-body button:focus-visible{outline:3px solid #8d3fa0;outline-offset:3px}
+.v47-settings-overlay{position:fixed;inset:0;z-index:1400;background:rgba(18,10,23,.58);padding:18px;display:grid;place-items:start end}
+.v47-settings-overlay[hidden]{display:none!important}
+.v47-settings-sheet{width:min(390px,calc(100vw - 36px));margin-top:max(52px,env(safe-area-inset-top));background:#fff;color:#261d2b;border:2px solid #b86cc8;border-radius:20px;box-shadow:0 18px 55px rgba(25,10,31,.28);overflow:hidden}
+.v47-settings-head{padding:16px 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e5c9eb}.v47-settings-head h2{font-size:1.08rem;margin:0;color:#4b245b}.v47-settings-close{min-height:44px;border:1.5px solid #7a438a;border-radius:12px;background:#f8effa;color:#3d1e49;font-weight:800;padding:8px 12px}
+.v47-settings-body{padding:14px;display:grid;gap:10px}.v47-settings-body button{width:100%;min-height:48px;border-radius:12px;border:1.5px solid #855094;background:#fbf5fc;color:#321c3a;font-weight:800;text-align:left;padding:11px 13px}.v47-settings-body #v6-dark{text-align:center;background:#5c2e6b;color:#fff;border-color:#5c2e6b}.v47-settings-separator{height:1px;background:#e3cce8;margin:3px 0}.v47-settings-body .v47-reset{border-color:#a7475a;color:#7b2335;background:#fff4f6}
+body.v6-dark .v47-settings-open{background:#211d27;color:#fff;border-color:#d894e2;box-shadow:0 4px 18px rgba(0,0,0,.5)}body.v6-dark .v47-settings-sheet{background:#111015;color:#fff;border-color:#d894e2}body.v6-dark .v47-settings-head{border-color:#514456}body.v6-dark .v47-settings-head h2{color:#fff}body.v6-dark .v47-settings-close,body.v6-dark .v47-settings-body button{background:#211d27;color:#fff;border-color:#8d7996}body.v6-dark .v47-settings-body #v6-dark{background:#f3d7f7;color:#25132a;border-color:#fff}body.v6-dark .v47-settings-separator{background:#514456}body.v6-dark .v47-settings-body .v47-reset{background:#351b22;color:#ffdce3;border-color:#e68a9b}
+@media(max-width:700px){.v47-settings-open{width:46px;height:46px;font-size:21px}.v47-settings-overlay{padding:10px;place-items:end center}.v47-settings-sheet{width:100%;margin:0 0 max(8px,env(safe-area-inset-bottom));border-radius:20px 20px 16px 16px}.v47-settings-head{padding:14px}.v47-settings-body{padding:12px 14px 16px}}
+</style>
+
+<script>
+(function(){
+ const openBtn=document.getElementById('v47-settings-open');
+ const overlay=document.getElementById('v47-settings-overlay');
+ const closeBtn=document.getElementById('v47-settings-close');
+ let lastFocus=null;
+ function openSettings(){lastFocus=document.activeElement;overlay.hidden=false;document.body.style.overflow='hidden';setTimeout(()=>closeBtn.focus(),0)}
+ function closeSettings(){overlay.hidden=true;document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+ openBtn.addEventListener('click',openSettings);
+ closeBtn.addEventListener('click',closeSettings);
+ overlay.addEventListener('click',e=>{if(e.target===overlay)closeSettings()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeSettings()});
+})();
+</script>
 
 <script>
 (function(){

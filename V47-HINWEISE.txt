@@ -1,0 +1,9 @@
+v47 – Einstellungen als Zahnrad
+
+- Kleines festes ⚙️ oben rechts.
+- Öffnet ein kompaktes, barriereärmeres Einstellungsfenster.
+- Dunkelmodus, Export, Import und Zurücksetzen wurden dorthin verschoben.
+- Auf Smartphones öffnet sich der Bereich als gut bedienbares Bottom-Sheet.
+- Escape, Hintergrund-Tipp und Zurück-Button schließen die Einstellungen.
+- suggestions.json ist absichtlich NICHT im Paket, damit vorhandene Workflow-Vorschläge auf GitHub nicht überschrieben werden.
+- PWA-Cache: v47.

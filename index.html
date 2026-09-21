@@ -2380,4 +2380,26 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
 }
 </script>
+
+<script>
+/* v28 – Safari/Web-App: X closes only the surprise dialog, never the browser tab */
+(function () {
+  document.addEventListener('click', function (event) {
+    const x = event.target.closest && event.target.closest('#v7-close-x');
+    if (!x) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+    const overlay = document.getElementById('v7-overlay');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    document.body.classList.remove('v7-lock');
+  }, true);
+})();
+</script>
+
 </body></html>

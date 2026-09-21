@@ -1,0 +1,23 @@
+FILME ÜBER movies.json VERWALTEN
+
+Die Filmdaten liegen jetzt zusätzlich in movies.json.
+Damit ist die Grundlage geschaffen, die Liste künftig automatisch zu erweitern,
+ohne für jeden neuen Film die index.html bearbeiten zu müssen.
+
+Ein Filmeintrag sieht so aus:
+
+{
+  "id": "eindeutiger-name",
+  "title": "Filmtitel",
+  "year": "2026",
+  "platform": "Netflix",
+  "genres": ["Thriller", "Drama"],
+  "description": "Kurze Beschreibung"
+}
+
+WICHTIG:
+Diese Version lässt die bestehende Filmliste in index.html absichtlich als Fallback
+bestehen, damit Suche, Favoriten, Bewertungen, Angeschaut-Status und der
+Überraschungsmodus nicht kaputtgehen, falls movies.json einmal nicht geladen werden kann.
+
+Der nächste Automatisierungsschritt kann movies.json per GitHub Action aktualisieren.

@@ -1494,6 +1494,194 @@ body.v6-dark .v35-recent-dialog { border-color:rgba(218,153,255,.62); }
   .v35-recent-head button { width:100%; }
 }
 
+
+/* ===== v38: Dark Mode 2.0 – konsistent, kontrastreich, iPhone-tauglich ===== */
+body.v6-dark {
+  background:#0f0d16 !important;
+  color:#f7f3fb !important;
+  color-scheme:dark;
+}
+
+/* Kopfbereich und persönliche Nachricht */
+body.v6-dark header,
+body.v6-dark header *,
+body.v6-dark .v29-time-message,
+body.v6-dark .v29-time-message * {
+  color:#fff !important;
+}
+body.v6-dark .v29-time-message {
+  background:#21192e !important;
+  border:1px solid #6e5587 !important;
+}
+
+/* Bedienfelder oben */
+body.v6-dark .controls,
+body.v6-dark .v6-panel,
+body.v6-dark .filter-panel,
+body.v6-dark .toolbar {
+  background:#191522 !important;
+  color:#f7f3fb !important;
+  border-color:#4d405c !important;
+}
+body.v6-dark .controls *,
+body.v6-dark .v6-panel *,
+body.v6-dark .filter-panel *,
+body.v6-dark .toolbar * {
+  color:#f7f3fb;
+}
+
+/* Suche, Selects und Eingaben */
+body.v6-dark input,
+body.v6-dark select,
+body.v6-dark textarea {
+  background:#292333 !important;
+  color:#fff !important;
+  border:1px solid #71617f !important;
+  -webkit-text-fill-color:#fff !important;
+}
+body.v6-dark input::placeholder,
+body.v6-dark textarea::placeholder {
+  color:#cfc5d7 !important;
+  opacity:1 !important;
+}
+body.v6-dark option {
+  background:#292333 !important;
+  color:#fff !important;
+}
+
+/* Buttons: klare helle Schrift */
+body.v6-dark button,
+body.v6-dark .btn {
+  background:#332940 !important;
+  color:#fff !important;
+  border-color:#7d6790 !important;
+  -webkit-text-fill-color:#fff !important;
+}
+body.v6-dark button:hover,
+body.v6-dark .btn:hover {
+  background:#443452 !important;
+}
+body.v6-dark button:focus-visible,
+body.v6-dark input:focus-visible,
+body.v6-dark select:focus-visible {
+  outline:3px solid #d8a6ff !important;
+  outline-offset:2px;
+}
+
+/* Genre-Chips */
+body.v6-dark .genre-chip,
+body.v6-dark [class*="chip"] {
+  background:#2b2435 !important;
+  color:#f7f3fb !important;
+  border-color:#71617f !important;
+}
+body.v6-dark .genre-chip.active,
+body.v6-dark .genre-chip[aria-pressed="true"] {
+  background:#7147a0 !important;
+  color:#fff !important;
+  border-color:#d4a4ff !important;
+}
+
+/* Filmkarten */
+body.v6-dark .movie,
+body.v6-dark .movie-card {
+  background:#1d1926 !important;
+  color:#f5f0f8 !important;
+  border-color:#564462 !important;
+}
+body.v6-dark .movie h1,
+body.v6-dark .movie h2,
+body.v6-dark .movie h3,
+body.v6-dark .movie-card h1,
+body.v6-dark .movie-card h2,
+body.v6-dark .movie-card h3,
+body.v6-dark .movie strong,
+body.v6-dark .movie-card strong {
+  color:#fff !important;
+}
+body.v6-dark .movie p,
+body.v6-dark .movie span,
+body.v6-dark .movie div,
+body.v6-dark .movie-card p,
+body.v6-dark .movie-card span,
+body.v6-dark .movie-card div {
+  color:#e8e0ed;
+}
+body.v6-dark .meta,
+body.v6-dark .muted,
+body.v6-dark .movie-meta {
+  color:#cec3d5 !important;
+}
+
+/* Zuletzt angesehen – eigene Ansicht */
+body.v6-dark .v35-recent-overlay {
+  background:rgba(4,3,7,.86) !important;
+}
+body.v6-dark .v35-recent-dialog,
+body.v6-dark .v35-recent-head,
+body.v6-dark .v35-recent-body {
+  background:#17131f !important;
+  color:#f7f3fb !important;
+}
+body.v6-dark .v35-recent-head {
+  border-bottom-color:#4d405c !important;
+}
+body.v6-dark .v35-recent-body *,
+body.v6-dark .recent-list * {
+  color:#f0e9f5;
+}
+
+/* Überraschungsmodus */
+body.v6-dark #v7-overlay.v7-present-overlay {
+  background:rgba(4,3,7,.88) !important;
+}
+body.v6-dark #v7-overlay .v7-present,
+body.v6-dark #v7-overlay .v7-present-head,
+body.v6-dark #v7-overlay .v7-present-body,
+body.v6-dark #v7-overlay .v7-present-actions {
+  background:#17131f !important;
+  color:#f7f3fb !important;
+}
+body.v6-dark #v7-overlay .movie,
+body.v6-dark #v7-overlay .movie-card {
+  background:#211b2b !important;
+  border:3px solid #b879df !important;
+}
+body.v6-dark #v7-overlay h1,
+body.v6-dark #v7-overlay h2,
+body.v6-dark #v7-overlay h3,
+body.v6-dark #v7-overlay strong {
+  color:#fff !important;
+}
+body.v6-dark #v7-overlay p,
+body.v6-dark #v7-overlay span,
+body.v6-dark #v7-overlay div {
+  color:#eee7f3;
+}
+
+/* Statistiken, Hilfstexte, leere Zustände */
+body.v6-dark .stats,
+body.v6-dark .v6-stats,
+body.v6-dark .empty,
+body.v6-dark .no-results,
+body.v6-dark label {
+  color:#e9e1ee !important;
+}
+body.v6-dark hr {
+  border-color:#4d405c !important;
+}
+body.v6-dark a {
+  color:#ddb2ff !important;
+}
+
+/* iOS/Safari Autofill darf keine helle, unlesbare Fläche erzeugen */
+body.v6-dark input:-webkit-autofill,
+body.v6-dark input:-webkit-autofill:hover,
+body.v6-dark input:-webkit-autofill:focus {
+  -webkit-text-fill-color:#fff !important;
+  -webkit-box-shadow:0 0 0 1000px #292333 inset !important;
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
@@ -1799,6 +1987,42 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 </head><body>
 
 <div class="v12-maus-note"><span class="maus-symbol">🐭</span> Für dich, Maus – damit Langeweile gar nicht erst aufkommt. 💜</div>
+
+
+<section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
+<div class="v35-recent-launch-wrap">
+  <button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button>
+</div>
+<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
+<p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
+<section class="controls"><div class="inner">
+<input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
+<button class="active" data-filter="all">Alle</button><button data-filter="Netflix">Netflix</button><button data-filter="Amazon Prime Video">Prime</button>
+<button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
+</div></section>
+
+<section class="v6-panel">
+  <div class="v6-box">
+    <div class="v6-row">
+      <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
+      <button data-v6-platform="all" class="active">Alle</button>
+      <button data-v6-platform="Netflix">Netflix</button>
+      <button data-v6-platform="Amazon Prime Video">Prime</button>
+      <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
+      <button id="v6-hide">👁️ Angeschaute ausblenden</button>
+      <button id="v6-surprise">🎲 Überrasche mich!</button>
+      <button id="v6-dark">🌙 Dunkel</button>
+    </div>
+    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
+    <div id="v6-stats" class="v6-stats"></div>
+    <div class="v6-row" style="margin-top:9px">
+      <button id="v6-export">💾 Daten exportieren</button>
+      <button id="v6-import-btn">📂 Daten importieren</button>
+      <input id="v6-import" type="file" accept=".json" hidden>
+      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
+    </div>
+  </div>
+</section>
 
 <main><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
       <div class="platform netflix"><span>N</span>Netflix</div>
@@ -2311,41 +2535,7 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 <div class="note"> <strong>Stand: 21.09.2026.</strong> Streaming-Kataloge ändern sich. Vor dem Start bitte kurz prüfen, ob der Titel noch im Abo enthalten ist. <strong>Die neu ergänzten Prime-Thriller wurden nur aufgenommen, wenn die Recherche eine Prime-Abo-Verfügbarkeit in Deutschland ergeben hat.</strong></div></main>
 
 
-<header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
-<p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
-<section class="controls"><div class="inner">
-<input id="search" type="search" placeholder="🔎 Film, Genre oder Stichwort …" aria-label="Filme durchsuchen">
-<button class="active" data-filter="all">Alle</button><button data-filter="Netflix">Netflix</button><button data-filter="Amazon Prime Video">Prime</button>
-<button id="watchedToggle" type="button">👁️ Angeschaut ausblenden</button>
-</div></section>
 
-<section class="v6-panel">
-  <div class="v6-box">
-    <div class="v6-row">
-      <input id="v6-search" class="v6-search" type="search" placeholder="🔎 Film, Genre oder Stichwort …">
-      <button data-v6-platform="all" class="active">Alle</button>
-      <button data-v6-platform="Netflix">Netflix</button>
-      <button data-v6-platform="Amazon Prime Video">Prime</button>
-      <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
-      <button id="v6-hide">👁️ Angeschaute ausblenden</button>
-      <button id="v6-surprise">🎲 Überrasche mich!</button>
-      <button id="v6-dark">🌙 Dunkel</button>
-    </div>
-    <div><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>🎨 Nach Genre filtern</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
-    <div id="v6-stats" class="v6-stats"></div>
-    <div class="v6-row" style="margin-top:9px">
-      <button id="v6-export">💾 Daten exportieren</button>
-      <button id="v6-import-btn">📂 Daten importieren</button>
-      <input id="v6-import" type="file" accept=".json" hidden>
-      <button id="v6-reset">♻️ Persönliche Daten zurücksetzen</button>
-    </div>
-  </div>
-</section>
-<section id="v10-recent" aria-label="Zuletzt angesehen">
-  <div class="recent-title">Zuletzt angesehen, Maus 💜</div>
-  <div class="recent-list" id="v10-recent-list"></div>
-</section>
-</section>
 <footer>Mit Liebe gegen Langeweile · Stand 21.09.2026</footer>
 <script>
 const cards=[...document.querySelectorAll('.movie')],buttons=[...document.querySelectorAll('button[data-filter]')],search=document.querySelector('#search'),watchedToggle=document.querySelector('#watchedToggle');
@@ -2715,6 +2905,40 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 
 
 
+
+
+
+<script>
+/* v36 – movies.json data layer */
+(function(){
+  async function loadMovieDatabase(){
+    try{
+      const r=await fetch('./movies.json?ts='+Date.now(),{cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const db=await r.json();
+      window.mouseMovieDatabase=Array.isArray(db.movies)?db.movies:[];
+      document.documentElement.dataset.movieDatabase='loaded';
+      window.dispatchEvent(new CustomEvent('mousemoviesloaded',{detail:window.mouseMovieDatabase}));
+    }catch(err){
+      console.warn('movies.json konnte nicht geladen werden; eingebettete Filmliste bleibt aktiv.',err);
+      window.mouseMovieDatabase=[];
+      document.documentElement.dataset.movieDatabase='fallback';
+    }
+  }
+  loadMovieDatabase();
+})();
+</script>
+
+
+<script>
+window.addEventListener('mousemoviesloaded',function(e){
+  const n=e.detail.length;
+  if(!n) return;
+  console.info('Filmdatenbank geladen:',n,'Filme aus movies.json');
+});
+</script>
+
+
 <div id="v35-recent-overlay" class="v35-recent-overlay" hidden aria-hidden="true">
   <section class="v35-recent-dialog" role="dialog" aria-modal="true" aria-labelledby="v35-recent-title">
     <div class="v35-recent-head">
@@ -2722,38 +2946,23 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
       <button type="button" id="v35-close-recent">← Zurück zur Filmliste</button>
     </div>
     <div class="v35-recent-body">
-      <section id="v29-time-message" class="v29-time-message" aria-live="polite">
+      <div class="recent-list" id="v10-recent-list"></div>
     </div>
   </section>
 </div>
-
-
 <script>
-/* v35 – separate Ansicht für „Zuletzt angesehen“ */
+/* v37 – separate Ansicht für Zuletzt angesehen */
 (function(){
-  const openBtn=document.getElementById('v35-open-recent');
-  const closeBtn=document.getElementById('v35-close-recent');
-  const overlay=document.getElementById('v35-recent-overlay');
-  if(!openBtn||!closeBtn||!overlay) return;
-
-  function openRecent(){
-    overlay.hidden=false;
-    overlay.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-    closeBtn.focus();
-  }
-  function closeRecent(){
-    overlay.hidden=true;
-    overlay.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    openBtn.focus();
-  }
-  openBtn.addEventListener('click',openRecent);
-  closeBtn.addEventListener('click',closeRecent);
-  overlay.addEventListener('click',e=>{ if(e.target===overlay) closeRecent(); });
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'&&!overlay.hidden) closeRecent();
-  });
+ const openBtn=document.getElementById('v35-open-recent');
+ const closeBtn=document.getElementById('v35-close-recent');
+ const overlay=document.getElementById('v35-recent-overlay');
+ if(!openBtn||!closeBtn||!overlay)return;
+ function openRecent(){overlay.hidden=false;overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+ function closeRecent(){overlay.hidden=true;overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+ openBtn.addEventListener('click',openRecent);
+ closeBtn.addEventListener('click',closeRecent);
+ overlay.addEventListener('click',e=>{if(e.target===overlay)closeRecent();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeRecent();});
 })();
 </script>
 

@@ -1395,6 +1395,105 @@ body.v6-dark .v33-tab-panel {
   .v33-tab { font-size: 14px; }
 }
 
+
+/* ===== v34: automatische Filmvorschläge ===== */
+.v33-tabs { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+.v34-suggest-head {
+  display:flex; justify-content:space-between; gap:18px; align-items:flex-start;
+  margin-bottom:16px;
+}
+.v34-suggest-head h2 { margin:0 0 6px; }
+.v34-suggest-head p { margin:0; line-height:1.55; }
+.v34-status { margin:10px 0 16px; font-weight:700; }
+.v34-suggestions-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+.v34-suggestion {
+  border:2px solid rgba(186,104,240,.35); border-radius:18px; padding:16px;
+  background:rgba(255,255,255,.72); box-sizing:border-box;
+}
+.v34-suggestion h3 { margin:0 0 8px; }
+.v34-suggestion p { line-height:1.55; }
+.v34-suggestion-meta { opacity:.82; font-size:.92em; margin-bottom:10px; }
+.v34-suggestion-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+.v34-suggestion-actions button { min-height:44px; flex:1 1 130px; }
+.v34-empty { padding:22px; text-align:center; border:1px dashed rgba(160,100,200,.45); border-radius:18px; }
+body.v6-dark .v34-suggestion { background:#211c2d; color:#f8f5ff; border-color:rgba(218,153,255,.55); }
+body.v6-dark .v34-suggest-head p, body.v6-dark .v34-suggestion-meta { color:#e6deef; }
+@media(max-width:700px){
+  .v33-tabs { grid-template-columns:1fr !important; }
+  .v34-suggest-head { flex-direction:column; }
+  #v34-refresh { width:100%; }
+}
+
+
+/* ===== v35: v32-Startseite + separate Schaltfläche für Zuletzt angesehen ===== */
+.v33-tabs, #v34-suggestions-panel { display:none !important; }
+.v35-recent-launch-wrap {
+  max-width:1180px;
+  margin:8px auto 4px;
+  padding:0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  box-sizing:border-box;
+}
+.v35-recent-launch {
+  min-height:46px;
+  padding:10px 16px;
+  border-radius:14px;
+  font-weight:800;
+}
+.v35-recent-overlay {
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(18,12,28,.68);
+  padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right))
+          max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  box-sizing:border-box;
+}
+.v35-recent-overlay[hidden] { display:none !important; }
+.v35-recent-overlay:not([hidden]) {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.v35-recent-dialog {
+  width:min(760px,100%);
+  max-height:calc(100vh - 20px);
+  max-height:calc(100dvh - 20px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#fffdf9;
+  border:2px solid rgba(190,100,255,.55);
+  border-radius:22px;
+  box-shadow:0 22px 70px rgba(30,10,50,.28);
+}
+.v35-recent-head {
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:18px;
+  background:#fffdf9;
+  border-bottom:1px solid rgba(130,80,190,.18);
+}
+.v35-recent-head h2 { margin:0; }
+.v35-recent-head button { min-height:46px; }
+.v35-recent-body { padding:18px; }
+body.v6-dark .v35-recent-dialog,
+body.v6-dark .v35-recent-head {
+  background:#17131f !important;
+  color:#f8f5ff !important;
+}
+body.v6-dark .v35-recent-dialog { border-color:rgba(218,153,255,.62); }
+@media(max-width:700px){
+  .v35-recent-launch { width:100%; }
+  .v35-recent-overlay { align-items:stretch; }
+  .v35-recent-dialog { max-height:100%; height:100%; }
+  .v35-recent-head { flex-direction:column; align-items:stretch; }
+  .v35-recent-head button { width:100%; }
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
@@ -1701,12 +1800,7 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 
 <div class="v12-maus-note"><span class="maus-symbol">🐭</span> Für dich, Maus – damit Langeweile gar nicht erst aufkommt. 💜</div>
 
-<nav class="v33-tabs" aria-label="Bereiche">
-  <button type="button" class="v33-tab active" data-tab="movies" aria-selected="true">🎬 Filmliste</button>
-  <button type="button" class="v33-tab" data-tab="recent" aria-selected="false">🐭 Zuletzt angesehen</button>
-</nav>
-
-<main id="v33-movies-panel"><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
+<main><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
       <div class="platform netflix"><span>N</span>Netflix</div>
       <h2>Verirrte Kugel (Lost Bullet, 2020)</h2>
       <div class="genre genre-action">Action / Auto-Thriller</div>
@@ -2215,8 +2309,8 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
       <div class="card-actions"><button class="watched-btn" type="button">✓ Angeschaut</button><a class="watch" href="https://www.amazon.de/s?k=A+Simple+Favor+(2018)&i=instant-video" target="_blank" rel="noopener">Zum Streaming&nbsp; ↗</a></div>
     </article></div>
 <div class="note"> <strong>Stand: 21.09.2026.</strong> Streaming-Kataloge ändern sich. Vor dem Start bitte kurz prüfen, ob der Titel noch im Abo enthalten ist. <strong>Die neu ergänzten Prime-Thriller wurden nur aufgenommen, wenn die Recherche eine Prime-Abo-Verfügbarkeit in Deutschland ergeben hat.</strong></div></main>
-<section id="v33-recent-panel" class="v33-tab-panel" hidden>
-<section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
+
+
 <header><div class="mascot"></div><h1>Filmliste gegen<br>„Mäuse-Langweiligekeit“</h1>
 <p class="subtitle">Wenn die Maus mal wieder vor Langeweile im Kreis läuft: Action, Drama, Heists, Mystery, Komödien, Sci-Fi und Thriller für den nächsten Filmabend.</p></header>
 <section class="controls"><div class="inner">
@@ -2615,26 +2709,51 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </script>
 
 
-<script>
-/* v33 – tabs */
-(function(){
-  const buttons = Array.from(document.querySelectorAll('.v33-tab'));
-  const movies = document.getElementById('v33-movies-panel');
-  const recent = document.getElementById('v33-recent-panel');
-  if (!buttons.length || !movies || !recent) return;
 
-  function show(name) {
-    const isRecent = name === 'recent';
-    movies.hidden = isRecent;
-    recent.hidden = !isRecent;
-    buttons.forEach(b => {
-      const active = b.dataset.tab === name;
-      b.classList.toggle('active', active);
-      b.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    window.scrollTo({top: 0, behavior: 'smooth'});
+
+
+
+
+
+<div id="v35-recent-overlay" class="v35-recent-overlay" hidden aria-hidden="true">
+  <section class="v35-recent-dialog" role="dialog" aria-modal="true" aria-labelledby="v35-recent-title">
+    <div class="v35-recent-head">
+      <h2 id="v35-recent-title">🐭 Zuletzt angesehen</h2>
+      <button type="button" id="v35-close-recent">← Zurück zur Filmliste</button>
+    </div>
+    <div class="v35-recent-body">
+      <section id="v29-time-message" class="v29-time-message" aria-live="polite">
+    </div>
+  </section>
+</div>
+
+
+<script>
+/* v35 – separate Ansicht für „Zuletzt angesehen“ */
+(function(){
+  const openBtn=document.getElementById('v35-open-recent');
+  const closeBtn=document.getElementById('v35-close-recent');
+  const overlay=document.getElementById('v35-recent-overlay');
+  if(!openBtn||!closeBtn||!overlay) return;
+
+  function openRecent(){
+    overlay.hidden=false;
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    closeBtn.focus();
   }
-  buttons.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
+  function closeRecent(){
+    overlay.hidden=true;
+    overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    openBtn.focus();
+  }
+  openBtn.addEventListener('click',openRecent);
+  closeBtn.addEventListener('click',closeRecent);
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) closeRecent(); });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&!overlay.hidden) closeRecent();
+  });
 })();
 </script>
 

@@ -3451,4 +3451,56 @@ body.v6-dark:before,body.v6-dark:after{opacity:.24;filter:saturate(.75) brightne
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',v44Arrange); else v44Arrange();
 })();
 </script>
+
+<style id="v45-dark-streaming-contrast">
+/* v45 – Streaming-Bedienelemente im Dunkelmodus mit hohem Kontrast */
+body.v6-dark .movie .platform,
+body.v6-dark .movie-card .platform,
+body.v6-dark #v7-overlay .platform{
+  color:#fff!important;
+  border:2px solid #fff!important;
+  box-shadow:none!important;
+  font-weight:900!important;
+}
+body.v6-dark .movie .platform.netflix,
+body.v6-dark .movie-card .platform.netflix,
+body.v6-dark #v7-overlay .platform.netflix{
+  background:#8f1026!important;
+  color:#fff!important;
+  border-color:#ffb7c3!important;
+}
+body.v6-dark .movie .platform.prime,
+body.v6-dark .movie-card .platform.prime,
+body.v6-dark #v7-overlay .platform.prime{
+  background:#064f78!important;
+  color:#fff!important;
+  border-color:#9cddff!important;
+}
+body.v6-dark .movie .platform span,
+body.v6-dark .movie-card .platform span,
+body.v6-dark #v7-overlay .platform span{color:#fff!important}
+body.v6-dark a.watch,
+body.v6-dark .movie a.watch,
+body.v6-dark .movie-card a.watch,
+body.v6-dark #v7-overlay a.watch{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:44px!important;
+  padding:10px 14px!important;
+  background:#f4eaff!important;
+  color:#241234!important;
+  border:2px solid #fff!important;
+  border-radius:13px!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+  box-shadow:0 0 0 1px #8f68aa!important;
+}
+body.v6-dark a.watch:hover{background:#fff!important;color:#180c23!important;border-color:#ffd86b!important}
+body.v6-dark a.watch:focus-visible{outline:4px solid #ffd86b!important;outline-offset:3px!important;box-shadow:0 0 0 2px #090a0f!important}
+/* Plattformfilter ebenfalls klar lesbar. */
+body.v6-dark button[data-v6-platform],body.v6-dark button[data-filter]{background:#262833!important;color:#fff!important;border:2px solid #aeb3c5!important}
+body.v6-dark button[data-v6-platform].active,body.v6-dark button[data-filter].active{background:#7047a6!important;color:#fff!important;border-color:#fff!important}
+</style>
+
 </body></html>

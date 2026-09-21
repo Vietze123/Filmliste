@@ -1920,6 +1920,42 @@ body.v6-dark .movie-card:nth-child(4n+3)::after {
   .movie-card:nth-child(4n+3)::after { font-size:15px; }
 }
 
+
+/* v41: alten leeren Balken entfernen + floraler Hintergrund */
+.v12-maus-note{display:none!important}
+body{
+ background-color:var(--bg)!important;
+ background-image:
+ radial-gradient(circle at 10% 0%,#ffe9ef 0 15%,transparent 36%),
+ radial-gradient(circle at 8% 18%,rgba(240,150,190,.11) 0 2px,transparent 3px),
+ radial-gradient(circle at 88% 28%,rgba(145,105,210,.10) 0 2px,transparent 3px),
+ radial-gradient(circle at 18% 72%,rgba(240,170,120,.09) 0 2px,transparent 3px),
+ radial-gradient(circle at 82% 84%,rgba(220,120,185,.10) 0 2px,transparent 3px)!important;
+}
+body>main:before,body>main:after{
+ position:fixed;pointer-events:none;z-index:-1;white-space:pre;
+ font-size:22px;line-height:3.3;opacity:.16
+}
+body>main:before{content:"✿\A ❀\A 🌸\A ✿\A 🌷";left:18px;top:30%}
+body>main:after{content:"🌼\A ❀\A ✿\A 🌸\A ❀";right:18px;top:37%}
+header:before{content:"❀  ·  ✿  ·  ❀";display:block;margin:0 auto 10px;font-size:15px;letter-spacing:8px;opacity:.28}
+body.v6-dark{
+ background-color:#09080d!important;
+ background-image:
+ radial-gradient(circle at 12% 4%,rgba(112,64,149,.20) 0 12%,transparent 32%),
+ radial-gradient(circle at 8% 18%,rgba(226,174,240,.10) 0 2px,transparent 3px),
+ radial-gradient(circle at 88% 28%,rgba(196,123,234,.10) 0 2px,transparent 3px),
+ radial-gradient(circle at 18% 72%,rgba(235,175,215,.08) 0 2px,transparent 3px),
+ radial-gradient(circle at 82% 84%,rgba(205,155,238,.09) 0 2px,transparent 3px)!important;
+}
+body.v6-dark>main:before,body.v6-dark>main:after{opacity:.22}
+body.v6-dark header:before{opacity:.30}
+@media(max-width:700px){
+ body>main:before,body>main:after{font-size:16px;opacity:.09;line-height:4.2}
+ body>main:before{left:4px} body>main:after{right:4px}
+ body.v6-dark>main:before,body.v6-dark>main:after{opacity:.13}
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
@@ -2223,9 +2259,6 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
 <link rel="apple-touch-icon" href="icon-180.png">
 
 </head><body>
-
-<div class="v12-maus-note"><span class="maus-symbol">🐭</span></div>
-
 
 <section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
 <div class="v35-recent-launch-wrap">

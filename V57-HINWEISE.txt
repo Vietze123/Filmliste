@@ -1,0 +1,7 @@
+v57: Mausig-Modus erweitert.
+- Überraschungsfenster im Mausig-Modus repariert und an das Cinematic-Layout angepasst.
+- Mausig kann jetzt individuell gestaltet werden: Schriftfarbe, Grundfarbe, Bedienelemente, Akzentfarbe, Schriftstil und Glas-Transparenz.
+- Eigene Mausig-Einstellungen werden lokal gespeichert.
+- Neuer Smartphone-Hintergrund mausig-mobile-bg.jpg mit deutlich sichtbarerem Blumenrahmen.
+- Hell und Dunkel bleiben als klassische Designs erhalten.
+- suggestions.json ist absichtlich nicht enthalten.

@@ -1797,6 +1797,129 @@ body.v6-dark select:focus-visible {
   outline-offset:3px !important;
 }
 
+
+/* ===== v40: ehemaliger Nachrichtenbalken entfernt + subtile Blumen ===== */
+.dedication:empty, .tagline:empty, .subtitle:empty {
+  display:none !important;
+}
+
+/* Kleine florale Akzente – bewusst dezent, damit die Filmliste übersichtlich bleibt */
+body::before,
+body::after {
+  position:fixed;
+  z-index:0;
+  pointer-events:none;
+  opacity:.16;
+  font-size:28px;
+  line-height:1;
+}
+body::before {
+  content:"🌸";
+  left:10px;
+  top:24%;
+  transform:rotate(-12deg);
+}
+body::after {
+  content:"🌼";
+  right:12px;
+  bottom:12%;
+  transform:rotate(10deg);
+}
+
+header,
+.controls,
+.v6-panel,
+main,
+.v35-recent-launch-wrap,
+.v29-time-message {
+  position:relative;
+  z-index:1;
+}
+
+header::after {
+  content:"🌷";
+  display:inline-block;
+  margin-left:9px;
+  font-size:.72em;
+  opacity:.72;
+  transform:rotate(7deg);
+}
+
+.controls::after {
+  content:"✿";
+  position:absolute;
+  right:14px;
+  top:10px;
+  pointer-events:none;
+  opacity:.28;
+  font-size:20px;
+}
+
+.v6-panel::before {
+  content:"❀";
+  position:absolute;
+  left:12px;
+  bottom:9px;
+  pointer-events:none;
+  opacity:.22;
+  font-size:18px;
+}
+
+.movie,
+.movie-card {
+  position:relative;
+}
+.movie:nth-child(4n+1)::after,
+.movie-card:nth-child(4n+1)::after {
+  content:"✿";
+  position:absolute;
+  right:11px;
+  bottom:8px;
+  pointer-events:none;
+  opacity:.13;
+  font-size:18px;
+}
+.movie:nth-child(4n+3)::after,
+.movie-card:nth-child(4n+3)::after {
+  content:"❀";
+  position:absolute;
+  right:11px;
+  bottom:8px;
+  pointer-events:none;
+  opacity:.11;
+  font-size:17px;
+}
+
+/* Auch im Dunkelmodus sichtbar, aber nicht aufdringlich */
+body.v6-dark::before,
+body.v6-dark::after {
+  opacity:.20;
+}
+body.v6-dark header::after {
+  opacity:.78;
+}
+body.v6-dark .controls::after,
+body.v6-dark .v6-panel::before {
+  opacity:.34;
+}
+body.v6-dark .movie:nth-child(4n+1)::after,
+body.v6-dark .movie-card:nth-child(4n+1)::after,
+body.v6-dark .movie:nth-child(4n+3)::after,
+body.v6-dark .movie-card:nth-child(4n+3)::after {
+  color:#e7b9ef !important;
+  opacity:.20;
+}
+
+/* Auf kleinen Displays noch zurückhaltender */
+@media(max-width:700px){
+  body::before, body::after { font-size:22px; opacity:.11; }
+  body.v6-dark::before, body.v6-dark::after { opacity:.15; }
+  .movie:nth-child(4n+1)::after,
+  .movie-card:nth-child(4n+1)::after,
+  .movie:nth-child(4n+3)::after,
+  .movie-card:nth-child(4n+3)::after { font-size:15px; }
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */

@@ -1,4 +1,236 @@
 {
-  "updated": null,
-  "movies": []
+  "updated": "2026-09-21T20:11:31.204542+00:00",
+  "movies": [
+    {
+      "id": "tmdb-1560520",
+      "title": "Batman: Knightfall Part 1: Knightfall",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Science-Fiction"
+      ],
+      "description": "Der übernatürlich starke und hochintelligente Superschurke Bane (Stimme im Original: Michael Mando) will dafür sorgen, dass Batman (Anson Mount) in Gotham City nie wieder für Recht und Ordnung sorgen kann. Um den Dunklen Ritter zu schwächen, befreit er dessen gefährlichste Gegner wie Joker, Scarecrow, Mad Hatter und Poison Ivy aus dem Hochsicherheitsgefängnis Arkham Asylum. Bei seinen Bemühungen, die wahnsinnigen Kriminellen wiedereinzufangen, stößt Batman an seine physischen und psychischen Grenzen – exakt so, wie von Bane beabsichtigt, der zwischenzeitlich Batmans wahre Identität als Millionär Bruce Wayne enttarnt hat und weiß, wo er seinen Gegner finden kann.",
+      "rating": 9.174,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-980431",
+      "title": "Avatar Aang: Der Herr der Elemente",
+      "year": "2026",
+      "genres": [
+        "Action"
+      ],
+      "description": "Der Avatar Aang, der letzte Luftbändiger der Welt, erfährt von einer uralten Kraft, die seine Kultur vor dem Aussterben bewahren könnte. Gemeinsam mit seinen Freunden begibt er sich auf eine weltweite Suche, um diese Kraft zu finden, bevor sie in die falschen Hände gerät und den mühsam erkämpften Frieden gefährdet.",
+      "rating": 9.15,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1311031",
+      "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+      "year": "2025",
+      "genres": [
+        "Action"
+      ],
+      "description": "Während die Mitglieder des Dämonentöter-Korps und die Hashira in Vorbereitung auf den bevorstehenden Kampf gegen die Dämonen ein gemeinsames Krafttrainingsprogramm, das Hashira-Training, absolvieren, taucht Muzan Kibutsuji in der Ubuyashiki-Villa auf. Da der Leiter des Dämonenkorps in Gefahr ist, eilen Tanjiro und die Hashira zum Hauptquartier, werden aber von Muzan Kibutsuji in einen tiefen Abstieg in einen mysteriösen Raum gestürzt. Das Ziel, in das Tanjiro und das Dämonentöter-Korps gestürzt sind, ist die Festung der Dämonen - die Unendlichkeitsburg. Und so ist das Schlachtfeld für die finale Schlacht zwischen dem Dämonentöterkorps und den Dämonen bereitet.",
+      "rating": 8.801,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1621552",
+      "title": "Die Festnahme",
+      "year": "2026",
+      "genres": [
+        "Krimi",
+        "Action",
+        "Thriller"
+      ],
+      "description": "Basierend auf wahren Begebenheiten: Der international gesuchte Drogenkartellboss Joaquin „El Chapo“ Guzmán flüchtet am 8. Januar 2016 vor dem Zugriff der mexikanischen Marine durch die Kanalisation aus seinem Anwesen. Anschließend bringt er ein Auto in seine Gewalt und wähnt sich bald in Sicherheit. Doch dann gerät er in eine Routinekontrolle durch zwei ganz normale Polizisten, die ihn jedoch direkt erkennen. Nachdem der Gangster bei ihnen mit Bestechungsversuchen auf Granit beißt, droht er ihnen unverhohlen mit dem Tod durch seine Leute, sollten sie ihn nicht freilassen. Für die beiden braven Gesetzeshüter beginnen die härtesten Stunden ihres bisherigen Lebens.",
+      "rating": 8.79,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1333100",
+      "title": "Attack on Titan: The Last Attack",
+      "year": "2024",
+      "genres": [
+        "Action",
+        "Drama"
+      ],
+      "description": "Die Menschheit lebte ruhig im Schatten riesiger Mauern, als Schutz vor den Titanen - riesigen menschenfressenden Kreaturen. Doch dann fand das Jahrhundert des Friedens durch einen Titanenangriff ein Ende, der dem Jungen Eren auch seine Mutter raubte und ihn Rache an den Titanen schwören ließ. Jahre später, nachdem Eren dem Aufklärungstrupp beigetreten war, stand er einem tödlichen Feind gegenüber und erlangte eine besondere Fähigkeit, die ihm eine neue Wahrheit über die Welt, wie er sie bisher kannte, enthüllte. Nach Erkundungstouren hinter den Mauern und mittlerweile getrennt von seinen alten Kameraden plant Eren, getrieben von dieser neuen Wahrheit, das \"Erdrumoren\": ein furchterregendes Vorhaben, bei dem alles, was auf dieser Welt lebt, ausgelöscht werden soll. Das Schicksal der Welt steht auf Messers Schneide und ein zusammengewürfelter Haufen von Erens ehemaligen Kameraden und auch Feinden muss versuchen, ihn auf seiner todbringenden Mission aufzuhalten. Kann ihnen das gelingen?",
+      "rating": 8.7,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-278",
+      "title": "Die Verurteilten",
+      "year": "1994",
+      "genres": [
+        "Drama",
+        "Krimi"
+      ],
+      "description": "Das Shawshank Gefängnis in den 30ern: der wegen Mordes an seiner Frau verurteilte Andy Dufresne kommt als Neuling lebenslänglich hinter Gittern. Zurückhaltend wie er ist, ist er ständig das Ziel sexueller Angriffe, doch als er als Banker durchblicken läßt, daß er finanziell für den Direktor und die Wärter eine Menge tun kann, ist für seine Sicherheit gesorgt. Langsam aber sicher freundet er sich mit dem Langzeitinsassen Red an, baut die Gefängnisbibliothek auf und rückt nie von seiner Überzeugung ab, unschuldig zu sein. Viele Jahre vergehen, bis etwas geschieht, was sogar Reds Leben für immer verändern wird...",
+      "rating": 8.731,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-238",
+      "title": "Der Pate",
+      "year": "1972",
+      "genres": [
+        "Drama",
+        "Krimi"
+      ],
+      "description": "Don Vito Corleone ist der Kopf einer der einflußreichsten Mafia-Familien New Yorks. Als die anderen Familien der Stadt beschließen, neben Glücksspiel und Schutzgelderpressungen nun auch den Handel mit Drogen als Erwerbsquelle zu nutzen und sich Don Corleone diesem Vorhaben nicht anschließen möchte, wird er zum Ziel eines hinterhältigen Mordanschlags. Nun steht Vitos Sohn Michael in der Verantwortung, in die Fußstapfen seines Vaters zu treten, obwohl er mit den Geschäften der Familie bis dato nichts zu tun haben wollte.",
+      "rating": 8.687,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-687163",
+      "title": "Der Astronaut – Project Hail Mary",
+      "year": "2026",
+      "genres": [
+        "Science-Fiction"
+      ],
+      "description": "Als Ryland Grace erwacht, muss er feststellen, dass er ganz allein ist. Er ist anscheinend der einzige Überlebende einer Raumfahrtmission, Millionen Kilometer von zu Hause entfernt, auf einem Flug ins Tau-Ceti-Sternsystem. Aber was erwartet ihn dort? Und warum sind alle anderen Besatzungsmitglieder tot? Nach und nach dämmert es Grace, dass von seinem Überleben nicht nur die Mission, sondern die Zukunft der gesamten Erdbevölkerung abhängt.",
+      "rating": 8.639,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-936075",
+      "title": "Michael",
+      "year": "2026",
+      "genres": [
+        "Drama"
+      ],
+      "description": "Der junge Michael Jackson wird als achtes von zehn Kindern unter der strengen Führung seines Vaters Joe früh für eine Musikkarriere gedrillt wird. Mit der Familienband Jackson Five feiert er erste Erfolge, im Alter von 13 Jahren startet er bereits die Solokarriere. Auch im Erwachsenenalter ist sein Leben von der Musik dominiert. Ende der 1970er-Jahre lernt er bei Filmarbeiten Diana Ross und den Produzenten Quincy Jones kennen, was seine musikalische Ausrichtung grundlegend verändert. Das von Jones produzierte Album \"Off the Wall\" (1979) wird ein großer Erfolg, der 1982 durch die bahnbrechende und meistverkaufte Platte \"Thriller\" noch übertroffen wird. Parallel zu diesem Aufstieg kommt es zum Bruch mit seinem Vater Joe, den Jackson als Manager entlässt und durch den Anwalt John Branca ersetzt.",
+      "rating": 8.633,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1232449",
+      "title": "Young Hearts",
+      "year": "2024",
+      "genres": [
+        "Drama"
+      ],
+      "description": "Elias ist 14 und eigentlich mit Schulkram beschäftigt. Doch als der gleichaltrige Alexander ins Haus gegenüber zieht, gibt es da auf einmal ganz neue, aufregende Gefühle. Elias spürt, dass er sich zum ersten Mal richtig verliebt – und am liebsten jede freie Minute mit seinem neuen Freund verbringen möchte! Und dann erzählt ihm Alexander auch noch, dass er auf Jungs steht. Aber Elias hat Angst vor den Reaktionen der anderen, er behält seine Gefühle für sich und fängt an zu lügen. Erst nach einem Gespräch mit seinem Großvater wird ihm klar, was er wirklich will: mit allen Mitteln um Alexanders Herz kämpfen!",
+      "rating": 8.587,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-240",
+      "title": "Der Pate - Teil II",
+      "year": "1974",
+      "genres": [
+        "Drama",
+        "Krimi"
+      ],
+      "description": "Michael Corleone ist jetzt der Pate seiner Familie und führt diese Aufgabe mit der nötigen Gnadenlosigkeit aus. Als er in Las Vegas und auf Kuba expandieren will, weil ihm die alten Geschäftsideen nichts mehr einbringen, treten Schwierigkeiten auf. Um diese zu klären, veranlaßt Michael eine große Säuberungsaktion, die auch vor den Familienmitgliedern nicht halt macht.",
+      "rating": 8.572,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-389",
+      "title": "Die zwölf Geschworenen",
+      "year": "1957",
+      "genres": [
+        "Drama"
+      ],
+      "description": "Zwölf Geschworene verhandeln im Juryraum in brütender Hitze über das Schicksal eines Jungen, der angeklagt ist, seinen Vater getötet zu haben. Als das Urteil \"Schuldig\" beinahe feststeht, formuliert der Geschworene Nr. 8 seine Zweifel. Gegen den teils erbitterten Widerstand der Mehrheit entwickelt er nach und nach mit ruhiger Logik seine Argumente. Der Kampf der Meinungen setzt unerwartete Vorurteile und Charakterzüge der zwölf Männer frei, deren Gewissensprüfungen für den Angeklagten ausfallen.",
+      "rating": 8.571,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-424",
+      "title": "Schindlers Liste",
+      "year": "1993",
+      "genres": [
+        "Drama"
+      ],
+      "description": "Von einer wahren Begebenheit inspiriert, erzählt Schindlers Liste die Geschichte des Industriellen Oskar Schindler, der während des Zweiten Weltkriegs versucht, sich in Krakau eine Existenz aufzubauen. Aus finanziellen Gründen beschäftigt er nur Juden und leiht sich Geld von ihnen um eine Emaillefabrik zu gründen, die ihm letztlich großen Reichtum beschert. Als die Brutalität des Holocaust Krakau erreicht, riskiert er nicht nur sein Vermögen, sondern auch sein Leben um seine Arbeiter vor der Deportation zu bewahren.",
+      "rating": 8.57,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1218925",
+      "title": "Chainsaw Man - The Movie: Reze Arc",
+      "year": "2025",
+      "genres": [
+        "Action"
+      ],
+      "description": "Denji wurde zum „Kettensägenmann“, einem Jungen mit dem Herzen eines Teufels, und gehört nun zu den Teufelsjägern der Spezialabteilung 4. Nach einer Verabredung mit Makima, der Frau seiner Träume, sucht Denji Schutz vor dem Regen. Dort lernt er Reze kennen, ein Mädchen, das in einem Café arbeitet.",
+      "rating": 8.555,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1630423",
+      "title": "My Dearest Assassin",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Drama"
+      ],
+      "description": "Lhan, eine junge vietnamesische Frau, wird wegen der Seltenheit ihrer Blutgruppe von einem rachsüchtigen Feind gejagt, der bereits ihre Eltern auf dem Gewissen hat. Eine Familie von Attentätern nimmt sie auf, und so wächst sie mit dem Sohn des Anführers Pran auf. Als ihr Feind sie jedoch wieder aufspürt, muss Lhan sich ihrer Vergangenheit stellen und an der Seite des Mannes, den sie liebt, kämpfen.",
+      "rating": 8.6,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-155",
+      "title": "The Dark Knight",
+      "year": "2008",
+      "genres": [
+        "Action",
+        "Thriller",
+        "Krimi"
+      ],
+      "description": "Gemeinsam mit Bezirksstaatsanwalt Harvey Dent und Lieutenant James Gordon versucht der im Fledermauskostüm agierende Milliardär Bruce Wayne dem Verbrechen in Gotham City Einhalt zu gebieten. Wie aus dem Nichts taucht plötzlich ein psychotischer Superverbrecher auf - der Joker. In seiner wahnhaften Vision möchte er die Stadt in Chaos und Anarchie stürzen und Batman scheint der einzige, der ihn stoppen kann. Bis es zum endgültigen Show-Down kommt, wird aber viel Blut fließen und auch Menschen die Bruce Wayne nahe stehen, könnten Opfer werden.",
+      "rating": 8.535,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-497",
+      "title": "The Green Mile",
+      "year": "1999",
+      "genres": [
+        "Drama",
+        "Krimi"
+      ],
+      "description": "Paul Edgecomb und seine Kollegen sind Wärter im Todestrakt eines Gefängnisses in den 30ern. Paul versieht seinen Job zwar immer noch mit der größtmöglichen Menschlichkeit, doch er wird zunehmend zynischer, da er ständig Menschen sterben sieht. Außerdem ist er krank. Da kommt ein neuer Delinquent in den Trakt: John Coffey, ein farbiger Riese von friedlichster Bauart, der im Dunkeln Angst hat. Wie sich herausstellt, hat Coffey heilende Fähigkeiten, die auch Paul kennenlernt. Zunehmend gerät er in Zweifel, ob dieser Gigant sterben soll, vor allem da er die Morde, wegen der er verurteilt ist, nicht begangen zu haben scheint. Doch der Stuhl wartet und Coffeys Gabe droht für immer zu verschwinden ...",
+      "rating": 8.506,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-122",
+      "title": "Der Herr der Ringe - Die Rückkehr des Königs",
+      "year": "2003",
+      "genres": [
+        "Action"
+      ],
+      "description": "Saurons Heer will Minas Tirith angreifen, die in Felsen errichtete Hauptstadt von Gondor. Angesichts der Bedrohlichkeit des feindlichen Heeres wiegt es umso schwerer, dass Gondors König fehlt und nur der schwächliche Truchsess Denethor über das einst mächtige Königreich wacht. Wird Aragorn die Kraft aufbringen, jene Aufgabe zu übernehmen, für die sein Schicksal ihn bestimmt hat? Während Gandalf verzweifelt versucht, die mutlosen Kämpfer von Gondor zu motivieren, sammelt Théoden die Krieger von Rohan, um am Kampf teilzunehmen. Aber obwohl sie tapfer und leidenschaftlich Widerstand leisten, haben die Streitkräfte der Menschen dem überwältigenden Ansturm der feindlichen Legionen gegen das Königreich kaum etwas entgegenzusetzen. Jeder Sieg fordert große Opfer. Trotz der starken Verluste stellen sich die Gefährten der größten Schlacht ihres Lebens - vereint durch ein einziges Ziel: Sauron muss so lange abgelenkt werden, bis Frodo den Ring vernichtet hat...",
+      "rating": 8.505,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-19404",
+      "title": "Dilwale Dulhania Le Jayenge - Wer zuerst kommt, kriegt die Braut",
+      "year": "1995",
+      "genres": [
+        "Drama"
+      ],
+      "description": "Eine Europareise mit romantischen Folgen: Auf seiner Interrailtour begegnet Raj Simran, einem Mädchen aus gutem Hause. Seinen Annäherungsversuchen geht sie zunächst erfolgreich aus dem Weg, denn immerhin ist Simran bereits einem Anderen versprochen. Doch in der Schweiz, auf fahrenden Zügen und duftenden Almwiesen, erliegt sie seinem Charme, und bald ist klar: Sie gehören zusammen. Nur Simrans Familie stellt sich ihrem Glück entgegen. \"Dilwale Dulhania Le Jayenge\" markiert die Geburtsstunde des Leinwandtraumpaars Shah Rukh Khan und Kajol und gilt unumstritten als Meilenstein indischer Film- und Kulturgeschichte. Neben des ausgeprägt zelebrierten Schweiz-Mythos kommen hier alle wichtigen Grundzutaten soliden Bollywoodkinos zusammen und machen den Film zu einer der erfolgreichsten indischen Produktionen aller Zeiten, die selbst heute noch in den Kinos Indiens zu sehen ist.",
+      "rating": 8.504,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-268854",
+      "title": "La delgada línea amarilla",
+      "year": "2015",
+      "genres": [
+        "Drama"
+      ],
+      "description": "",
+      "rating": 8.491,
+      "source": "TMDB"
+    }
+  ]
 }

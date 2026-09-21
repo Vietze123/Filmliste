@@ -1,0 +1,1 @@
+v55: Hintergrund visuell korrigiert. Legacy-Hellmodus kann den Cinematic-Floral-Hintergrund nicht mehr überschreiben. Persönliche Willkommensnachricht aus v54 bleibt erhalten.

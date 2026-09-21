@@ -1,0 +1,1 @@
+v53: Referenzgetreuer Neuaufbau der sichtbaren Oberfläche mit floralem Cinematic-Hintergrund, Glassmorphism, neuem Header, Tabs, Überraschungsbanner und Kartenlayout. Visuell in Chromium geprüft. suggestions.json absichtlich nicht enthalten.

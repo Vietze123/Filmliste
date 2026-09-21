@@ -1,0 +1,1 @@
+v54: Widmung korrigiert: für die Maus. Persönliche Tageszeit-Willkommensnachricht wieder sichtbar direkt unter dem Header. PWA-Cache v54. suggestions.json bleibt absichtlich unberührt/nicht enthalten.

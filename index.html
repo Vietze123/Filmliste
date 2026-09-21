@@ -1165,6 +1165,50 @@ main {
   }
 }
 
+
+/* ===== v29: sichere iPhone-Navigation + Tageszeit-Nachricht ===== */
+#v7-overlay .v7-present-head {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+}
+#v7-overlay .v29-back {
+  position: relative !important;
+  inset: auto !important;
+  width: auto !important;
+  min-width: 92px !important;
+  min-height: 46px !important;
+  padding: 10px 14px !important;
+  border-radius: 14px !important;
+  white-space: nowrap !important;
+  z-index: 1000 !important;
+}
+.v29-time-message {
+  max-width: 1180px;
+  margin: 14px auto 4px;
+  padding: 13px 18px;
+  border: 1px solid rgba(190,100,255,.32);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(116,76,255,.10), rgba(238,92,190,.10));
+  box-shadow: 0 8px 24px rgba(82,49,130,.08);
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.45;
+}
+@media (max-width:700px) {
+  #v7-overlay .v7-present-head {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  #v7-overlay .v29-back {
+    justify-self: stretch !important;
+    width: 100% !important;
+  }
+  .v29-time-message {
+    margin: 10px max(12px, env(safe-area-inset-right)) 4px max(12px, env(safe-area-inset-left));
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+}
+
 </style>
 <style id="v9-accent-design">
 /* v9: altes, kräftiges Farbschema behalten – nur sauberer, moderner und mit Akzenten */
@@ -1503,6 +1547,7 @@ header h1:after,.hero h1:after,.top h1:after{content:" 🐭";font-size:.52em;ver
   <div class="recent-list" id="v10-recent-list"></div>
 </section>
 <div class="v12-maus-note"><span class="maus-symbol">🐭</span> Für dich, Maus – damit Langeweile gar nicht erst aufkommt. 💜</div>
+<section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
 <main><div class="grid" id="grid"><article class="movie" data-platform="Netflix" data-search="verirrte kugel (lost bullet, 2020) action / auto-thriller mechaniker wird des mordes beschuldigt und jagt das auto mit dem beweis seiner unschuld. viel echte stunt-action, stil wie fast &amp; furious.">
       <div class="platform netflix"><span>N</span>Netflix</div>
       <h2>Verirrte Kugel (Lost Bullet, 2020)</h2>
@@ -2110,13 +2155,13 @@ render();
         <div class="v7-counter" id="v7-counter"></div>
         <h2 class="v7-present-title">🎬 Deine Film-Überraschung</h2>
       </div>
-      <button class="v7-close" id="v7-close">✕</button>
+      <button class="v7-close v29-back" id="v7-close" type="button" aria-label="Zurück zur Filmliste">← Zurück</button>
     </div>
     <div class="v7-present-body" id="v7-present-body"></div>
     <div class="v7-present-actions">
       <button class="v7-next" id="v7-next">🎲 Noch einmal überraschen</button>
       <button class="v7-watch" id="v7-mark">✓ Als angeschaut markieren</button>
-      <button class="v7-close" id="v7-close2">Schließen</button>
+      <button class="v7-close" id="v7-close2" type="button">← Zurück zur Filmliste</button>
     </div>
   </div>
 </div>
@@ -2335,45 +2380,7 @@ function showRandom(){
 
 
 
-<script>
-/* ===== v27: native delegated iPhone button handling ===== */
-(function () {
-  function activate(el) {
-    if (!el || el.disabled) return false;
 
-    /* Standard controls keep their existing native click handlers. */
-    const id = el.id || '';
-
-    if (id === 'v7-again' && typeof showRandom === 'function') {
-      showRandom();
-      return true;
-    }
-
-    if ((id === 'v7-close' || id === 'v7-close-x') && typeof close === 'function') {
-      close();
-      return true;
-    }
-
-    if (id === 'v7-watched') {
-      /* Let the existing click listener handle watched state if present. */
-      return false;
-    }
-
-    return false;
-  }
-
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest && e.target.closest('#v7-overlay button');
-    if (!btn) return;
-    if (activate(btn)) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, false);
-
-  /* Do not synthesize click on touchend: Safari already generates native clicks. */
-})();
-</script>
 
 <script>
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
@@ -2381,24 +2388,34 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 }
 </script>
 
+
+
+
 <script>
-/* v28 – Safari/Web-App: X closes only the surprise dialog, never the browser tab */
+/* v29 – persönliche Nachricht nach lokaler Gerätezeit */
 (function () {
-  document.addEventListener('click', function (event) {
-    const x = event.target.closest && event.target.closest('#v7-close-x');
-    if (!x) return;
+  const box = document.getElementById('v29-time-message');
+  if (!box) return;
 
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-
-    const overlay = document.getElementById('v7-overlay');
-    if (overlay) {
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden', 'true');
+  function updateGreeting() {
+    const h = new Date().getHours();
+    let text;
+    if (h >= 5 && h < 10) {
+      text = '🌅 Guten Morgen, Maus 💜 Bereit für einen gemütlichen Filmstart?';
+    } else if (h >= 10 && h < 14) {
+      text = '☀️ Schönen Mittag, Maus 💜 Vielleicht ist ja schon der richtige Film für dich dabei.';
+    } else if (h >= 14 && h < 18) {
+      text = '🌤️ Schönen Nachmittag, Maus 💜 Zeit für ein bisschen Mäuse-Kino?';
+    } else if (h >= 18 && h < 23) {
+      text = '🌙 Guten Abend, Maus 💜 Mach es dir gemütlich und such dir einen schönen Film aus.';
+    } else {
+      text = '✨ Noch wach, Maus? 💜 Dann darf es jetzt ein richtig guter Nachtfilm sein. Bleib nicht mehr allzu lange wach, schlaf gut Kleine.';
     }
-    document.body.classList.remove('v7-lock');
-  }, true);
+    box.textContent = text;
+  }
+
+  updateGreeting();
+  setInterval(updateGreeting, 60000);
 })();
 </script>
 

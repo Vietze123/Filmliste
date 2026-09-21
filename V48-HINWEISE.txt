@@ -1,0 +1,9 @@
+v48 – Layout-Veredelung
+
+- Zahnrad bleibt ganz oben rechts auf der Seite und scrollt mit dem Seiteninhalt weg (nicht fixed/sticky).
+- Ruhigerer, hochwertigerer Kopfbereich und klarere visuelle Hierarchie.
+- Filmkarten mit mehr Abstand, Tiefe und besserer Lesbarkeit.
+- Floraler Hintergrund in Hell- und Dunkelmodus.
+- Hoher Kontrast und große Touch-Ziele bleiben erhalten.
+- suggestions.json ist absichtlich NICHT im Paket, damit die vom GitHub-Workflow erzeugten Vorschläge nicht überschrieben werden.
+- PWA-Cache: v48.

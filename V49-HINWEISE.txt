@@ -1,0 +1,8 @@
+v49 – Cinematic Floral Layout
+- Layout an das florale Streaming-Mockup angelehnt.
+- Dunkler Navy/Lila/Pink-Look mit floralen Silhouetten im Hintergrund.
+- Heller Modus bleibt verfügbar und ebenfalls floral.
+- Filmkarten, Filter, Überraschungsbereich und Buttons neu gestaltet.
+- Zahnrad bleibt oben auf der Seite und scrollt NICHT mit.
+- Bestehende Funktionen, 100 Filme, Prime-Video-Links, lokale Daten und Vorschlags-Workflow bleiben erhalten.
+- suggestions.json ist absichtlich NICHT enthalten, damit GitHub-Vorschläge nicht überschrieben werden.

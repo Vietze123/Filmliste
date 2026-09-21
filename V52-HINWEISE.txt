@@ -1,0 +1,7 @@
+v52 – Reference-first Cinematic Floral
+
+- Neuer reiner Blumenhintergrund ohne eingebettete UI: cinematic-floral-bg-v52.jpg
+- Oberfläche konsequent auf dunkles Navy/Pink-Glassmorphism umgebaut
+- Filmkarten mit großer Posterzone und 3/2/1-Spalten-Layout
+- Bestehende 100 Filme und Funktionen bleiben erhalten
+- suggestions.json wird absichtlich nicht ausgeliefert

@@ -1,0 +1,1 @@
+v51: Echter bildbasierter Cinematic-Floral-Hintergrund aus der freigegebenen Referenz, Glassmorphism-Oberfläche und dunkle Filmkarten. suggestions.json bleibt absichtlich außerhalb des Pakets.

@@ -4132,27 +4132,35 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 <script id="v53-layout-script">
-document.addEventListener('DOMContentLoaded',()=>{
-  const hero=document.querySelector('.v49-hero');
-  const greeting=document.getElementById('v29-time-message');
-  if(hero && greeting) hero.insertAdjacentElement('afterend', greeting);
+(function(){
+ function sync(mausig){
   const tools=document.querySelector('.v44-primary-tools');
+  const wrap=document.querySelector('.v35-recent-launch-wrap');
   const recent=document.getElementById('v35-open-recent');
   const sugg=document.getElementById('v42-open-suggestions');
-  if(tools && !document.querySelector('.v53-tabs')){
-    const tabs=document.createElement('div'); tabs.className='v53-tabs';
-    const all=tools.querySelector('[data-v6-platform="all"]');
-    const netflix=tools.querySelector('[data-v6-platform="Netflix"]');
-    const prime=tools.querySelector('[data-v6-platform="Amazon Prime Video"]');
-    [all,netflix,prime].forEach(b=>{if(b) tabs.appendChild(b)});
-    if(recent) tabs.appendChild(recent);
-    if(sugg) tabs.appendChild(sugg);
-    tools.insertAdjacentElement('afterend',tabs);
+  if(!tools||!wrap)return;
+  let tabs=document.querySelector('.v53-tabs');
+  const all=document.querySelector('[data-v6-platform="all"]');
+  const netflix=document.querySelector('[data-v6-platform="Netflix"]');
+  const prime=document.querySelector('[data-v6-platform="Amazon Prime Video"]');
+  if(mausig){
+    if(!tabs){tabs=document.createElement('div');tabs.className='v53-tabs';tools.insertAdjacentElement('afterend',tabs)}
+    [all,netflix,prime,recent,sugg].forEach(el=>{if(el)tabs.appendChild(el)});
+  }else{
+    const sort=document.getElementById('v6-sort');
+    [all,netflix,prime].forEach(el=>{if(el)tools.insertBefore(el,sort||null)});
+    [recent,sugg].forEach(el=>{if(el)wrap.appendChild(el)});
   }
-  if(!document.querySelector('.v53-footer')){
-    const f=document.createElement('div'); f.className='v53-footer'; f.innerHTML='Schöne Filme. Schönere Momente. ♡'; document.querySelector('main')?.insertAdjacentElement('afterend',f);
-  }
-});
+ }
+ window.v62SyncDiscoveryActions=sync;
+ document.addEventListener('DOMContentLoaded',()=>{
+  const hero=document.querySelector('.v49-hero');
+  const greeting=document.getElementById('v29-time-message');
+  if(hero&&greeting)hero.insertAdjacentElement('afterend',greeting);
+  if(!document.querySelector('.v53-footer')){const f=document.createElement('div');f.className='v53-footer';f.innerHTML='Schöne Filme. Schönere Momente. ♡';document.querySelector('main')?.insertAdjacentElement('afterend',f)}
+  sync(document.body.classList.contains('v53'));
+ });
+})();
 </script>
 
 \n
@@ -4293,6 +4301,14 @@ html[data-theme="mausig"] #v42-close:focus-visible{outline:3px solid var(--m57-a
  html[data-theme="mausig"] .v42-head{position:sticky!important;top:0!important}
 }
 </style>
+
+<style id="v62-new-films-visibility-fix">
+/* v62 – Neue Filme/Zuletzt angesehen bleiben in Hell und Dunkel erreichbar. */
+html:not([data-theme="mausig"]) .v35-recent-launch-wrap{display:flex!important;max-width:900px!important;margin:12px auto 14px!important;padding:0 16px!important;justify-content:center!important;gap:10px!important;flex-wrap:wrap!important}
+html:not([data-theme="mausig"]) .v35-recent-launch-wrap .v35-recent-launch{display:inline-flex!important;align-items:center!important;justify-content:center!important}
+html:not([data-theme="mausig"]) .v53-tabs{display:none!important}
+@media(max-width:700px){html:not([data-theme="mausig"]) .v35-recent-launch-wrap{display:grid!important;grid-template-columns:1fr 1fr!important;padding:0 12px!important}}
+</style>
 </body></html>
 <style id="v55-background-fix">
 /* v55: final override after all legacy themes. Keeps the cinematic floral backdrop visible in both modes. */
@@ -4356,6 +4372,7 @@ body:not(.v53) .v51-backdrop{display:none!important}
    if(!mausig) writeLegacyDark(theme==='dark');
    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v56Theme===theme)));
    document.documentElement.dataset.theme=theme;
+   if(window.v62SyncDiscoveryActions) window.v62SyncDiscoveryActions(mausig);
    if(persist!==false)localStorage.setItem(KEY,theme);
  }
  let initial=new URLSearchParams(location.search).get('theme')||localStorage.getItem(KEY);

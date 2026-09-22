@@ -2513,6 +2513,33 @@ html[data-theme="mausig"] .v53-stage::after {
 }
 </style>
 
+
+<style id="v81-platform-tabs-touch-fix">
+html[data-theme="mausig"] body.v53 .v53-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  position:relative!important;
+  z-index:6000!important;
+  pointer-events:auto!important;
+}
+html[data-theme="mausig"] body.v53 .v53-tabs [data-v6-platform]{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:44px!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  position:relative!important;
+  z-index:6001!important;
+}
+@media(max-width:430px){
+ html[data-theme="mausig"] body.v53 .v53-tabs{
+   grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+}
+</style>
+
 </head><body class="v53"><div class="v51-backdrop" aria-hidden="true"></div>
 
 <button type="button" id="v47-settings-open" class="v47-settings-open" aria-label="Einstellungen öffnen" title="Einstellungen">⚙️</button>
@@ -4891,6 +4918,46 @@ window.__v79={openRecent,openSuggestions,surprise,markCurrent,closeRecent,closeS
     portalOverlays();
   }
   window.addEventListener('pageshow',portalOverlays);
+})();
+</script>
+
+
+<script id="v81-restore-platform-tabs">
+(function(){
+  function syncPlatformTabs(){
+    const tools=document.querySelector('.v44-primary-tools');
+    if(!tools) return;
+    const sort=document.getElementById('v6-sort');
+    const all=document.querySelector('[data-v6-platform="all"]');
+    const netflix=document.querySelector('[data-v6-platform="Netflix"]');
+    const prime=document.querySelector('[data-v6-platform="Amazon Prime Video"]');
+    const mausig=document.documentElement.dataset.theme==='mausig' || document.body.classList.contains('v53');
+
+    let tabs=document.querySelector('.v53-tabs');
+    if(mausig){
+      if(!tabs){
+        tabs=document.createElement('div');
+        tabs.className='v53-tabs';
+        tools.insertAdjacentElement('afterend',tabs);
+      }
+      [all,netflix,prime].forEach(el=>{ if(el) tabs.appendChild(el); });
+    }else{
+      [all,netflix,prime].forEach(el=>{ if(el) tools.insertBefore(el,sort||null); });
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',syncPlatformTabs,{once:true});
+  }else syncPlatformTabs();
+
+  /* Theme changes happen without a reload. Observe both html[data-theme] and body.v53. */
+  const htmlObserver=new MutationObserver(syncPlatformTabs);
+  htmlObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  const bodyObserver=new MutationObserver(syncPlatformTabs);
+  bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
+
+  window.addEventListener('pageshow',syncPlatformTabs);
+  window.v81SyncPlatformTabs=syncPlatformTabs;
 })();
 </script>
 

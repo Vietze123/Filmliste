@@ -2448,16 +2448,7 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 </style>
 
 
-<style id="v77-mobile-interaction-final">
-#v35-open-recent,#v42-open-suggestions,#v6-surprise{position:relative!important;z-index:1000!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-user-select:none;user-select:none}
-#v35-recent-overlay,#v42-overlay,#v7-overlay{position:fixed!important;inset:0!important;z-index:2147483640!important;pointer-events:auto!important}
-#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){display:flex!important;visibility:visible!important;opacity:1!important}
-#v7-overlay.v7-present-overlay.open{display:flex!important;visibility:visible!important;opacity:1!important}
-@media(max-width:700px){
- #v35-open-recent,#v42-open-suggestions,#v6-surprise{min-height:48px!important}
- #v35-recent-dialog,.v42-dialog,#v7-overlay .v7-present{pointer-events:auto!important;max-width:100%!important}
-}
-</style>
+
 </head><body class="v53"><div class="v51-backdrop" aria-hidden="true"></div>
 
 <button type="button" id="v47-settings-open" class="v47-settings-open" aria-label="Einstellungen öffnen" title="Einstellungen">⚙️</button>
@@ -4205,37 +4196,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 
-<script id="v53-layout-script">
-(function(){
- function sync(mausig){
-  const tools=document.querySelector('.v44-primary-tools');
-  const wrap=document.querySelector('.v35-recent-launch-wrap');
-  const recent=document.getElementById('v35-open-recent');
-  const sugg=document.getElementById('v42-open-suggestions');
-  if(!tools||!wrap)return;
-  let tabs=document.querySelector('.v53-tabs');
-  const all=document.querySelector('[data-v6-platform="all"]');
-  const netflix=document.querySelector('[data-v6-platform="Netflix"]');
-  const prime=document.querySelector('[data-v6-platform="Amazon Prime Video"]');
-  if(mausig){
-    if(!tabs){tabs=document.createElement('div');tabs.className='v53-tabs';tools.insertAdjacentElement('afterend',tabs)}
-    [all,netflix,prime,recent,sugg].forEach(el=>{if(el)tabs.appendChild(el)});
-  }else{
-    const sort=document.getElementById('v6-sort');
-    [all,netflix,prime].forEach(el=>{if(el)tools.insertBefore(el,sort||null)});
-    [recent,sugg].forEach(el=>{if(el)wrap.appendChild(el)});
-  }
- }
- window.v62SyncDiscoveryActions=sync;
- document.addEventListener('DOMContentLoaded',()=>{
-  const hero=document.querySelector('.v49-hero');
-  const greeting=document.getElementById('v29-time-message');
-  if(hero&&greeting)hero.insertAdjacentElement('afterend',greeting);
-  if(!document.querySelector('.v53-footer')){const f=document.createElement('div');f.className='v53-footer';f.innerHTML='Schöne Filme. Schönere Momente. ♡';document.querySelector('main')?.insertAdjacentElement('afterend',f)}
-  sync(document.body.classList.contains('v53'));
- });
-})();
-</script>
+
 
 \n
 
@@ -4715,6 +4676,97 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 
 
 
+
+
+<style id="v78-mobile-mausig-actions">
+/* v78: Mausig mobile actions are independent controls; no button is reparented at runtime. */
+html[data-theme="mausig"] body.v53 .v35-recent-launch-wrap{display:none!important}
+html[data-theme="mausig"] body.v53 .v53-tabs{display:flex!important;position:relative!important;z-index:2000!important;pointer-events:auto!important;gap:8px!important;flex-wrap:wrap!important}
+html[data-theme="mausig"] body.v53 .v53-tabs button{pointer-events:auto!important;touch-action:manipulation!important;-webkit-user-select:none!important;user-select:none!important}
+#v78-mobile-recent,#v78-mobile-suggestions{min-height:44px!important}
+#v35-recent-overlay,#v42-overlay,#v7-overlay{position:fixed!important;inset:0!important;z-index:2147483640!important;pointer-events:auto!important}
+#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){display:flex!important;visibility:visible!important;opacity:1!important}
+#v7-overlay.v7-present-overlay.open{display:flex!important;visibility:visible!important;opacity:1!important}
+@media(max-width:700px){
+ html[data-theme="mausig"] body.v53 .v53-tabs{display:grid!important;grid-template-columns:1fr 1fr!important}
+ html[data-theme="mausig"] body.v53 .v53-tabs button{min-height:48px!important;font-size:.82rem!important}
+ html[data-theme="mausig"] body.v53 #v6-surprise{min-height:54px!important;pointer-events:auto!important;touch-action:manipulation!important;position:relative!important;z-index:2000!important}
+ #v35-recent-dialog,.v42-dialog,#v7-overlay .v7-present{width:100%!important;max-width:100%!important;pointer-events:auto!important}
+}
+</style>
+<script id="v78-mobile-mausig-controller">
+(function(){
+'use strict';
+const STORE='mouseMovieAppV6', SUG='mouseMovieSuggestionChoicesV42';
+let current=null, suggestionCache=[], memoryState={};
+function get(id){return document.getElementById(id)}
+function readStore(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return JSON.parse(JSON.stringify(memoryState||{}))}}
+function writeStore(s){memoryState=JSON.parse(JSON.stringify(s||{}));try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+function movieId(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')}
+function lock(on){document.body.classList.toggle('v7-lock',!!on);document.body.style.overflow=on?'hidden':''}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function renderRecent(){const box=get('v10-recent-list');if(!box)return;const s=readStore(),items=Array.isArray(s.lastViewed)?s.lastViewed:[];box.innerHTML='';if(!items.length){const e=document.createElement('span');e.textContent='Noch keine Filme angesehen – such dir deinen nächsten Film aus, Maus 💜';box.appendChild(e);return}items.forEach(item=>{const title=typeof item==='string'?item:(item.title||'');const b=document.createElement('button');b.type='button';b.className='recent-item';b.textContent='🎬 '+title;b.onclick=()=>{window.v78CloseRecent();const card=[...document.querySelectorAll('.movie')].find(c=>(c.querySelector('h2')?.textContent.trim()||'')===title);if(card){card.scrollIntoView({behavior:'smooth',block:'center'});card.style.boxShadow='0 0 0 3px rgba(244,201,93,.65), var(--v9-shadow)';setTimeout(()=>card.style.boxShadow='',900)}};box.appendChild(b)})}
+window.v78OpenRecent=function(){
+ const o=get('v35-recent-overlay'); if(!o)return false;
+ renderRecent();
+ o.hidden=false;o.setAttribute('aria-hidden','false');lock(true);return false;
+};
+window.v78CloseRecent=function(){const o=get('v35-recent-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false);return false};
+
+function readChoices(){let c={accepted:{},dismissed:{}};try{c=Object.assign(c,JSON.parse(localStorage.getItem(SUG)||'{}'))}catch(e){}return c}
+function saveChoices(c){try{localStorage.setItem(SUG,JSON.stringify(c))}catch(e){}}
+function renderSuggestions(){
+ const list=get('v42-list'),status=get('v42-status'),badge=get('v42-badge');if(!list||!status)return;
+ const c=readChoices(), pending=suggestionCache.filter(x=>!c.accepted[x.id]&&!c.dismissed[x.id]);
+ if(badge)badge.textContent=pending.length?pending.length:'';
+ status.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';list.innerHTML='';
+ if(!pending.length){list.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald neue Kandidaten gefunden wurden.</div>';return}
+ pending.forEach(x=>{const a=document.createElement('article');a.className='v42-card';a.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button type="button" data-v78-keep="'+esc(x.id)+'">💜 Merken</button><button type="button" data-v78-hide="'+esc(x.id)+'">Nicht interessant</button></div>';list.appendChild(a)});
+}
+window.v78OpenSuggestions=async function(){
+ const o=get('v42-overlay'),status=get('v42-status'),list=get('v42-list');if(!o)return false;
+ o.hidden=false;o.setAttribute('aria-hidden','false');lock(true);if(status)status.textContent='Neue Filme werden geladen …';if(list)list.innerHTML='';
+ try{const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();suggestionCache=Array.isArray(d.movies)?d.movies:[];renderSuggestions()}
+ catch(e){if(status)status.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';if(list)list.innerHTML='<div class="v42-empty">Die Filmliste funktioniert weiterhin. suggestions.json konnte nicht geladen werden.</div>'}
+ return false;
+};
+window.v78CloseSuggestions=function(){const o=get('v42-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false);return false};
+
+function candidates(){const s=readStore(),w=s.watched||{};return [...document.querySelectorAll('.movie')].filter(c=>c.style.display!=='none'&&getComputedStyle(c).display!=='none').filter(c=>!w[movieId(c.querySelector('h2')?.textContent.trim()||'')])}
+function remember(title){const s=readStore(),id=movieId(title);s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed:[];s.lastViewed=s.lastViewed.filter(x=>(typeof x==='string'?x:x.id)!==id);s.lastViewed.unshift({id,title:String(title),time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);writeStore(s);renderRecent()}
+window.v78Surprise=function(){
+ const list=candidates();if(!list.length){alert('Keine passenden ungesehenen Filme mehr. Maus, hier ist noch nichts Passendes dabei.');return false}
+ current=list[Math.floor(Math.random()*list.length)];const o=get('v7-overlay'),body=get('v7-present-body');if(!o||!body)return false;
+ const clone=current.cloneNode(true);clone.style.display='block';clone.classList.remove('v6-watched');body.replaceChildren(clone);
+ const title=current.querySelector('h2')?.textContent.trim()||'';const cw=clone.querySelector('.watched-btn');if(cw)cw.onclick=function(e){e.preventDefault();window.v78MarkCurrent()};
+ const counter=get('v7-counter');if(counter)counter.textContent='🐭 Überraschung für dich, Maus';o.hidden=false;o.classList.add('open');o.setAttribute('aria-hidden','false');lock(true);requestAnimationFrame(()=>o.scrollTop=0);return false;
+};
+window.v78CloseSurprise=function(){const o=get('v7-overlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true');o.hidden=true}lock(false);current=null;return false};
+window.v78MarkCurrent=function(){if(!current)return false;const title=current.querySelector('h2')?.textContent.trim()||'',s=readStore();s.watched=s.watched||{};s.watched[movieId(title)]=true;writeStore(s);remember(title);current.classList.add('v6-watched');return window.v78Surprise()};
+
+function buildTabs(){
+ const tools=document.querySelector('.v44-primary-tools');if(!tools)return;let tabs=document.querySelector('.v53-tabs');if(!tabs){tabs=document.createElement('div');tabs.className='v53-tabs';tools.insertAdjacentElement('afterend',tabs)}
+ const all=document.querySelector('[data-v6-platform="all"]'),netflix=document.querySelector('[data-v6-platform="Netflix"]'),prime=document.querySelector('[data-v6-platform="Amazon Prime Video"]');[all,netflix,prime].forEach(el=>{if(el&&el.parentElement!==tabs)tabs.appendChild(el)});
+ if(!get('v78-mobile-recent')){const b=document.createElement('button');b.type='button';b.id='v78-mobile-recent';b.className='v35-recent-launch v44-secondary-action';b.textContent='🐭 Zuletzt angesehen';b.onclick=window.v78OpenRecent;tabs.appendChild(b)}
+ if(!get('v78-mobile-suggestions')){const b=document.createElement('button');b.type='button';b.id='v78-mobile-suggestions';b.className='v35-recent-launch v44-secondary-action';b.innerHTML='✨ Neue Filme <span id="v78-mobile-badge"></span>';b.onclick=window.v78OpenSuggestions;tabs.appendChild(b)}
+}
+function bind(){
+ buildTabs();
+ const surprise=get('v6-surprise');if(surprise)surprise.onclick=window.v78Surprise;
+ const next=get('v7-next');if(next)next.onclick=window.v78Surprise;
+ const mark=get('v7-mark');if(mark)mark.onclick=window.v78MarkCurrent;
+ const c1=get('v7-close'),c2=get('v7-close2');if(c1)c1.onclick=window.v78CloseSurprise;if(c2)c2.onclick=window.v78CloseSurprise;
+ const rc=get('v35-close-recent');if(rc)rc.onclick=window.v78CloseRecent;
+ const sc=get('v42-close');if(sc)sc.onclick=window.v78CloseSuggestions;
+ const oldR=get('v35-open-recent');if(oldR)oldR.onclick=window.v78OpenRecent;const oldS=get('v42-open-suggestions');if(oldS)oldS.onclick=window.v78OpenSuggestions;
+ const ro=get('v35-recent-overlay');if(ro)ro.onclick=e=>{if(e.target===ro)window.v78CloseRecent()};const so=get('v42-overlay');if(so)so.onclick=e=>{if(e.target===so)window.v78CloseSuggestions()};
+ document.addEventListener('click',e=>{const k=e.target.closest?.('[data-v78-keep]'),d=e.target.closest?.('[data-v78-hide]');if(!k&&!d)return;const c=readChoices(),id=(k||d).dataset[k?'v78Keep':'v78Hide'];if(k){const x=suggestionCache.find(v=>String(v.id)===String(id));if(x)c.accepted[id]=x}else c.dismissed[id]=true;saveChoices(c);renderSuggestions()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+window.addEventListener('pageshow',bind);
+})();
+</script>
 
 </body>
 </html>

@@ -4851,5 +4851,125 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 })();
 </script>
 
+
+<script id="v74-main-actions-controller">
+(function(){
+  "use strict";
+
+  function byId(id){ return document.getElementById(id); }
+  function visible(el){
+    if(!el) return false;
+    const cs=getComputedStyle(el);
+    return cs.display!=="none" && cs.visibility!=="hidden";
+  }
+  function clickFirst(selectors){
+    for(const sel of selectors){
+      const el=document.querySelector(sel);
+      if(el && visible(el)){ el.click(); return true; }
+    }
+    return false;
+  }
+
+  function replaceAndBind(id, handler){
+    const old=byId(id);
+    if(!old) return null;
+    const fresh=old.cloneNode(true);
+    old.replaceWith(fresh);
+    fresh.removeAttribute("onclick");
+    fresh.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      handler(e, fresh);
+    }, {passive:false});
+    return fresh;
+  }
+
+  function openSurprise(){
+    // Use the established v7 presentation implementation if available.
+    if(typeof window.v7ShowRandom==="function"){ window.v7ShowRandom(); return; }
+    if(typeof window.showRandom==="function"){ window.showRandom(); return; }
+
+    // Fallback: choose a currently visible, unwatched movie and present it.
+    const cards=[...document.querySelectorAll("article.movie")]
+      .filter(el=>visible(el) && !el.classList.contains("watched"));
+    if(!cards.length) return;
+    const card=cards[Math.floor(Math.random()*cards.length)];
+    const overlay=byId("v7-overlay");
+    const body=byId("v7-present-body");
+    if(overlay && body){
+      body.innerHTML="";
+      body.appendChild(card.cloneNode(true));
+      overlay.hidden=false;
+      overlay.style.display="flex";
+      overlay.setAttribute("aria-hidden","false");
+      document.documentElement.classList.add("v7-modal-open");
+      return;
+    }
+    card.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  function openRecent(){
+    // Existing recent dialog implementations, without recursively clicking the launch button.
+    if(typeof window.v35OpenRecent==="function"){ window.v35OpenRecent(); return; }
+    const overlay=byId("v35-recent-overlay") || document.querySelector(".v35-recent-overlay");
+    if(overlay){
+      overlay.hidden=false;
+      overlay.style.display="flex";
+      overlay.setAttribute("aria-hidden","false");
+      return;
+    }
+    // Try a non-launch internal opener only.
+    clickFirst(["#v35-recent-dialog [data-open]"]);
+  }
+
+  function openSuggestions(){
+    // Existing suggestions implementation.
+    if(typeof window.v42OpenSuggestions==="function"){ window.v42OpenSuggestions(); return; }
+    if(typeof window.openSuggestions==="function"){ window.openSuggestions(); return; }
+    const overlay=byId("v42-overlay") || document.querySelector(".v42-overlay");
+    if(overlay){
+      overlay.hidden=false;
+      overlay.style.display="flex";
+      overlay.setAttribute("aria-hidden","false");
+      // Trigger the existing loader if it is exposed.
+      if(typeof window.v42LoadSuggestions==="function") window.v42LoadSuggestions();
+      return;
+    }
+  }
+
+  function bind(){
+    replaceAndBind("v6-surprise", openSurprise);
+
+    // Recent button has used this id in the main line.
+    replaceAndBind("v35-recent-launch", openRecent);
+
+    // New Films button has had a few ids/classes over the versions.
+    const candidates=[
+      "v42-launch","v42-open","v42-suggestions-launch","v42-new-films"
+    ];
+    for(const id of candidates){
+      if(byId(id)){ replaceAndBind(id, openSuggestions); break; }
+    }
+    // If it is class-only, bind exactly the first launch control, not dialog buttons.
+    const classLaunch=document.querySelector(".v42-launch");
+    if(classLaunch && !classLaunch.dataset.v74Bound){
+      const fresh=classLaunch.cloneNode(true);
+      classLaunch.replaceWith(fresh);
+      fresh.dataset.v74Bound="1";
+      fresh.removeAttribute("onclick");
+      fresh.addEventListener("click",function(e){
+        e.preventDefault(); e.stopPropagation(); openSuggestions();
+      },{passive:false});
+    }
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind,{once:true});
+  else bind();
+
+  // Rebind once after pageshow because iOS/Safari can restore controls from BFCache.
+  window.addEventListener("pageshow",function(){ setTimeout(bind,0); });
+})();
+</script>
+
 </body>
 </html>

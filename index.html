@@ -2493,10 +2493,7 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 </div>
 
 <section id="v29-time-message" class="v29-time-message" aria-live="polite"></section>
-<div class="v35-recent-launch-wrap">
-  <button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button>
-  <button type="button" id="v42-open-suggestions" class="v35-recent-launch">✨ Neue Filme <span id="v42-badge"></span></button>
-</div>
+
 <header class="v49-hero"><div class="mascot"></div><h1>Filmliste <span aria-hidden="true">♥</span></h1>
 <p class="subtitle">für die Maus – für besondere Filmabende</p><p class="v49-quote">„Gute Filme sind wie Blumen – sie machen das Leben ein bisschen schöner.“</p></header>
 <section class="controls"><div class="inner">
@@ -2516,7 +2513,7 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
       <select id="v6-sort"><option value="default">Sortierung</option><option value="title">A–Z</option><option value="rating">Meine Bewertung</option><option value="genre">Genre</option></select>
       <button id="v6-hide">👁️ Angeschaute ausblenden</button>
     </div>
-    <div class="v44-main-actions v49-surprise-banner"><div class="v49-surprise-copy"><strong>Noch keinen Plan?</strong><span>Lass dich überraschen – die Maus wählt einen Film für dich!</span></div><button id="v6-surprise" class="v44-surprise">🎲 Überrasche mich!</button></div>
+    <div class="v44-main-actions v49-surprise-banner"><div class="v49-surprise-copy"><strong>Noch keinen Plan?</strong><span>Lass dich überraschen – die Maus wählt einen Film für dich!</span></div><button id="v6-surprise" class="v44-surprise">🎲 Überrasche mich!</button><button type="button" id="v35-open-recent" class="v35-recent-launch">🐭 Zuletzt angesehen</button><button type="button" id="v42-open-suggestions" class="v35-recent-launch">✨ Neue Filme <span id="v42-badge"></span></button></div>
     <details class="v44-filter-box">
       <summary>🎨 Filter &amp; Sortierung</summary>
       <div class="v44-filter-inner"><button id="v7-filter-toggle" class="v7-filter-toggle" type="button"><span>Genres auswählen</span><span class="arrow">▼</span></button><div id="v6-genres" class="v6-chips"></div></div>
@@ -4063,19 +4060,7 @@ body.v6-dark .v47-settings-open{background:#211d27;color:#fff;border-color:#d894
 })();
 </script>
 
-<script>
-(function(){
- function v44Arrange(){
-   var actions=document.querySelector('.v44-main-actions');
-   var recent=document.getElementById('v35-open-recent');
-   var suggestions=document.getElementById('v42-open-suggestions');
-   if(actions){ if(recent) actions.appendChild(recent); if(suggestions) actions.appendChild(suggestions); }
-   if(recent) recent.classList.add('v44-secondary-action');
-   if(suggestions) suggestions.classList.add('v44-secondary-action');
- }
- if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',v44Arrange); else v44Arrange();
-})();
-</script>
+
 
 <style id="v45-dark-streaming-contrast">
 /* v45 – Streaming-Bedienelemente im Dunkelmodus mit hohem Kontrast */
@@ -4678,93 +4663,152 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 
 
 
-<style id="v78-mobile-mausig-actions">
-/* v78: Mausig mobile actions are independent controls; no button is reparented at runtime. */
-html[data-theme="mausig"] body.v53 .v35-recent-launch-wrap{display:none!important}
-html[data-theme="mausig"] body.v53 .v53-tabs{display:flex!important;position:relative!important;z-index:2000!important;pointer-events:auto!important;gap:8px!important;flex-wrap:wrap!important}
-html[data-theme="mausig"] body.v53 .v53-tabs button{pointer-events:auto!important;touch-action:manipulation!important;-webkit-user-select:none!important;user-select:none!important}
-#v78-mobile-recent,#v78-mobile-suggestions{min-height:44px!important}
-#v35-recent-overlay,#v42-overlay,#v7-overlay{position:fixed!important;inset:0!important;z-index:2147483640!important;pointer-events:auto!important}
-#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){display:flex!important;visibility:visible!important;opacity:1!important}
-#v7-overlay.v7-present-overlay.open{display:flex!important;visibility:visible!important;opacity:1!important}
-@media(max-width:700px){
- html[data-theme="mausig"] body.v53 .v53-tabs{display:grid!important;grid-template-columns:1fr 1fr!important}
- html[data-theme="mausig"] body.v53 .v53-tabs button{min-height:48px!important;font-size:.82rem!important}
- html[data-theme="mausig"] body.v53 #v6-surprise{min-height:54px!important;pointer-events:auto!important;touch-action:manipulation!important;position:relative!important;z-index:2000!important}
- #v35-recent-dialog,.v42-dialog,#v7-overlay .v7-present{width:100%!important;max-width:100%!important;pointer-events:auto!important}
+
+
+
+
+<style id="v79-mobile-action-fix">
+/* v79: one set of real buttons; no cloned/duplicate mobile controls */
+html[data-theme="mausig"] body.v53 .v44-main-actions{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;
+  position:relative!important;z-index:5000!important;pointer-events:auto!important
+}
+html[data-theme="mausig"] body.v53 .v44-main-actions #v6-surprise{
+  grid-column:1/-1!important
+}
+html[data-theme="mausig"] body.v53 #v6-surprise,
+html[data-theme="mausig"] body.v53 #v35-open-recent,
+html[data-theme="mausig"] body.v53 #v42-open-suggestions{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-height:50px!important;position:relative!important;z-index:5001!important;
+  pointer-events:auto!important;touch-action:manipulation!important
+}
+#v35-recent-overlay[hidden],#v42-overlay[hidden]{display:none!important}
+#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){
+  display:flex!important;visibility:visible!important;opacity:1!important;
+  position:fixed!important;inset:0!important;z-index:2147483640!important;pointer-events:auto!important
+}
+#v7-overlay.open{
+  display:flex!important;visibility:visible!important;opacity:1!important;
+  position:fixed!important;inset:0!important;z-index:2147483640!important;pointer-events:auto!important
+}
+@media(max-width:430px){
+ html[data-theme="mausig"] body.v53 .v44-main-actions{grid-template-columns:1fr!important}
+ html[data-theme="mausig"] body.v53 .v44-main-actions #v6-surprise{grid-column:auto!important}
 }
 </style>
-<script id="v78-mobile-mausig-controller">
+<script id="v79-authoritative-mobile-actions">
 (function(){
 'use strict';
 const STORE='mouseMovieAppV6', SUG='mouseMovieSuggestionChoicesV42';
-let current=null, suggestionCache=[], memoryState={};
-function get(id){return document.getElementById(id)}
-function readStore(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return JSON.parse(JSON.stringify(memoryState||{}))}}
-function writeStore(s){memoryState=JSON.parse(JSON.stringify(s||{}));try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
-function movieId(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')}
-function lock(on){document.body.classList.toggle('v7-lock',!!on);document.body.style.overflow=on?'hidden':''}
-function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let current=null, suggestions=[], lastPrimary=0;
+const $=id=>document.getElementById(id);
+const movieId=t=>String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+const read=()=>{try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return {}}};
+const write=s=>{try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}};
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function lock(v){document.body.classList.toggle('v7-lock',!!v);document.body.style.overflow=v?'hidden':''}
 
-function renderRecent(){const box=get('v10-recent-list');if(!box)return;const s=readStore(),items=Array.isArray(s.lastViewed)?s.lastViewed:[];box.innerHTML='';if(!items.length){const e=document.createElement('span');e.textContent='Noch keine Filme angesehen – such dir deinen nächsten Film aus, Maus 💜';box.appendChild(e);return}items.forEach(item=>{const title=typeof item==='string'?item:(item.title||'');const b=document.createElement('button');b.type='button';b.className='recent-item';b.textContent='🎬 '+title;b.onclick=()=>{window.v78CloseRecent();const card=[...document.querySelectorAll('.movie')].find(c=>(c.querySelector('h2')?.textContent.trim()||'')===title);if(card){card.scrollIntoView({behavior:'smooth',block:'center'});card.style.boxShadow='0 0 0 3px rgba(244,201,93,.65), var(--v9-shadow)';setTimeout(()=>card.style.boxShadow='',900)}};box.appendChild(b)})}
-window.v78OpenRecent=function(){
- const o=get('v35-recent-overlay'); if(!o)return false;
- renderRecent();
- o.hidden=false;o.setAttribute('aria-hidden','false');lock(true);return false;
-};
-window.v78CloseRecent=function(){const o=get('v35-recent-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false);return false};
+function renderRecent(){
+ const box=$('v10-recent-list');if(!box)return;
+ const items=Array.isArray(read().lastViewed)?read().lastViewed:[];box.innerHTML='';
+ if(!items.length){box.innerHTML='<span>Noch keine Filme angesehen – such dir deinen nächsten Film aus, Maus 💜</span>';return}
+ items.forEach(item=>{
+   const title=typeof item==='string'?item:(item.title||'');
+   const b=document.createElement('button');b.type='button';b.className='recent-item';b.textContent='🎬 '+title;
+   b.addEventListener('click',()=>{closeRecent();const card=[...document.querySelectorAll('.movie')].find(c=>(c.querySelector('h2')?.textContent.trim()||'')===title);if(card)card.scrollIntoView({behavior:'smooth',block:'center'})});
+   box.appendChild(b);
+ });
+}
+function openRecent(){const o=$('v35-recent-overlay');if(!o)return;renderRecent();o.hidden=false;o.setAttribute('aria-hidden','false');lock(true)}
+function closeRecent(){const o=$('v35-recent-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false)}
 
 function readChoices(){let c={accepted:{},dismissed:{}};try{c=Object.assign(c,JSON.parse(localStorage.getItem(SUG)||'{}'))}catch(e){}return c}
 function saveChoices(c){try{localStorage.setItem(SUG,JSON.stringify(c))}catch(e){}}
 function renderSuggestions(){
- const list=get('v42-list'),status=get('v42-status'),badge=get('v42-badge');if(!list||!status)return;
- const c=readChoices(), pending=suggestionCache.filter(x=>!c.accepted[x.id]&&!c.dismissed[x.id]);
+ const list=$('v42-list'),status=$('v42-status'),badge=$('v42-badge');if(!list||!status)return;
+ const c=readChoices(), pending=suggestions.filter(x=>!c.accepted[x.id]&&!c.dismissed[x.id]);
  if(badge)badge.textContent=pending.length?pending.length:'';
- status.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';list.innerHTML='';
+ status.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';
+ list.innerHTML='';
  if(!pending.length){list.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald neue Kandidaten gefunden wurden.</div>';return}
- pending.forEach(x=>{const a=document.createElement('article');a.className='v42-card';a.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button type="button" data-v78-keep="'+esc(x.id)+'">💜 Merken</button><button type="button" data-v78-hide="'+esc(x.id)+'">Nicht interessant</button></div>';list.appendChild(a)});
+ pending.forEach(x=>{
+   const a=document.createElement('article');a.className='v42-card';
+   a.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button type="button" data-v79-keep="'+esc(x.id)+'">💜 Merken</button><button type="button" data-v79-hide="'+esc(x.id)+'">Nicht interessant</button></div>';
+   list.appendChild(a);
+ });
 }
-window.v78OpenSuggestions=async function(){
- const o=get('v42-overlay'),status=get('v42-status'),list=get('v42-list');if(!o)return false;
- o.hidden=false;o.setAttribute('aria-hidden','false');lock(true);if(status)status.textContent='Neue Filme werden geladen …';if(list)list.innerHTML='';
- try{const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();suggestionCache=Array.isArray(d.movies)?d.movies:[];renderSuggestions()}
- catch(e){if(status)status.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';if(list)list.innerHTML='<div class="v42-empty">Die Filmliste funktioniert weiterhin. suggestions.json konnte nicht geladen werden.</div>'}
- return false;
-};
-window.v78CloseSuggestions=function(){const o=get('v42-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false);return false};
+async function openSuggestions(){
+ const o=$('v42-overlay'),status=$('v42-status'),list=$('v42-list');if(!o)return;
+ o.hidden=false;o.setAttribute('aria-hidden','false');lock(true);
+ if(status)status.textContent='Neue Filme werden geladen …';if(list)list.innerHTML='';
+ try{
+   const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);
+   const d=await r.json();suggestions=Array.isArray(d.movies)?d.movies:[];renderSuggestions();
+ }catch(e){
+   if(status)status.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';
+   if(list)list.innerHTML='<div class="v42-empty">suggestions.json konnte nicht geladen werden.</div>';
+ }
+}
+function closeSuggestions(){const o=$('v42-overlay');if(o){o.hidden=true;o.setAttribute('aria-hidden','true')}lock(false)}
 
-function candidates(){const s=readStore(),w=s.watched||{};return [...document.querySelectorAll('.movie')].filter(c=>c.style.display!=='none'&&getComputedStyle(c).display!=='none').filter(c=>!w[movieId(c.querySelector('h2')?.textContent.trim()||'')])}
-function remember(title){const s=readStore(),id=movieId(title);s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed:[];s.lastViewed=s.lastViewed.filter(x=>(typeof x==='string'?x:x.id)!==id);s.lastViewed.unshift({id,title:String(title),time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);writeStore(s);renderRecent()}
-window.v78Surprise=function(){
- const list=candidates();if(!list.length){alert('Keine passenden ungesehenen Filme mehr. Maus, hier ist noch nichts Passendes dabei.');return false}
- current=list[Math.floor(Math.random()*list.length)];const o=get('v7-overlay'),body=get('v7-present-body');if(!o||!body)return false;
- const clone=current.cloneNode(true);clone.style.display='block';clone.classList.remove('v6-watched');body.replaceChildren(clone);
- const title=current.querySelector('h2')?.textContent.trim()||'';const cw=clone.querySelector('.watched-btn');if(cw)cw.onclick=function(e){e.preventDefault();window.v78MarkCurrent()};
- const counter=get('v7-counter');if(counter)counter.textContent='🐭 Überraschung für dich, Maus';o.hidden=false;o.classList.add('open');o.setAttribute('aria-hidden','false');lock(true);requestAnimationFrame(()=>o.scrollTop=0);return false;
-};
-window.v78CloseSurprise=function(){const o=get('v7-overlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true');o.hidden=true}lock(false);current=null;return false};
-window.v78MarkCurrent=function(){if(!current)return false;const title=current.querySelector('h2')?.textContent.trim()||'',s=readStore();s.watched=s.watched||{};s.watched[movieId(title)]=true;writeStore(s);remember(title);current.classList.add('v6-watched');return window.v78Surprise()};
+function candidates(){
+ const s=read(),w=s.watched||{};
+ return [...document.querySelectorAll('.movie')].filter(c=>!c.hidden&&c.style.display!=='none'&&getComputedStyle(c).display!=='none')
+   .filter(c=>!w[movieId(c.querySelector('h2')?.textContent.trim()||'')]);
+}
+function surprise(){
+ const a=candidates();if(!a.length){alert('Keine passenden ungesehenen Filme mehr.');return}
+ current=a[Math.floor(Math.random()*a.length)];
+ const o=$('v7-overlay'),body=$('v7-present-body');if(!o||!body)return;
+ const clone=current.cloneNode(true);clone.style.display='block';clone.hidden=false;clone.classList.remove('v6-watched');body.replaceChildren(clone);
+ const counter=$('v7-counter');if(counter)counter.textContent='🐭 Überraschung für dich, Maus';
+ o.hidden=false;o.classList.add('open');o.setAttribute('aria-hidden','false');lock(true);
+}
+function closeSurprise(){const o=$('v7-overlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true');o.hidden=true}lock(false);current=null}
+function markCurrent(){
+ if(!current)return;
+ const title=current.querySelector('h2')?.textContent.trim()||'',id=movieId(title),s=read();
+ s.watched=s.watched||{};s.watched[id]=true;
+ s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed.filter(x=>(typeof x==='string'?movieId(x):x.id)!==id):[];
+ s.lastViewed.unshift({id,title,time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);write(s);renderRecent();surprise();
+}
 
-function buildTabs(){
- const tools=document.querySelector('.v44-primary-tools');if(!tools)return;let tabs=document.querySelector('.v53-tabs');if(!tabs){tabs=document.createElement('div');tabs.className='v53-tabs';tools.insertAdjacentElement('afterend',tabs)}
- const all=document.querySelector('[data-v6-platform="all"]'),netflix=document.querySelector('[data-v6-platform="Netflix"]'),prime=document.querySelector('[data-v6-platform="Amazon Prime Video"]');[all,netflix,prime].forEach(el=>{if(el&&el.parentElement!==tabs)tabs.appendChild(el)});
- if(!get('v78-mobile-recent')){const b=document.createElement('button');b.type='button';b.id='v78-mobile-recent';b.className='v35-recent-launch v44-secondary-action';b.textContent='🐭 Zuletzt angesehen';b.onclick=window.v78OpenRecent;tabs.appendChild(b)}
- if(!get('v78-mobile-suggestions')){const b=document.createElement('button');b.type='button';b.id='v78-mobile-suggestions';b.className='v35-recent-launch v44-secondary-action';b.innerHTML='✨ Neue Filme <span id="v78-mobile-badge"></span>';b.onclick=window.v78OpenSuggestions;tabs.appendChild(b)}
+const SEL='#v6-surprise,#v35-open-recent,#v42-open-suggestions,#v35-close-recent,#v42-close,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v79-keep],[data-v79-hide]';
+function actionFor(el){
+ if(!el)return false;
+ if(el.id==='v6-surprise'||el.id==='v7-next')surprise();
+ else if(el.id==='v35-open-recent')openRecent();
+ else if(el.id==='v42-open-suggestions')openSuggestions();
+ else if(el.id==='v35-close-recent')closeRecent();
+ else if(el.id==='v42-close')closeSuggestions();
+ else if(el.id==='v7-mark')markCurrent();
+ else if(el.id==='v7-close'||el.id==='v7-close2')closeSurprise();
+ else if(el.matches('[data-v79-keep],[data-v79-hide]')){
+   const c=readChoices(),id=el.dataset.v79Keep||el.dataset.v79Hide;
+   if(el.dataset.v79Keep){const x=suggestions.find(v=>String(v.id)===String(id));if(x)c.accepted[id]=x}else c.dismissed[id]=true;
+   saveChoices(c);renderSuggestions();
+ } else return false;
+ return true;
 }
-function bind(){
- buildTabs();
- const surprise=get('v6-surprise');if(surprise)surprise.onclick=window.v78Surprise;
- const next=get('v7-next');if(next)next.onclick=window.v78Surprise;
- const mark=get('v7-mark');if(mark)mark.onclick=window.v78MarkCurrent;
- const c1=get('v7-close'),c2=get('v7-close2');if(c1)c1.onclick=window.v78CloseSurprise;if(c2)c2.onclick=window.v78CloseSurprise;
- const rc=get('v35-close-recent');if(rc)rc.onclick=window.v78CloseRecent;
- const sc=get('v42-close');if(sc)sc.onclick=window.v78CloseSuggestions;
- const oldR=get('v35-open-recent');if(oldR)oldR.onclick=window.v78OpenRecent;const oldS=get('v42-open-suggestions');if(oldS)oldS.onclick=window.v78OpenSuggestions;
- const ro=get('v35-recent-overlay');if(ro)ro.onclick=e=>{if(e.target===ro)window.v78CloseRecent()};const so=get('v42-overlay');if(so)so.onclick=e=>{if(e.target===so)window.v78CloseSuggestions()};
- document.addEventListener('click',e=>{const k=e.target.closest?.('[data-v78-keep]'),d=e.target.closest?.('[data-v78-hide]');if(!k&&!d)return;const c=readChoices(),id=(k||d).dataset[k?'v78Keep':'v78Hide'];if(k){const x=suggestionCache.find(v=>String(v.id)===String(id));if(x)c.accepted[id]=x}else c.dismissed[id]=true;saveChoices(c);renderSuggestions()});
+function primary(e){
+ const el=e.target?.closest?.(SEL);if(!el)return;
+ if(actionFor(el)){lastPrimary=Date.now();e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-window.addEventListener('pageshow',bind);
+/* WINDOW capture is intentionally used: it runs before the old document/target click handlers. */
+window.addEventListener('pointerup',primary,{capture:true,passive:false});
+window.addEventListener('touchend',function(e){
+ if(Date.now()-lastPrimary<500)return;
+ primary(e);
+},{capture:true,passive:false});
+window.addEventListener('click',function(e){
+ const el=e.target?.closest?.(SEL);if(!el)return;
+ e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+ if(Date.now()-lastPrimary>=650)actionFor(el);
+},{capture:true});
+
+/* expose only for automated regression checks */
+window.__v79={openRecent,openSuggestions,surprise,markCurrent,closeRecent,closeSuggestions,closeSurprise};
 })();
 </script>
 

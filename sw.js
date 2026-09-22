@@ -1,13 +1,37 @@
-const CACHE='maeuse-filmliste-v57';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png','./movies.json','./cinematic-floral-bg.jpg',
-  './cinematic-floral-bg-v53.jpg','./suggestions.json'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
-self.addEventListener('activate',e=>e.waitUntil(
-  caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-  .then(()=>self.clients.claim())
-));
-self.addEventListener('fetch',e=>{
- if(e.request.method!=='GET')return;
- e.respondWith(fetch(e.request).then(r=>{const x=r.clone();caches.open(CACHE).then(c=>c.put(e.request,x));return r;})
- .catch(()=>caches.match(e.request).then(r=>r||caches.match('./index.html'))));
+const CACHE = 'maeuse-filmliste-v77';
+const CORE = ['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png'];
+self.addEventListener('install', event => {
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).catch(()=>{})));
+});
+self.addEventListener('activate', event => {
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+self.addEventListener('fetch', event => {
+  const req=event.request;
+  if(req.method!=='GET') return;
+  const url=new URL(req.url);
+  if(url.origin!==self.location.origin) return;
+  const isFresh = req.mode==='navigate' || url.pathname.endsWith('/index.html') || url.pathname.endsWith('/suggestions.json') || url.pathname.endsWith('/movies.json');
+  if(isFresh){
+    event.respondWith((async()=>{
+      try{
+        const res=await fetch(req,{cache:'no-store'});
+        if(res && res.ok){const c=await caches.open(CACHE);c.put(req,res.clone());}
+        return res;
+      }catch(e){return (await caches.match(req)) || (await caches.match('./index.html'));}
+    })());
+    return;
+  }
+  event.respondWith((async()=>{
+    const cached=await caches.match(req);
+    if(cached)return cached;
+    const res=await fetch(req);
+    if(res&&res.ok){const c=await caches.open(CACHE);c.put(req,res.clone());}
+    return res;
+  })());
 });

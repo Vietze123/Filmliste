@@ -4961,5 +4961,94 @@ window.__v79={openRecent,openSuggestions,surprise,markCurrent,closeRecent,closeS
 })();
 </script>
 
+
+<style id="v82-mausig-control-hit-layer">
+html[data-theme="mausig"] body.v53 .v53-tabs,
+html[data-theme="mausig"] body.v53 .v44-main-actions{
+  position:relative!important;z-index:2147483000!important;pointer-events:auto!important
+}
+html[data-theme="mausig"] body.v53 .v53-tabs button,
+html[data-theme="mausig"] body.v53 .v44-main-actions button{
+  position:relative!important;z-index:2147483001!important;
+  pointer-events:auto!important;touch-action:manipulation!important;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+</style>
+<script id="v82-mausig-control-bridge">
+(function(){
+ 'use strict';
+ let lastTouch=0;
+ const selector=[
+   '[data-v6-platform="all"]',
+   '[data-v6-platform="Netflix"]',
+   '[data-v6-platform="Amazon Prime Video"]',
+   '#v6-surprise',
+   '#v35-open-recent',
+   '#v42-open-suggestions'
+ ].join(',');
+
+ function isMausig(){
+   return document.documentElement.dataset.theme==='mausig' ||
+          document.body.classList.contains('v53');
+ }
+
+ function run(el,ev){
+   if(!el || !isMausig()) return false;
+
+   /* Plattformfilter: use the ORIGINAL v6 onclick closure.
+      This preserves search, genre, watched and sorting state exactly. */
+   if(el.matches('[data-v6-platform]')){
+     if(typeof el.onclick==='function'){
+       el.onclick.call(el,ev);
+       return true;
+     }
+     return false;
+   }
+
+   /* The three discovery actions use the one authoritative v79 API. */
+   if(window.__v79){
+     if(el.id==='v6-surprise'){ window.__v79.surprise(); return true; }
+     if(el.id==='v35-open-recent'){ window.__v79.openRecent(); return true; }
+     if(el.id==='v42-open-suggestions'){ window.__v79.openSuggestions(); return true; }
+   }
+   return false;
+ }
+
+ function find(e){ return e.target && e.target.closest ? e.target.closest(selector) : null; }
+
+ /* iPhone/Safari: touchend is the primary path. */
+ window.addEventListener('touchend',function(e){
+   const el=find(e); if(!el || !isMausig()) return;
+   if(run(el,e)){
+     lastTouch=Date.now();
+     e.preventDefault();
+     e.stopPropagation();
+     e.stopImmediatePropagation();
+   }
+ },{capture:true,passive:false});
+
+ /* Pointer path for modern mobile browsers. */
+ window.addEventListener('pointerup',function(e){
+   if(Date.now()-lastTouch<700) return;
+   const el=find(e); if(!el || !isMausig()) return;
+   if(run(el,e)){
+     lastTouch=Date.now();
+     e.preventDefault();
+     e.stopPropagation();
+     e.stopImmediatePropagation();
+   }
+ },{capture:true,passive:false});
+
+ /* Click fallback; suppressed after a handled touch/pointer event. */
+ window.addEventListener('click',function(e){
+   const el=find(e); if(!el || !isMausig()) return;
+   e.preventDefault();
+   e.stopPropagation();
+   e.stopImmediatePropagation();
+   if(Date.now()-lastTouch>=700) run(el,e);
+ },true);
+})();
+</script>
+
 </body>
 </html>

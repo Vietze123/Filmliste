@@ -4809,7 +4809,6 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 })();
 </script>
 
-</body></html>
 <style id="v66-visible-bg-layer">
 @media(max-width:620px){
  html[data-theme="mausig"] body.v53{background:#b85f91!important;isolation:isolate!important}
@@ -4819,58 +4818,38 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 </style>
 <script id="v66-bg-layer-script">(function(){function go(){if(!document.getElementById('v66-mobile-bg')){const d=document.createElement('div');d.id='v66-mobile-bg';d.setAttribute('aria-hidden','true');document.body.prepend(d)}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();</script>
 
-
-<script id="v71-surprise-final-fix">
+<style id="v72-portrait-surprise-fix">
+/* v72: keep the surprise control and modal above decorative Mausig layers in portrait and landscape. */
+html[data-theme="mausig"] body.v53 .v49-surprise-banner,
+html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-index:30!important;pointer-events:auto!important;touch-action:manipulation!important}
+#v7-overlay.v7-present-overlay{z-index:2147483000!important;pointer-events:auto!important}
+#v7-overlay.v7-present-overlay.open{display:flex!important}
+@media (orientation:portrait) and (max-width:700px){
+ html[data-theme="mausig"] body.v53 #v6-surprise{display:flex!important;width:100%!important;min-height:52px!important;align-items:center!important;justify-content:center!important}
+ #v7-overlay.v7-present-overlay{inset:0!important;width:100vw!important;height:100dvh!important;padding:8px!important;align-items:stretch!important;justify-content:center!important}
+ #v7-overlay .v7-present{width:100%!important;max-width:100%!important;height:calc(100dvh - 16px)!important;max-height:calc(100dvh - 16px)!important;overflow:auto!important}
+}
+</style>
+<script id="v72-surprise-orientation-safe">
 (function(){
- function boot(){
-  var old=document.getElementById('v6-surprise');
-  var overlay=document.getElementById('v7-overlay');
-  var body=document.getElementById('v7-present-body');
-  if(!old||!overlay||!body)return;
-  /* Replace the trigger node itself: this removes every legacy listener that
-     accumulated on the surprise button in earlier versions. */
-  var trigger=old.cloneNode(true); old.replaceWith(trigger);
-  var current=null;
-  var key=function(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')};
-  function read(){try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}}
-  function write(v){try{localStorage.setItem('mouseMovieAppV6',JSON.stringify(v))}catch(e){}}
-  function candidates(){
-   var st=read(), watched=st.watched||{};
-   return Array.from(document.querySelectorAll('#grid .movie')).filter(function(c){
-    var cs=getComputedStyle(c), title=(c.querySelector('h2')||{}).textContent||'';
-    return cs.display!=='none' && cs.visibility!=='hidden' && !watched[key(title.trim())];
-   });
-  }
-  function remember(title){
-   var st=read(); st.lastViewed=Array.isArray(st.lastViewed)?st.lastViewed:[];
-   var id=key(title); st.lastViewed=st.lastViewed.filter(function(x){return x.id!==id});
-   st.lastViewed.unshift({id:id,title:title,time:Date.now()}); st.lastViewed=st.lastViewed.slice(0,8); write(st);
-   try{ if(typeof window.v10RenderRecent==='function') window.v10RenderRecent(); }catch(e){}
-  }
-  function markAndNext(){
-   if(!current)return;
-   var title=((current.querySelector('h2')||{}).textContent||'').trim();
-   var st=read(); st.watched=st.watched||{}; st.watched[key(title)]=true; write(st); remember(title);
-   current.classList.add('v6-watched'); show();
-  }
-  function show(){
-   var list=candidates();
-   if(!list.length){alert('Keine passenden ungesehenen Filme mehr, Maus 💜');return;}
-   current=list[Math.floor(Math.random()*list.length)];
-   var clone=current.cloneNode(true); clone.style.display='block'; clone.classList.remove('v6-watched');
-   body.replaceChildren(clone);
-   var counter=document.getElementById('v7-counter'); if(counter)counter.textContent='🐭 Überraschung für dich, Maus';
-   var cw=clone.querySelector('.watched-btn'); if(cw)cw.onclick=function(e){e.preventDefault();markAndNext()};
-   overlay.hidden=false; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.classList.add('v7-lock');
-  }
-  function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.classList.remove('v7-lock');current=null;}
-  trigger.onclick=function(e){e.preventDefault();show()};
-  var next=document.getElementById('v7-next'), mark=document.getElementById('v7-mark');
-  if(next){var nn=next.cloneNode(true);next.replaceWith(nn);nn.onclick=function(e){e.preventDefault();show()}}
-  if(mark){var mm=mark.cloneNode(true);mark.replaceWith(mm);mm.onclick=function(e){e.preventDefault();markAndNext()}}
-  ['v7-close','v7-close2'].forEach(function(id){var b=document.getElementById(id);if(b){var n=b.cloneNode(true);b.replaceWith(n);n.onclick=function(e){e.preventDefault();close()}}});
-  window.__mouseSurpriseV71={show:show,candidates:candidates};
- }
- if(document.readyState==='complete')boot(); else window.addEventListener('load',boot,{once:true});
+ var current=null, touchStamp=0;
+ function key(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')}
+ function read(){try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}}
+ function write(v){try{localStorage.setItem('mouseMovieAppV6',JSON.stringify(v))}catch(e){}}
+ function candidates(){var st=read(),watched=st.watched||{};return Array.from(document.querySelectorAll('#grid .movie')).filter(function(c){var cs=getComputedStyle(c),t=(c.querySelector('h2')||{}).textContent||'';return cs.display!=='none'&&cs.visibility!=='hidden'&&!c.hidden&&!watched[key(t.trim())]})}
+ function remember(title){var st=read();st.lastViewed=Array.isArray(st.lastViewed)?st.lastViewed:[];var id=key(title);st.lastViewed=st.lastViewed.filter(function(x){return x.id!==id});st.lastViewed.unshift({id:id,title:title,time:Date.now()});st.lastViewed=st.lastViewed.slice(0,8);write(st);try{if(typeof window.v10RenderRecent==='function')window.v10RenderRecent()}catch(e){}}
+ function show(){var overlay=document.getElementById('v7-overlay'),body=document.getElementById('v7-present-body');if(!overlay||!body)return;var list=candidates();if(!list.length){alert('Keine passenden ungesehenen Filme mehr, Maus 💜');return}current=list[Math.floor(Math.random()*list.length)];var clone=current.cloneNode(true);clone.style.display='block';clone.hidden=false;clone.classList.remove('v6-watched');body.replaceChildren(clone);var counter=document.getElementById('v7-counter');if(counter)counter.textContent='🐭 Überraschung für dich, Maus';var cw=clone.querySelector('.watched-btn');if(cw)cw.onclick=function(e){e.preventDefault();markAndNext()};overlay.hidden=false;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.classList.add('v7-lock');requestAnimationFrame(function(){overlay.scrollTop=0})}
+ function close(){var o=document.getElementById('v7-overlay');if(o){o.classList.remove('open');o.hidden=true;o.setAttribute('aria-hidden','true')}document.body.classList.remove('v7-lock');current=null}
+ function markAndNext(){if(!current)return;var title=((current.querySelector('h2')||{}).textContent||'').trim(),st=read();st.watched=st.watched||{};st.watched[key(title)]=true;write(st);remember(title);current.classList.add('v6-watched');show()}
+ function act(e){var b=e.target&&e.target.closest?e.target.closest('#v6-surprise'):null;if(!b)return;e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();show()}
+ // Capture-phase delegation survives responsive DOM moves/replacements and orientation changes.
+ document.addEventListener('click',act,true);
+ document.addEventListener('touchend',function(e){var b=e.target&&e.target.closest?e.target.closest('#v6-surprise'):null;if(!b)return;touchStamp=Date.now();act(e)}, {capture:true,passive:false});
+ document.addEventListener('click',function(e){if(Date.now()-touchStamp<650&&e.target&&e.target.closest&&e.target.closest('#v6-surprise')){e.preventDefault();e.stopImmediatePropagation()}},true);
+ document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('#v7-next,#v7-mark,#v7-close,#v7-close2'):null;if(!t)return;e.preventDefault();e.stopImmediatePropagation();if(t.id==='v7-next')show();else if(t.id==='v7-mark')markAndNext();else close()},true);
+ window.__mouseSurpriseV72={show:show,candidates:candidates};
 })();
 </script>
+
+</body>
+</html>

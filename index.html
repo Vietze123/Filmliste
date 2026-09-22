@@ -2426,6 +2426,27 @@ body.v53 .v49-hero .subtitle{color:#ffc0dc!important}
  }
 }
 </style>
+
+<style id="v68-mausig-actions-genre-fix">
+/* v68: restore interactive discovery controls in Mausig after the v53 reference layout. */
+html[data-theme="mausig"] body.v53 .v44-filter-box{display:block!important;margin:10px 12px 0!important}
+html[data-theme="mausig"] body.v53 .v44-filter-box>summary{display:flex!important;min-height:46px!important;cursor:pointer!important;pointer-events:auto!important}
+html[data-theme="mausig"] body.v53 #v7-filter-toggle,
+html[data-theme="mausig"] body.v53 #v6-genres,
+html[data-theme="mausig"] body.v53 #v6-genres button{pointer-events:auto!important;touch-action:manipulation!important}
+html[data-theme="mausig"] body.v53 #v6-genres.v7-open{display:flex!important}
+html[data-theme="mausig"] body.v53 .v53-tabs{position:relative!important;z-index:6!important;pointer-events:auto!important}
+html[data-theme="mausig"] body.v53 .v53-tabs button,
+html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-index:7!important;pointer-events:auto!important;touch-action:manipulation!important}
+@media(max-width:620px){
+ html[data-theme="mausig"] body.v53 .v44-filter-box{border-radius:18px!important;background:rgba(255,221,236,.82)!important}
+ html[data-theme="mausig"] body.v53 .v44-filter-box>summary{color:#3d2058!important}
+ html[data-theme="mausig"] body.v53 #v7-filter-toggle{background:rgba(255,232,242,.92)!important;color:#3d2058!important;border:1px solid rgba(91,43,96,.42)!important;border-radius:14px!important}
+ html[data-theme="mausig"] body.v53 #v6-genres{gap:8px!important;padding-top:8px!important}
+ html[data-theme="mausig"] body.v53 #v6-genres button{min-height:42px!important}
+}
+</style>
+
 </head><body class="v53"><div class="v51-backdrop" aria-hidden="true"></div>
 
 <button type="button" id="v47-settings-open" class="v47-settings-open" aria-label="Einstellungen öffnen" title="Einstellungen">⚙️</button>
@@ -4592,7 +4613,7 @@ html[data-theme="mausig"] body.v53 .genre{background:#a85bc0!important;color:whi
 html[data-theme="mausig"] body.v53 .v47-settings-open{background:rgba(255,224,238,.92)!important;color:#4a235f!important;border-color:rgba(88,42,94,.42)!important}
 html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;backdrop-filter:blur(10px)!important}html[data-theme="mausig"] #v7-overlay .v7-present{background:linear-gradient(160deg,rgba(255,232,242,.98),rgba(250,199,224,.96))!important;color:#2e1b55!important;border-color:rgba(93,44,99,.46)!important}html[data-theme="mausig"] #v7-overlay .movie{background:rgba(255,239,246,.86)!important;color:#2e1b55!important;border-color:rgba(93,44,99,.35)!important}html[data-theme="mausig"] #v7-overlay .movie h2,html[data-theme="mausig"] #v7-overlay .movie p{color:#2e1b55!important}
 }
-</style>
+</script>
 
 <script id="v67-surprise-function-fix">
 /* v67: robust final binding for "Überrasche mich".

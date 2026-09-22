@@ -4615,92 +4615,7 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 }
 </style>
 
-<script id="v67-surprise-function-fix">
-/* v67: robust final binding for "Überrasche mich".
-   This runs after the legacy handlers so the presentation modal always wins. */
-(function(){
-  function initV67Surprise(){
-    const trigger=document.getElementById('v6-surprise');
-    const overlay=document.getElementById('v7-overlay');
-    const presentBody=document.getElementById('v7-present-body');
-    const counter=document.getElementById('v7-counter');
-    const next=document.getElementById('v7-next');
-    const mark=document.getElementById('v7-mark');
-    const close1=document.getElementById('v7-close');
-    const close2=document.getElementById('v7-close2');
-    if(!trigger||!overlay||!presentBody) return;
 
-    let current=null;
-    const key=t=>String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
-    const read=()=>{try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}};
-    const write=s=>localStorage.setItem('mouseMovieAppV6',JSON.stringify(s));
-
-    function candidates(){
-      const s=read(), watched=s.watched||{};
-      return [...document.querySelectorAll('#grid .movie, main .movie')]
-        .filter((c,i,a)=>a.indexOf(c)===i)
-        .filter(c=>c.style.display!=='none' && getComputedStyle(c).display!=='none')
-        .filter(c=>!watched[key(c.querySelector('h2')?.textContent.trim())]);
-    }
-    function remember(title){
-      if(typeof window.v10Remember==='function') { window.v10Remember(title); return; }
-      const s=read(); s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed:[];
-      const id=key(title);
-      s.lastViewed=s.lastViewed.filter(x=>x.id!==id);
-      s.lastViewed.unshift({id,title,time:Date.now()});
-      s.lastViewed=s.lastViewed.slice(0,8); write(s);
-    }
-    function show(){
-      const list=candidates();
-      if(!list.length){ alert('Keine passenden ungesehenen Filme mehr, Maus 💜'); return; }
-      current=list[Math.floor(Math.random()*list.length)];
-      const title=current.querySelector('h2')?.textContent.trim()||'';
-      const clone=current.cloneNode(true);
-      clone.style.display='block';
-      clone.classList.remove('v6-watched');
-      presentBody.replaceChildren(clone);
-      if(counter) counter.textContent='🐭 Überraschung für dich, Maus';
-
-      const clonedWatch=clone.querySelector('.watched-btn');
-      if(clonedWatch) clonedWatch.onclick=function(e){
-        e.preventDefault(); e.stopPropagation();
-        const s=read(); s.watched=s.watched||{}; s.watched[key(title)]=true; write(s);
-        remember(title); current.classList.add('v6-watched'); show();
-      };
-
-      overlay.classList.add('open');
-      overlay.setAttribute('aria-hidden','false');
-      document.body.classList.add('v7-lock');
-    }
-    function close(){
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden','true');
-      document.body.classList.remove('v7-lock');
-      current=null;
-    }
-
-    /* Capture phase prevents older v6/v7 click handlers from stealing the tap. */
-    trigger.addEventListener('click',function(e){
-      e.preventDefault(); e.stopImmediatePropagation(); show();
-    },true);
-    if(next) next.addEventListener('click',function(e){
-      e.preventDefault(); e.stopImmediatePropagation(); show();
-    },true);
-    if(mark) mark.addEventListener('click',function(e){
-      e.preventDefault(); e.stopImmediatePropagation();
-      if(!current)return;
-      const title=current.querySelector('h2')?.textContent.trim()||'';
-      const s=read(); s.watched=s.watched||{}; s.watched[key(title)]=true; write(s);
-      remember(title); current.classList.add('v6-watched'); show();
-    },true);
-    [close1,close2].filter(Boolean).forEach(b=>b.addEventListener('click',function(e){
-      e.preventDefault(); e.stopImmediatePropagation(); close();
-    },true));
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initV67Surprise,{once:true});
-  else initV67Surprise();
-})();
-</script>
 
 
 <style id="v69-mausig-reference-repair">
@@ -4750,64 +4665,7 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 #v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){visibility:visible!important;opacity:1!important}
 #v35-recent-dialog,#v42-overlay .v42-dialog{pointer-events:auto!important}
 </style>
-<script id="v70-discovery-actions-fix-script">
-(function(){
- function init(){
-  const recentBtn=document.getElementById('v35-open-recent');
-  const recentOverlay=document.getElementById('v35-recent-overlay');
-  const recentClose=document.getElementById('v35-close-recent');
-  const suggestBtn=document.getElementById('v42-open-suggestions');
-  const suggestOverlay=document.getElementById('v42-overlay');
-  const suggestClose=document.getElementById('v42-close');
-  const suggestStatus=document.getElementById('v42-status');
-  const suggestList=document.getElementById('v42-list');
-  const badge=document.getElementById('v42-badge');
-  const KEY='mouseMovieSuggestionChoicesV42';
-  let choices={accepted:{},dismissed:{}};
-  try{choices=Object.assign(choices,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
-  let cache=[];
-  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function lock(v){document.body.style.overflow=v?'hidden':''}
-  function openRecent(){
-   if(!recentOverlay)return;
-   if(typeof window.v10RenderRecent==='function')try{window.v10RenderRecent()}catch(e){}
-   recentOverlay.hidden=false; recentOverlay.setAttribute('aria-hidden','false'); lock(true);
-  }
-  function closeRecent(){if(!recentOverlay)return;recentOverlay.hidden=true;recentOverlay.setAttribute('aria-hidden','true');lock(false)}
-  function renderSuggestions(){
-   if(!suggestList||!suggestStatus)return;
-   const pending=cache.filter(x=>!choices.accepted[x.id]&&!choices.dismissed[x.id]);
-   if(badge)badge.textContent=pending.length?pending.length:'';
-   suggestStatus.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';
-   suggestList.innerHTML='';
-   if(!pending.length){suggestList.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald neue Kandidaten vorhanden sind.</div>';return}
-   pending.forEach(x=>{
-    const el=document.createElement('article');el.className='v42-card';
-    el.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button data-v70-keep="'+esc(x.id)+'">💜 Merken</button><button data-v70-hide="'+esc(x.id)+'">Nicht interessant</button></div>';
-    suggestList.appendChild(el);
-   });
-   suggestList.querySelectorAll('[data-v70-keep]').forEach(b=>b.onclick=()=>{const x=cache.find(i=>String(i.id)===b.dataset.v70Keep);if(x){choices.accepted[x.id]=x;localStorage.setItem(KEY,JSON.stringify(choices));renderSuggestions()}});
-   suggestList.querySelectorAll('[data-v70-hide]').forEach(b=>b.onclick=()=>{choices.dismissed[b.dataset.v70Hide]=true;localStorage.setItem(KEY,JSON.stringify(choices));renderSuggestions()});
-  }
-  async function loadSuggestions(){
-   if(!suggestStatus||!suggestList)return;
-   suggestStatus.textContent='Neue Filme werden geladen …';
-   try{const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();cache=Array.isArray(d.movies)?d.movies:[];renderSuggestions()}
-   catch(e){suggestStatus.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';suggestList.innerHTML='<div class="v42-empty">Die normale Filmliste funktioniert weiterhin.</div>'}
-  }
-  function openSuggestions(){if(!suggestOverlay)return;suggestOverlay.hidden=false;suggestOverlay.setAttribute('aria-hidden','false');lock(true);loadSuggestions()}
-  function closeSuggestions(){if(!suggestOverlay)return;suggestOverlay.hidden=true;suggestOverlay.setAttribute('aria-hidden','true');lock(false)}
-  // Property handlers run at target and are intentionally simple/independent of older listeners.
-  if(recentBtn)recentBtn.onclick=function(e){e.preventDefault();openRecent()};
-  if(recentClose)recentClose.onclick=function(e){e.preventDefault();closeRecent()};
-  if(suggestBtn)suggestBtn.onclick=function(e){e.preventDefault();openSuggestions()};
-  if(suggestClose)suggestClose.onclick=function(e){e.preventDefault();closeSuggestions()};
-  if(recentOverlay)recentOverlay.addEventListener('click',e=>{if(e.target===recentOverlay)closeRecent()});
-  if(suggestOverlay)suggestOverlay.addEventListener('click',e=>{if(e.target===suggestOverlay)closeSuggestions()});
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-})();
-</script>
+
 
 <style id="v66-visible-bg-layer">
 @media(max-width:620px){
@@ -4830,26 +4688,7 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
  #v7-overlay .v7-present{width:100%!important;max-width:100%!important;height:calc(100dvh - 16px)!important;max-height:calc(100dvh - 16px)!important;overflow:auto!important}
 }
 </style>
-<script id="v73-surprise-orientation-safe">
-(function(){
- var current=null, touchStamp=0;
- function key(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')}
- function read(){try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}}
- function write(v){try{localStorage.setItem('mouseMovieAppV6',JSON.stringify(v))}catch(e){}}
- function candidates(){var st=read(),watched=st.watched||{};return Array.from(document.querySelectorAll('#grid .movie')).filter(function(c){var cs=getComputedStyle(c),t=(c.querySelector('h2')||{}).textContent||'';return cs.display!=='none'&&cs.visibility!=='hidden'&&!c.hidden&&!watched[key(t.trim())]})}
- function remember(title){var st=read();st.lastViewed=Array.isArray(st.lastViewed)?st.lastViewed:[];var id=key(title);st.lastViewed=st.lastViewed.filter(function(x){return x.id!==id});st.lastViewed.unshift({id:id,title:title,time:Date.now()});st.lastViewed=st.lastViewed.slice(0,8);write(st);try{if(typeof window.v10RenderRecent==='function')window.v10RenderRecent()}catch(e){}}
- function show(){var overlay=document.getElementById('v7-overlay'),body=document.getElementById('v7-present-body');if(!overlay||!body)return;var list=candidates();if(!list.length){alert('Keine passenden ungesehenen Filme mehr, Maus 💜');return}current=list[Math.floor(Math.random()*list.length)];var clone=current.cloneNode(true);clone.style.display='block';clone.hidden=false;clone.classList.remove('v6-watched');body.replaceChildren(clone);var counter=document.getElementById('v7-counter');if(counter)counter.textContent='🐭 Überraschung für dich, Maus';var cw=clone.querySelector('.watched-btn');if(cw)cw.onclick=function(e){e.preventDefault();markAndNext()};overlay.hidden=false;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.classList.add('v7-lock');requestAnimationFrame(function(){overlay.scrollTop=0})}
- function close(){var o=document.getElementById('v7-overlay');if(o){o.classList.remove('open');o.hidden=true;o.setAttribute('aria-hidden','true')}document.body.classList.remove('v7-lock');current=null}
- function markAndNext(){if(!current)return;var title=((current.querySelector('h2')||{}).textContent||'').trim(),st=read();st.watched=st.watched||{};st.watched[key(title)]=true;write(st);remember(title);current.classList.add('v6-watched');show()}
- function act(e){var b=e.target&&e.target.closest?e.target.closest('#v6-surprise'):null;if(!b)return;e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();show()}
- // Capture-phase delegation survives responsive DOM moves/replacements and orientation changes.
- document.addEventListener('click',act,true);
- document.addEventListener('touchend',function(e){var b=e.target&&e.target.closest?e.target.closest('#v6-surprise'):null;if(!b)return;touchStamp=Date.now();act(e)}, {capture:true,passive:false});
- document.addEventListener('click',function(e){if(Date.now()-touchStamp<650&&e.target&&e.target.closest&&e.target.closest('#v6-surprise')){e.preventDefault();e.stopImmediatePropagation()}},true);
- document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('#v7-next,#v7-mark,#v7-close,#v7-close2'):null;if(!t)return;e.preventDefault();e.stopImmediatePropagation();if(t.id==='v7-next')show();else if(t.id==='v7-mark')markAndNext();else close()},true);
- window.__mouseSurpriseV72={show:show,candidates:candidates};
-})();
-</script>
+
 
 
 
@@ -4885,127 +4724,114 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
   }
 }
 </style>
-<script id="v75-mobile-actions-controller">
+
+
+
+<script id="v76-single-mobile-action-controller">
 (function(){
- "use strict";
- let lastAction=0;
+"use strict";
+const STORE="mouseMovieAppV6", SUGGEST="mouseMovieSuggestionChoicesV42";
+let current=null, cache=[], lastTouch=0;
+const $=id=>document.getElementById(id);
+const key=t=>String(t||"").toLowerCase().replace(/[^a-z0-9äöüß]+/gi,"_");
+const read=()=>{try{return JSON.parse(localStorage.getItem(STORE)||"{}")}catch(e){return {}}};
+const write=s=>localStorage.setItem(STORE,JSON.stringify(s));
+const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function lock(v){document.body.classList.toggle("v7-lock",v);document.body.style.overflow=v?"hidden":""}
 
- function state(){
-   try{return JSON.parse(localStorage.getItem("mouseMovieAppV6")||"{}")}catch(e){return {}}
- }
- function save(s){try{localStorage.setItem("mouseMovieAppV6",JSON.stringify(s))}catch(e){}}
- function key(t){return String(t||"").toLowerCase().replace(/[^a-z0-9äöüß]+/gi,"_")}
- function lock(v){document.body.style.overflow=v?"hidden":""}
+function openRecent(){
+ const o=$("v35-recent-overlay"); if(!o)return;
+ if(typeof window.v10RenderRecent==="function")try{window.v10RenderRecent()}catch(e){}
+ o.hidden=false;o.setAttribute("aria-hidden","false");lock(true);
+}
+function closeRecent(){const o=$("v35-recent-overlay");if(o){o.hidden=true;o.setAttribute("aria-hidden","true")}lock(false)}
 
- function recent(){
-   const o=document.getElementById("v35-recent-overlay");
-   if(!o)return;
-   try{if(typeof window.v10RenderRecent==="function")window.v10RenderRecent()}catch(e){}
-   o.hidden=false;o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
+function choices(){let x={accepted:{},dismissed:{}};try{x=Object.assign(x,JSON.parse(localStorage.getItem(SUGGEST)||"{}"))}catch(e){}return x}
+function saveChoices(x){localStorage.setItem(SUGGEST,JSON.stringify(x))}
+function renderSuggestions(){
+ const list=$("v42-list"),status=$("v42-status"),badge=$("v42-badge");if(!list||!status)return;
+ const ch=choices(), pending=cache.filter(x=>!ch.accepted[x.id]&&!ch.dismissed[x.id]);
+ if(badge)badge.textContent=pending.length?pending.length:"";
+ status.textContent=pending.length?pending.length+" neue Vorschläge warten auf dich.":"Im Moment gibt es keine neuen Vorschläge. 🌸";
+ list.innerHTML="";
+ if(!pending.length){list.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald neue Kandidaten gefunden wurden.</div>';return}
+ pending.forEach(x=>{
+   const a=document.createElement("article");a.className="v42-card";
+   a.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(" · "))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||"")+'</p><div class="v42-actions"><button type="button" data-v76-keep="'+esc(x.id)+'">💜 Merken</button><button type="button" data-v76-hide="'+esc(x.id)+'">Nicht interessant</button></div>';
+   list.appendChild(a);
+ });
+}
+async function openSuggestions(){
+ const o=$("v42-overlay");if(!o)return;
+ o.hidden=false;o.setAttribute("aria-hidden","false");lock(true);
+ const status=$("v42-status"),list=$("v42-list");if(status)status.textContent="Neue Filme werden geladen …";if(list)list.innerHTML="";
+ try{
+   const r=await fetch("./suggestions.json?ts="+Date.now(),{cache:"no-store"});
+   if(!r.ok)throw new Error("HTTP "+r.status);
+   const d=await r.json();cache=Array.isArray(d.movies)?d.movies:[];renderSuggestions();
+ }catch(e){
+   if(status)status.textContent="Neue Vorschläge konnten gerade nicht geladen werden.";
+   if(list)list.innerHTML='<div class="v42-empty">suggestions.json konnte nicht geladen werden.</div>';
  }
- function closeRecent(){
-   const o=document.getElementById("v35-recent-overlay");
-   if(o){o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);
- }
+}
+function closeSuggestions(){const o=$("v42-overlay");if(o){o.hidden=true;o.setAttribute("aria-hidden","true")}lock(false)}
 
- let suggestions=[];
- function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
- async function newFilms(){
-   const o=document.getElementById("v42-overlay"), list=document.getElementById("v42-list"), status=document.getElementById("v42-status");
-   if(!o||!list||!status)return;
-   o.hidden=false;o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
-   status.textContent="Neue Filme werden geladen …";
-   try{
-     const r=await fetch("./suggestions.json?ts="+Date.now(),{cache:"no-store"});
-     if(!r.ok)throw new Error("HTTP "+r.status);
-     const d=await r.json();suggestions=Array.isArray(d.movies)?d.movies:[];
-     let ch={accepted:{},dismissed:{}};
-     try{ch=Object.assign(ch,JSON.parse(localStorage.getItem("mouseMovieSuggestionChoicesV42")||"{}"))}catch(e){}
-     const pending=suggestions.filter(x=>!ch.accepted[x.id]&&!ch.dismissed[x.id]);
-     const badge=document.getElementById("v42-badge");if(badge)badge.textContent=pending.length?pending.length:"";
-     status.textContent=pending.length?pending.length+" neue Vorschläge warten auf dich.":"Im Moment gibt es keine neuen Vorschläge. 🌸";
-     list.innerHTML=pending.length?"":'<div class="v42-empty">Im Moment gibt es keine neuen Vorschläge.</div>';
-     pending.forEach(x=>{
-       const a=document.createElement("article");a.className="v42-card";
-       a.innerHTML="<h3>"+esc(x.title)+(x.year?" ("+esc(x.year)+")":"")+"</h3><div class='v42-meta'>"+esc((x.genres||[]).join(" · "))+(x.rating?" · ★ "+Number(x.rating).toFixed(1):"")+"</div><p>"+esc(x.description||"")+"</p><div class='v42-actions'><button data-v75-keep='"+esc(x.id)+"'>💜 Merken</button><button data-v75-hide='"+esc(x.id)+"'>Nicht interessant</button></div>";
-       list.appendChild(a);
-     });
-   }catch(e){
-     status.textContent="Neue Vorschläge konnten gerade nicht geladen werden.";
-     list.innerHTML='<div class="v42-empty">Bitte prüfe, ob suggestions.json im selben GitHub-Verzeichnis wie index.html liegt.</div>';
-   }
- }
- function closeNew(){
-   const o=document.getElementById("v42-overlay");
-   if(o){o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);
- }
+function candidates(){
+ const s=read(),watched=s.watched||{};
+ return [...document.querySelectorAll("#grid .movie, main .movie")]
+   .filter((c,i,a)=>a.indexOf(c)===i)
+   .filter(c=>!c.hidden && c.style.display!=="none" && getComputedStyle(c).display!=="none")
+   .filter(c=>!watched[key(c.querySelector("h2")?.textContent.trim())]);
+}
+function remember(title){
+ const s=read();s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed:[];
+ const id=key(title);s.lastViewed=s.lastViewed.filter(x=>x.id!==id);
+ s.lastViewed.unshift({id,title,time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);write(s);
+ if(typeof window.v10RenderRecent==="function")try{window.v10RenderRecent()}catch(e){}
+}
+function surprise(){
+ const a=candidates();if(!a.length){alert("Keine passenden ungesehenen Filme mehr, Maus 💜");return}
+ current=a[Math.floor(Math.random()*a.length)];
+ const o=$("v7-overlay"),body=$("v7-present-body");if(!o||!body)return;
+ const clone=current.cloneNode(true);clone.style.display="block";clone.hidden=false;clone.classList.remove("v6-watched");
+ body.replaceChildren(clone);
+ const counter=$("v7-counter");if(counter)counter.textContent="🐭 Überraschung für dich, Maus";
+ o.hidden=false;o.classList.add("open");o.setAttribute("aria-hidden","false");lock(true);
+ requestAnimationFrame(()=>o.scrollTop=0);
+}
+function closeSurprise(){const o=$("v7-overlay");if(o){o.classList.remove("open");o.hidden=true;o.setAttribute("aria-hidden","true")}lock(false);current=null}
+function markCurrent(){
+ if(!current)return;
+ const title=current.querySelector("h2")?.textContent.trim()||"",s=read();
+ s.watched=s.watched||{};s.watched[key(title)]=true;write(s);remember(title);
+ current.classList.add("v6-watched");surprise();
+}
 
- let current=null;
- function candidates(){
-   const s=state(), watched=s.watched||{};
-   return [...document.querySelectorAll("#grid .movie")].filter(c=>{
-     const cs=getComputedStyle(c),title=(c.querySelector("h2")?.textContent||"").trim();
-     return cs.display!=="none"&&cs.visibility!=="hidden"&&!c.hidden&&!watched[key(title)];
-   });
+const selector="#v35-open-recent,#v35-close-recent,#v42-open-suggestions,#v42-close,#v6-surprise,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v76-keep],[data-v76-hide]";
+function handle(e){
+ const b=e.target?.closest?.(selector);if(!b)return false;
+ e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+ if(b.id==="v35-open-recent")openRecent();
+ else if(b.id==="v35-close-recent")closeRecent();
+ else if(b.id==="v42-open-suggestions")openSuggestions();
+ else if(b.id==="v42-close")closeSuggestions();
+ else if(b.id==="v6-surprise"||b.id==="v7-next")surprise();
+ else if(b.id==="v7-mark")markCurrent();
+ else if(b.id==="v7-close"||b.id==="v7-close2")closeSurprise();
+ else {
+   const ch=choices(),id=b.dataset.v76Keep||b.dataset.v76Hide;
+   if(b.dataset.v76Keep){const x=cache.find(v=>String(v.id)===String(id));if(x)ch.accepted[id]=x}
+   else ch.dismissed[id]=true;
+   saveChoices(ch);renderSuggestions();
  }
- function surprise(){
-   const list=candidates();if(!list.length){alert("Keine passenden ungesehenen Filme mehr, Maus 💜");return}
-   current=list[Math.floor(Math.random()*list.length)];
-   const o=document.getElementById("v7-overlay"), b=document.getElementById("v7-present-body");
-   if(!o||!b)return;
-   const clone=current.cloneNode(true);clone.hidden=false;clone.style.display="block";
-   b.replaceChildren(clone);
-   const counter=document.getElementById("v7-counter");if(counter)counter.textContent="🐭 Überraschung für dich, Maus";
-   o.hidden=false;o.classList.add("open");o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
- }
- function closeSurprise(){
-   const o=document.getElementById("v7-overlay");
-   if(o){o.classList.remove("open");o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);current=null;
- }
- function mark(){
-   if(!current)return;
-   const title=(current.querySelector("h2")?.textContent||"").trim(), s=state(), id=key(title);
-   s.watched=s.watched||{};s.watched[id]=true;
-   s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed.filter(x=>x.id!==id):[];
-   s.lastViewed.unshift({id,title,time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);save(s);
-   try{if(typeof window.v10RenderRecent==="function")window.v10RenderRecent()}catch(e){}
-   surprise();
- }
-
- function act(target,e){
-   const el=target.closest?.("#v35-open-recent,#v42-open-suggestions,#v6-surprise,#v35-close-recent,#v42-close,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v75-keep],[data-v75-hide]");
-   if(!el)return false;
-   e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();
-   if(el.id==="v35-open-recent")recent();
-   else if(el.id==="v42-open-suggestions")newFilms();
-   else if(el.id==="v6-surprise"||el.id==="v7-next")surprise();
-   else if(el.id==="v35-close-recent")closeRecent();
-   else if(el.id==="v42-close")closeNew();
-   else if(el.id==="v7-close"||el.id==="v7-close2")closeSurprise();
-   else if(el.id==="v7-mark")mark();
-   else if(el.dataset.v75Keep||el.dataset.v75Hide){
-     let ch={accepted:{},dismissed:{}};try{ch=Object.assign(ch,JSON.parse(localStorage.getItem("mouseMovieSuggestionChoicesV42")||"{}"))}catch(x){}
-     const id=el.dataset.v75Keep||el.dataset.v75Hide;
-     if(el.dataset.v75Keep){const x=suggestions.find(i=>String(i.id)===id);if(x)ch.accepted[id]=x}else ch.dismissed[id]=true;
-     localStorage.setItem("mouseMovieSuggestionChoicesV42",JSON.stringify(ch));newFilms();
-   }
-   return true;
- }
-
- // Pointer events are the primary mobile path. Click remains desktop/accessibility fallback.
- document.addEventListener("pointerup",function(e){
-   if(act(e.target,e))lastAction=Date.now();
- },true);
- document.addEventListener("click",function(e){
-   if(Date.now()-lastAction<700){const x=e.target.closest?.("#v35-open-recent,#v42-open-suggestions,#v6-surprise,#v35-close-recent,#v42-close,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v75-keep],[data-v75-hide]");if(x){e.preventDefault();e.stopImmediatePropagation();return}}
-   act(e.target,e);
- },true);
-
- // Backdrop close.
- document.addEventListener("pointerup",function(e){
-   if(e.target?.id==="v35-recent-overlay")closeRecent();
-   if(e.target?.id==="v42-overlay")closeNew();
- },true);
+ return true;
+}
+// iOS Safari: touchend is authoritative; click is fallback for desktop/keyboard.
+document.addEventListener("touchend",e=>{if(handle(e))lastTouch=Date.now()},{capture:true,passive:false});
+document.addEventListener("click",e=>{
+ if(Date.now()-lastTouch<700 && e.target?.closest?.(selector)){e.preventDefault();e.stopImmediatePropagation();return}
+ handle(e);
+},true);
 })();
 </script>
 

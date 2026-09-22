@@ -4593,6 +4593,94 @@ html[data-theme="mausig"] body.v53 .v47-settings-open{background:rgba(255,224,23
 html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;backdrop-filter:blur(10px)!important}html[data-theme="mausig"] #v7-overlay .v7-present{background:linear-gradient(160deg,rgba(255,232,242,.98),rgba(250,199,224,.96))!important;color:#2e1b55!important;border-color:rgba(93,44,99,.46)!important}html[data-theme="mausig"] #v7-overlay .movie{background:rgba(255,239,246,.86)!important;color:#2e1b55!important;border-color:rgba(93,44,99,.35)!important}html[data-theme="mausig"] #v7-overlay .movie h2,html[data-theme="mausig"] #v7-overlay .movie p{color:#2e1b55!important}
 }
 </style>
+
+<script id="v67-surprise-function-fix">
+/* v67: robust final binding for "Überrasche mich".
+   This runs after the legacy handlers so the presentation modal always wins. */
+(function(){
+  function initV67Surprise(){
+    const trigger=document.getElementById('v6-surprise');
+    const overlay=document.getElementById('v7-overlay');
+    const presentBody=document.getElementById('v7-present-body');
+    const counter=document.getElementById('v7-counter');
+    const next=document.getElementById('v7-next');
+    const mark=document.getElementById('v7-mark');
+    const close1=document.getElementById('v7-close');
+    const close2=document.getElementById('v7-close2');
+    if(!trigger||!overlay||!presentBody) return;
+
+    let current=null;
+    const key=t=>String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+    const read=()=>{try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}};
+    const write=s=>localStorage.setItem('mouseMovieAppV6',JSON.stringify(s));
+
+    function candidates(){
+      const s=read(), watched=s.watched||{};
+      return [...document.querySelectorAll('#grid .movie, main .movie')]
+        .filter((c,i,a)=>a.indexOf(c)===i)
+        .filter(c=>c.style.display!=='none' && getComputedStyle(c).display!=='none')
+        .filter(c=>!watched[key(c.querySelector('h2')?.textContent.trim())]);
+    }
+    function remember(title){
+      if(typeof window.v10Remember==='function') { window.v10Remember(title); return; }
+      const s=read(); s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed:[];
+      const id=key(title);
+      s.lastViewed=s.lastViewed.filter(x=>x.id!==id);
+      s.lastViewed.unshift({id,title,time:Date.now()});
+      s.lastViewed=s.lastViewed.slice(0,8); write(s);
+    }
+    function show(){
+      const list=candidates();
+      if(!list.length){ alert('Keine passenden ungesehenen Filme mehr, Maus 💜'); return; }
+      current=list[Math.floor(Math.random()*list.length)];
+      const title=current.querySelector('h2')?.textContent.trim()||'';
+      const clone=current.cloneNode(true);
+      clone.style.display='block';
+      clone.classList.remove('v6-watched');
+      presentBody.replaceChildren(clone);
+      if(counter) counter.textContent='🐭 Überraschung für dich, Maus';
+
+      const clonedWatch=clone.querySelector('.watched-btn');
+      if(clonedWatch) clonedWatch.onclick=function(e){
+        e.preventDefault(); e.stopPropagation();
+        const s=read(); s.watched=s.watched||{}; s.watched[key(title)]=true; write(s);
+        remember(title); current.classList.add('v6-watched'); show();
+      };
+
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      document.body.classList.add('v7-lock');
+    }
+    function close(){
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+      document.body.classList.remove('v7-lock');
+      current=null;
+    }
+
+    /* Capture phase prevents older v6/v7 click handlers from stealing the tap. */
+    trigger.addEventListener('click',function(e){
+      e.preventDefault(); e.stopImmediatePropagation(); show();
+    },true);
+    if(next) next.addEventListener('click',function(e){
+      e.preventDefault(); e.stopImmediatePropagation(); show();
+    },true);
+    if(mark) mark.addEventListener('click',function(e){
+      e.preventDefault(); e.stopImmediatePropagation();
+      if(!current)return;
+      const title=current.querySelector('h2')?.textContent.trim()||'';
+      const s=read(); s.watched=s.watched||{}; s.watched[key(title)]=true; write(s);
+      remember(title); current.classList.add('v6-watched'); show();
+    },true);
+    [close1,close2].filter(Boolean).forEach(b=>b.addEventListener('click',function(e){
+      e.preventDefault(); e.stopImmediatePropagation(); close();
+    },true));
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initV67Surprise,{once:true});
+  else initV67Surprise();
+})();
+</script>
+
 </body></html>
 <style id="v66-visible-bg-layer">
 @media(max-width:620px){

@@ -2449,6 +2449,70 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 
 
 
+
+<style id="v80-mausig-overlay-layer-fix">
+/*
+ v80 – Mausig mobile overlay fix
+ The actions were already firing. In Mausig, the dialogs lived underneath
+ the theme's decorative/fixed layers, so they only became visible after
+ switching to Hell/Dunkel. Put all functional dialogs in the top viewport layer.
+*/
+html[data-theme="mausig"] #v35-recent-overlay,
+html[data-theme="mausig"] #v42-overlay,
+html[data-theme="mausig"] #v7-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  isolation: isolate !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}
+
+/* A hidden dialog must remain truly hidden. */
+html[data-theme="mausig"] #v35-recent-overlay[hidden],
+html[data-theme="mausig"] #v42-overlay[hidden],
+html[data-theme="mausig"] #v7-overlay[hidden] {
+  display: none !important;
+}
+
+/* An opened dialog must be visible in Mausig immediately. */
+html[data-theme="mausig"] #v35-recent-overlay:not([hidden]),
+html[data-theme="mausig"] #v42-overlay:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="mausig"] #v7-overlay.open:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Keep modal contents above their own backdrop/pseudo-elements. */
+html[data-theme="mausig"] #v35-recent-overlay > *,
+html[data-theme="mausig"] #v42-overlay > *,
+html[data-theme="mausig"] #v7-overlay > * {
+  position: relative !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+}
+
+/* Decorative Mausig layers must never intercept modal interaction. */
+html[data-theme="mausig"] body::before,
+html[data-theme="mausig"] body::after,
+html[data-theme="mausig"] .v53-stage::before,
+html[data-theme="mausig"] .v53-stage::after {
+  pointer-events: none !important;
+}
+</style>
+
 </head><body class="v53"><div class="v51-backdrop" aria-hidden="true"></div>
 
 <button type="button" id="v47-settings-open" class="v47-settings-open" aria-label="Einstellungen öffnen" title="Einstellungen">⚙️</button>
@@ -4809,6 +4873,24 @@ window.addEventListener('click',function(e){
 
 /* expose only for automated regression checks */
 window.__v79={openRecent,openSuggestions,surprise,markCurrent,closeRecent,closeSuggestions,closeSurprise};
+})();
+</script>
+
+
+<script id="v80-overlay-portal-fix">
+(function(){
+  function portalOverlays(){
+    ['v35-recent-overlay','v42-overlay','v7-overlay'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el && el.parentElement!==document.body) document.body.appendChild(el);
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',portalOverlays,{once:true});
+  }else{
+    portalOverlays();
+  }
+  window.addEventListener('pageshow',portalOverlays);
 })();
 </script>
 

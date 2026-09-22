@@ -4852,122 +4852,160 @@ html[data-theme="mausig"] body.v53 #v6-surprise{position:relative!important;z-in
 </script>
 
 
-<script id="v74-main-actions-controller">
+
+
+
+<style id="v75-mobile-actions">
+/* v75: actual controls used by the page, explicitly tappable on mobile */
+#v35-open-recent,#v42-open-suggestions,#v6-surprise{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:rgba(255,255,255,.12);
+}
+#v35-recent-overlay,#v42-overlay,#v7-overlay{
+  position:fixed!important;
+  inset:0!important;
+  pointer-events:auto!important;
+  z-index:2147483000!important;
+}
+#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]),#v7-overlay.open{
+  visibility:visible!important;
+  opacity:1!important;
+}
+@media(max-width:700px){
+  html[data-theme="mausig"] body.v53 .v53-tabs{
+    position:relative!important;z-index:100!important;pointer-events:auto!important
+  }
+  html[data-theme="mausig"] body.v53 .v53-tabs #v35-open-recent,
+  html[data-theme="mausig"] body.v53 .v53-tabs #v42-open-suggestions{
+    position:relative!important;z-index:101!important;pointer-events:auto!important
+  }
+  html[data-theme="mausig"] body.v53 .v49-surprise-banner{
+    position:relative!important;z-index:100!important;pointer-events:auto!important
+  }
+}
+</style>
+<script id="v75-mobile-actions-controller">
 (function(){
-  "use strict";
+ "use strict";
+ let lastAction=0;
 
-  function byId(id){ return document.getElementById(id); }
-  function visible(el){
-    if(!el) return false;
-    const cs=getComputedStyle(el);
-    return cs.display!=="none" && cs.visibility!=="hidden";
-  }
-  function clickFirst(selectors){
-    for(const sel of selectors){
-      const el=document.querySelector(sel);
-      if(el && visible(el)){ el.click(); return true; }
-    }
-    return false;
-  }
+ function state(){
+   try{return JSON.parse(localStorage.getItem("mouseMovieAppV6")||"{}")}catch(e){return {}}
+ }
+ function save(s){try{localStorage.setItem("mouseMovieAppV6",JSON.stringify(s))}catch(e){}}
+ function key(t){return String(t||"").toLowerCase().replace(/[^a-z0-9äöüß]+/gi,"_")}
+ function lock(v){document.body.style.overflow=v?"hidden":""}
 
-  function replaceAndBind(id, handler){
-    const old=byId(id);
-    if(!old) return null;
-    const fresh=old.cloneNode(true);
-    old.replaceWith(fresh);
-    fresh.removeAttribute("onclick");
-    fresh.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      handler(e, fresh);
-    }, {passive:false});
-    return fresh;
-  }
+ function recent(){
+   const o=document.getElementById("v35-recent-overlay");
+   if(!o)return;
+   try{if(typeof window.v10RenderRecent==="function")window.v10RenderRecent()}catch(e){}
+   o.hidden=false;o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
+ }
+ function closeRecent(){
+   const o=document.getElementById("v35-recent-overlay");
+   if(o){o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);
+ }
 
-  function openSurprise(){
-    // Use the established v7 presentation implementation if available.
-    if(typeof window.v7ShowRandom==="function"){ window.v7ShowRandom(); return; }
-    if(typeof window.showRandom==="function"){ window.showRandom(); return; }
+ let suggestions=[];
+ function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+ async function newFilms(){
+   const o=document.getElementById("v42-overlay"), list=document.getElementById("v42-list"), status=document.getElementById("v42-status");
+   if(!o||!list||!status)return;
+   o.hidden=false;o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
+   status.textContent="Neue Filme werden geladen …";
+   try{
+     const r=await fetch("./suggestions.json?ts="+Date.now(),{cache:"no-store"});
+     if(!r.ok)throw new Error("HTTP "+r.status);
+     const d=await r.json();suggestions=Array.isArray(d.movies)?d.movies:[];
+     let ch={accepted:{},dismissed:{}};
+     try{ch=Object.assign(ch,JSON.parse(localStorage.getItem("mouseMovieSuggestionChoicesV42")||"{}"))}catch(e){}
+     const pending=suggestions.filter(x=>!ch.accepted[x.id]&&!ch.dismissed[x.id]);
+     const badge=document.getElementById("v42-badge");if(badge)badge.textContent=pending.length?pending.length:"";
+     status.textContent=pending.length?pending.length+" neue Vorschläge warten auf dich.":"Im Moment gibt es keine neuen Vorschläge. 🌸";
+     list.innerHTML=pending.length?"":'<div class="v42-empty">Im Moment gibt es keine neuen Vorschläge.</div>';
+     pending.forEach(x=>{
+       const a=document.createElement("article");a.className="v42-card";
+       a.innerHTML="<h3>"+esc(x.title)+(x.year?" ("+esc(x.year)+")":"")+"</h3><div class='v42-meta'>"+esc((x.genres||[]).join(" · "))+(x.rating?" · ★ "+Number(x.rating).toFixed(1):"")+"</div><p>"+esc(x.description||"")+"</p><div class='v42-actions'><button data-v75-keep='"+esc(x.id)+"'>💜 Merken</button><button data-v75-hide='"+esc(x.id)+"'>Nicht interessant</button></div>";
+       list.appendChild(a);
+     });
+   }catch(e){
+     status.textContent="Neue Vorschläge konnten gerade nicht geladen werden.";
+     list.innerHTML='<div class="v42-empty">Bitte prüfe, ob suggestions.json im selben GitHub-Verzeichnis wie index.html liegt.</div>';
+   }
+ }
+ function closeNew(){
+   const o=document.getElementById("v42-overlay");
+   if(o){o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);
+ }
 
-    // Fallback: choose a currently visible, unwatched movie and present it.
-    const cards=[...document.querySelectorAll("article.movie")]
-      .filter(el=>visible(el) && !el.classList.contains("watched"));
-    if(!cards.length) return;
-    const card=cards[Math.floor(Math.random()*cards.length)];
-    const overlay=byId("v7-overlay");
-    const body=byId("v7-present-body");
-    if(overlay && body){
-      body.innerHTML="";
-      body.appendChild(card.cloneNode(true));
-      overlay.hidden=false;
-      overlay.style.display="flex";
-      overlay.setAttribute("aria-hidden","false");
-      document.documentElement.classList.add("v7-modal-open");
-      return;
-    }
-    card.scrollIntoView({behavior:"smooth",block:"center"});
-  }
+ let current=null;
+ function candidates(){
+   const s=state(), watched=s.watched||{};
+   return [...document.querySelectorAll("#grid .movie")].filter(c=>{
+     const cs=getComputedStyle(c),title=(c.querySelector("h2")?.textContent||"").trim();
+     return cs.display!=="none"&&cs.visibility!=="hidden"&&!c.hidden&&!watched[key(title)];
+   });
+ }
+ function surprise(){
+   const list=candidates();if(!list.length){alert("Keine passenden ungesehenen Filme mehr, Maus 💜");return}
+   current=list[Math.floor(Math.random()*list.length)];
+   const o=document.getElementById("v7-overlay"), b=document.getElementById("v7-present-body");
+   if(!o||!b)return;
+   const clone=current.cloneNode(true);clone.hidden=false;clone.style.display="block";
+   b.replaceChildren(clone);
+   const counter=document.getElementById("v7-counter");if(counter)counter.textContent="🐭 Überraschung für dich, Maus";
+   o.hidden=false;o.classList.add("open");o.style.display="flex";o.setAttribute("aria-hidden","false");lock(true);
+ }
+ function closeSurprise(){
+   const o=document.getElementById("v7-overlay");
+   if(o){o.classList.remove("open");o.hidden=true;o.style.display="";o.setAttribute("aria-hidden","true")}lock(false);current=null;
+ }
+ function mark(){
+   if(!current)return;
+   const title=(current.querySelector("h2")?.textContent||"").trim(), s=state(), id=key(title);
+   s.watched=s.watched||{};s.watched[id]=true;
+   s.lastViewed=Array.isArray(s.lastViewed)?s.lastViewed.filter(x=>x.id!==id):[];
+   s.lastViewed.unshift({id,title,time:Date.now()});s.lastViewed=s.lastViewed.slice(0,8);save(s);
+   try{if(typeof window.v10RenderRecent==="function")window.v10RenderRecent()}catch(e){}
+   surprise();
+ }
 
-  function openRecent(){
-    // Existing recent dialog implementations, without recursively clicking the launch button.
-    if(typeof window.v35OpenRecent==="function"){ window.v35OpenRecent(); return; }
-    const overlay=byId("v35-recent-overlay") || document.querySelector(".v35-recent-overlay");
-    if(overlay){
-      overlay.hidden=false;
-      overlay.style.display="flex";
-      overlay.setAttribute("aria-hidden","false");
-      return;
-    }
-    // Try a non-launch internal opener only.
-    clickFirst(["#v35-recent-dialog [data-open]"]);
-  }
+ function act(target,e){
+   const el=target.closest?.("#v35-open-recent,#v42-open-suggestions,#v6-surprise,#v35-close-recent,#v42-close,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v75-keep],[data-v75-hide]");
+   if(!el)return false;
+   e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+   if(el.id==="v35-open-recent")recent();
+   else if(el.id==="v42-open-suggestions")newFilms();
+   else if(el.id==="v6-surprise"||el.id==="v7-next")surprise();
+   else if(el.id==="v35-close-recent")closeRecent();
+   else if(el.id==="v42-close")closeNew();
+   else if(el.id==="v7-close"||el.id==="v7-close2")closeSurprise();
+   else if(el.id==="v7-mark")mark();
+   else if(el.dataset.v75Keep||el.dataset.v75Hide){
+     let ch={accepted:{},dismissed:{}};try{ch=Object.assign(ch,JSON.parse(localStorage.getItem("mouseMovieSuggestionChoicesV42")||"{}"))}catch(x){}
+     const id=el.dataset.v75Keep||el.dataset.v75Hide;
+     if(el.dataset.v75Keep){const x=suggestions.find(i=>String(i.id)===id);if(x)ch.accepted[id]=x}else ch.dismissed[id]=true;
+     localStorage.setItem("mouseMovieSuggestionChoicesV42",JSON.stringify(ch));newFilms();
+   }
+   return true;
+ }
 
-  function openSuggestions(){
-    // Existing suggestions implementation.
-    if(typeof window.v42OpenSuggestions==="function"){ window.v42OpenSuggestions(); return; }
-    if(typeof window.openSuggestions==="function"){ window.openSuggestions(); return; }
-    const overlay=byId("v42-overlay") || document.querySelector(".v42-overlay");
-    if(overlay){
-      overlay.hidden=false;
-      overlay.style.display="flex";
-      overlay.setAttribute("aria-hidden","false");
-      // Trigger the existing loader if it is exposed.
-      if(typeof window.v42LoadSuggestions==="function") window.v42LoadSuggestions();
-      return;
-    }
-  }
+ // Pointer events are the primary mobile path. Click remains desktop/accessibility fallback.
+ document.addEventListener("pointerup",function(e){
+   if(act(e.target,e))lastAction=Date.now();
+ },true);
+ document.addEventListener("click",function(e){
+   if(Date.now()-lastAction<700){const x=e.target.closest?.("#v35-open-recent,#v42-open-suggestions,#v6-surprise,#v35-close-recent,#v42-close,#v7-next,#v7-mark,#v7-close,#v7-close2,[data-v75-keep],[data-v75-hide]");if(x){e.preventDefault();e.stopImmediatePropagation();return}}
+   act(e.target,e);
+ },true);
 
-  function bind(){
-    replaceAndBind("v6-surprise", openSurprise);
-
-    // Recent button has used this id in the main line.
-    replaceAndBind("v35-recent-launch", openRecent);
-
-    // New Films button has had a few ids/classes over the versions.
-    const candidates=[
-      "v42-launch","v42-open","v42-suggestions-launch","v42-new-films"
-    ];
-    for(const id of candidates){
-      if(byId(id)){ replaceAndBind(id, openSuggestions); break; }
-    }
-    // If it is class-only, bind exactly the first launch control, not dialog buttons.
-    const classLaunch=document.querySelector(".v42-launch");
-    if(classLaunch && !classLaunch.dataset.v74Bound){
-      const fresh=classLaunch.cloneNode(true);
-      classLaunch.replaceWith(fresh);
-      fresh.dataset.v74Bound="1";
-      fresh.removeAttribute("onclick");
-      fresh.addEventListener("click",function(e){
-        e.preventDefault(); e.stopPropagation(); openSuggestions();
-      },{passive:false});
-    }
-  }
-
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind,{once:true});
-  else bind();
-
-  // Rebind once after pageshow because iOS/Safari can restore controls from BFCache.
-  window.addEventListener("pageshow",function(){ setTimeout(bind,0); });
+ // Backdrop close.
+ document.addEventListener("pointerup",function(e){
+   if(e.target?.id==="v35-recent-overlay")closeRecent();
+   if(e.target?.id==="v42-overlay")closeNew();
+ },true);
 })();
 </script>
 

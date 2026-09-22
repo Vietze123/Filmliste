@@ -4742,6 +4742,73 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 })();
 </script>
 
+
+<style id="v70-discovery-actions-fix">
+/* v70: keep discovery overlays above every Mausig layer and tappable on phones. */
+#v35-open-recent,#v42-open-suggestions{pointer-events:auto!important;position:relative!important;z-index:20!important;touch-action:manipulation!important}
+#v35-recent-overlay,#v42-overlay{z-index:2147483000!important;pointer-events:auto!important}
+#v35-recent-overlay:not([hidden]),#v42-overlay:not([hidden]){visibility:visible!important;opacity:1!important}
+#v35-recent-dialog,#v42-overlay .v42-dialog{pointer-events:auto!important}
+</style>
+<script id="v70-discovery-actions-fix-script">
+(function(){
+ function init(){
+  const recentBtn=document.getElementById('v35-open-recent');
+  const recentOverlay=document.getElementById('v35-recent-overlay');
+  const recentClose=document.getElementById('v35-close-recent');
+  const suggestBtn=document.getElementById('v42-open-suggestions');
+  const suggestOverlay=document.getElementById('v42-overlay');
+  const suggestClose=document.getElementById('v42-close');
+  const suggestStatus=document.getElementById('v42-status');
+  const suggestList=document.getElementById('v42-list');
+  const badge=document.getElementById('v42-badge');
+  const KEY='mouseMovieSuggestionChoicesV42';
+  let choices={accepted:{},dismissed:{}};
+  try{choices=Object.assign(choices,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+  let cache=[];
+  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function lock(v){document.body.style.overflow=v?'hidden':''}
+  function openRecent(){
+   if(!recentOverlay)return;
+   if(typeof window.v10RenderRecent==='function')try{window.v10RenderRecent()}catch(e){}
+   recentOverlay.hidden=false; recentOverlay.setAttribute('aria-hidden','false'); lock(true);
+  }
+  function closeRecent(){if(!recentOverlay)return;recentOverlay.hidden=true;recentOverlay.setAttribute('aria-hidden','true');lock(false)}
+  function renderSuggestions(){
+   if(!suggestList||!suggestStatus)return;
+   const pending=cache.filter(x=>!choices.accepted[x.id]&&!choices.dismissed[x.id]);
+   if(badge)badge.textContent=pending.length?pending.length:'';
+   suggestStatus.textContent=pending.length?pending.length+' neue Vorschläge warten auf dich.':'Im Moment gibt es keine neuen Vorschläge. 🌸';
+   suggestList.innerHTML='';
+   if(!pending.length){suggestList.innerHTML='<div class="v42-empty">Neue passende Filme erscheinen hier automatisch, sobald neue Kandidaten vorhanden sind.</div>';return}
+   pending.forEach(x=>{
+    const el=document.createElement('article');el.className='v42-card';
+    el.innerHTML='<h3>'+esc(x.title)+(x.year?' ('+esc(x.year)+')':'')+'</h3><div class="v42-meta">'+esc((x.genres||[]).join(' · '))+(x.rating?' · ★ '+Number(x.rating).toFixed(1):'')+'</div><p>'+esc(x.description||'')+'</p><div class="v42-actions"><button data-v70-keep="'+esc(x.id)+'">💜 Merken</button><button data-v70-hide="'+esc(x.id)+'">Nicht interessant</button></div>';
+    suggestList.appendChild(el);
+   });
+   suggestList.querySelectorAll('[data-v70-keep]').forEach(b=>b.onclick=()=>{const x=cache.find(i=>String(i.id)===b.dataset.v70Keep);if(x){choices.accepted[x.id]=x;localStorage.setItem(KEY,JSON.stringify(choices));renderSuggestions()}});
+   suggestList.querySelectorAll('[data-v70-hide]').forEach(b=>b.onclick=()=>{choices.dismissed[b.dataset.v70Hide]=true;localStorage.setItem(KEY,JSON.stringify(choices));renderSuggestions()});
+  }
+  async function loadSuggestions(){
+   if(!suggestStatus||!suggestList)return;
+   suggestStatus.textContent='Neue Filme werden geladen …';
+   try{const r=await fetch('./suggestions.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();cache=Array.isArray(d.movies)?d.movies:[];renderSuggestions()}
+   catch(e){suggestStatus.textContent='Neue Vorschläge konnten gerade nicht geladen werden.';suggestList.innerHTML='<div class="v42-empty">Die normale Filmliste funktioniert weiterhin.</div>'}
+  }
+  function openSuggestions(){if(!suggestOverlay)return;suggestOverlay.hidden=false;suggestOverlay.setAttribute('aria-hidden','false');lock(true);loadSuggestions()}
+  function closeSuggestions(){if(!suggestOverlay)return;suggestOverlay.hidden=true;suggestOverlay.setAttribute('aria-hidden','true');lock(false)}
+  // Property handlers run at target and are intentionally simple/independent of older listeners.
+  if(recentBtn)recentBtn.onclick=function(e){e.preventDefault();openRecent()};
+  if(recentClose)recentClose.onclick=function(e){e.preventDefault();closeRecent()};
+  if(suggestBtn)suggestBtn.onclick=function(e){e.preventDefault();openSuggestions()};
+  if(suggestClose)suggestClose.onclick=function(e){e.preventDefault();closeSuggestions()};
+  if(recentOverlay)recentOverlay.addEventListener('click',e=>{if(e.target===recentOverlay)closeRecent()});
+  if(suggestOverlay)suggestOverlay.addEventListener('click',e=>{if(e.target===suggestOverlay)closeSuggestions()});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body></html>
 <style id="v66-visible-bg-layer">
 @media(max-width:620px){

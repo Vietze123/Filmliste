@@ -4818,3 +4818,59 @@ html[data-theme="mausig"] #v7-overlay{background:rgba(45,16,51,.54)!important;ba
 }
 </style>
 <script id="v66-bg-layer-script">(function(){function go(){if(!document.getElementById('v66-mobile-bg')){const d=document.createElement('div');d.id='v66-mobile-bg';d.setAttribute('aria-hidden','true');document.body.prepend(d)}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();</script>
+
+
+<script id="v71-surprise-final-fix">
+(function(){
+ function boot(){
+  var old=document.getElementById('v6-surprise');
+  var overlay=document.getElementById('v7-overlay');
+  var body=document.getElementById('v7-present-body');
+  if(!old||!overlay||!body)return;
+  /* Replace the trigger node itself: this removes every legacy listener that
+     accumulated on the surprise button in earlier versions. */
+  var trigger=old.cloneNode(true); old.replaceWith(trigger);
+  var current=null;
+  var key=function(t){return String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_')};
+  function read(){try{return JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}')}catch(e){return {}}}
+  function write(v){try{localStorage.setItem('mouseMovieAppV6',JSON.stringify(v))}catch(e){}}
+  function candidates(){
+   var st=read(), watched=st.watched||{};
+   return Array.from(document.querySelectorAll('#grid .movie')).filter(function(c){
+    var cs=getComputedStyle(c), title=(c.querySelector('h2')||{}).textContent||'';
+    return cs.display!=='none' && cs.visibility!=='hidden' && !watched[key(title.trim())];
+   });
+  }
+  function remember(title){
+   var st=read(); st.lastViewed=Array.isArray(st.lastViewed)?st.lastViewed:[];
+   var id=key(title); st.lastViewed=st.lastViewed.filter(function(x){return x.id!==id});
+   st.lastViewed.unshift({id:id,title:title,time:Date.now()}); st.lastViewed=st.lastViewed.slice(0,8); write(st);
+   try{ if(typeof window.v10RenderRecent==='function') window.v10RenderRecent(); }catch(e){}
+  }
+  function markAndNext(){
+   if(!current)return;
+   var title=((current.querySelector('h2')||{}).textContent||'').trim();
+   var st=read(); st.watched=st.watched||{}; st.watched[key(title)]=true; write(st); remember(title);
+   current.classList.add('v6-watched'); show();
+  }
+  function show(){
+   var list=candidates();
+   if(!list.length){alert('Keine passenden ungesehenen Filme mehr, Maus 💜');return;}
+   current=list[Math.floor(Math.random()*list.length)];
+   var clone=current.cloneNode(true); clone.style.display='block'; clone.classList.remove('v6-watched');
+   body.replaceChildren(clone);
+   var counter=document.getElementById('v7-counter'); if(counter)counter.textContent='🐭 Überraschung für dich, Maus';
+   var cw=clone.querySelector('.watched-btn'); if(cw)cw.onclick=function(e){e.preventDefault();markAndNext()};
+   overlay.hidden=false; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.classList.add('v7-lock');
+  }
+  function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.classList.remove('v7-lock');current=null;}
+  trigger.onclick=function(e){e.preventDefault();show()};
+  var next=document.getElementById('v7-next'), mark=document.getElementById('v7-mark');
+  if(next){var nn=next.cloneNode(true);next.replaceWith(nn);nn.onclick=function(e){e.preventDefault();show()}}
+  if(mark){var mm=mark.cloneNode(true);mark.replaceWith(mm);mm.onclick=function(e){e.preventDefault();markAndNext()}}
+  ['v7-close','v7-close2'].forEach(function(id){var b=document.getElementById(id);if(b){var n=b.cloneNode(true);b.replaceWith(n);n.onclick=function(e){e.preventDefault();close()}}});
+  window.__mouseSurpriseV71={show:show,candidates:candidates};
+ }
+ if(document.readyState==='complete')boot(); else window.addEventListener('load',boot,{once:true});
+})();
+</script>

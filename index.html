@@ -4258,6 +4258,41 @@ html[data-theme="mausig"] .v57-custom-grid select{background:var(--m57-control)!
 })();
 </script>
 
+
+<style id="v61-new-films-contrast-fix">
+/* v61 – Neue Filme: lesbare Farben in allen drei Designs */
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-dialog,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-head{background:#fffdf9!important;color:#2b2030!important}
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-card{background:#fff!important;color:#2b2030!important;border-color:#caa5dc!important}
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-card h3,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-card p,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-meta,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-intro,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-status,
+html:not([data-theme="mausig"]) body:not(.v6-dark) .v42-empty{color:#2b2030!important}
+
+html[data-theme="mausig"] .v42-overlay{background:color-mix(in srgb,var(--m57-bg) 72%,transparent)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme="mausig"] .v42-dialog{background:color-mix(in srgb,var(--m57-bg) 94%,#05060a)!important;color:var(--m57-text)!important;border-color:var(--m59-line)!important;box-shadow:0 24px 80px rgba(0,0,0,.42)!important}
+html[data-theme="mausig"] .v42-head{background:color-mix(in srgb,var(--m57-bg) 96%,#05060a)!important;color:var(--m57-text)!important;border-color:var(--m59-line)!important}
+html[data-theme="mausig"] .v42-head h2,
+html[data-theme="mausig"] .v42-intro,
+html[data-theme="mausig"] .v42-status,
+html[data-theme="mausig"] .v42-empty{color:var(--m57-text)!important}
+html[data-theme="mausig"] .v42-grid{align-items:stretch}
+html[data-theme="mausig"] .v42-card{background:color-mix(in srgb,var(--m57-bg) 78%,var(--m57-control))!important;color:var(--m57-text)!important;border-color:var(--m59-line)!important;box-shadow:0 10px 30px rgba(0,0,0,.2)!important}
+html[data-theme="mausig"] .v42-card h3,
+html[data-theme="mausig"] .v42-card p{color:var(--m57-text)!important}
+html[data-theme="mausig"] .v42-meta{color:var(--m59-muted)!important;opacity:1!important}
+html[data-theme="mausig"] .v42-actions button,
+html[data-theme="mausig"] #v42-close{background:var(--m59-control)!important;color:var(--m59-on-control,var(--m57-text))!important;border:1px solid var(--m59-line)!important}
+html[data-theme="mausig"] .v42-actions button[data-keep]{background:var(--m57-accent)!important;color:var(--m59-on-accent,#160d18)!important;border-color:var(--m57-accent)!important}
+html[data-theme="mausig"] .v42-actions button:focus-visible,
+html[data-theme="mausig"] #v42-close:focus-visible{outline:3px solid var(--m57-accent)!important;outline-offset:3px!important}
+@media(max-width:700px){
+ html[data-theme="mausig"] .v42-dialog{border-radius:20px!important;height:min(100%,calc(100dvh - 16px))!important;max-height:calc(100dvh - 16px)!important}
+ html[data-theme="mausig"] .v42-head{position:sticky!important;top:0!important}
+}
+</style>
 </body></html>
 <style id="v55-background-fix">
 /* v55: final override after all legacy themes. Keeps the cinematic floral backdrop visible in both modes. */

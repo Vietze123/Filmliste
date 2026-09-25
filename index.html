@@ -7200,37 +7200,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  box-shadow:0 5px 18px rgba(82,42,105,.10)
 }
 </style>
-<script id="v88-3-shake-easteregg-control">
-(function(){
-'use strict';
-function place(){
- if(document.getElementById('v88-shake-visible-btn'))return;
- const anchor=document.querySelector('.v44-main-actions') ||
-              document.getElementById('v85-mood-open')?.parentElement ||
-              document.getElementById('v6-surprise')?.parentElement;
- if(!anchor)return;
- const outer=document.createElement('div');
- outer.innerHTML='<div id="v88-shake-visible-wrap"><button id="v88-shake-visible-btn" type="button">Schüttel mich</button></div>';
- anchor.appendChild(outer);
- document.getElementById('v88-shake-visible-btn').addEventListener('click',async()=>{
-   const hidden=document.getElementById('v88-shake-btn');
-   if(hidden){hidden.click();return}
-   try{
-     if(typeof DeviceMotionEvent==='undefined')return;
-     if(typeof DeviceMotionEvent.requestPermission==='function'){
-       const r=await DeviceMotionEvent.requestPermission();
-       if(r!=='granted')return;
-     }
-     localStorage.setItem('mouseMovieShakeLeavesV88','1');
-     location.reload();
-   }catch(e){}
- });
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place,{once:true});else place();
-})();
-</script>
-
-
 <style id="v89-easter-eggs-style">
 #v89-fx{position:fixed;inset:0;z-index:2147483645;pointer-events:none;overflow:hidden}
 .v89-float{position:absolute;will-change:transform,opacity;animation:v89-rise var(--d,2.8s) ease-out forwards}
@@ -7321,6 +7290,97 @@ function init(){
  // Long press a main action -> bubbles; rare cinema curtain on opening surprise.
  document.querySelectorAll('.v44-main-actions button').forEach(b=>{let t;b.addEventListener('pointerdown',()=>t=setTimeout(bubbles,1100));['pointerup','pointerleave','pointercancel'].forEach(x=>b.addEventListener(x,()=>clearTimeout(t)))});
  if(surprise)surprise.addEventListener('click',()=>{if(Math.random()<.06)curtain()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<style id="v89-1-shake-fix-style">
+#v891-shake-row{margin-top:12px}
+#v891-shake-btn{width:100%;min-height:44px;padding:9px 14px;border-radius:13px;font:inherit;font-weight:800;cursor:pointer}
+html[data-theme="mausig"] body.v53 > #v88-leaf-layer:not(#v66-mobile-bg){
+ position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+ margin:0!important;z-index:2147483646!important;pointer-events:none!important;transform:none!important;
+}
+</style>
+<script id="v89-1-shake-side-menu-and-detector">
+(function(){
+'use strict';
+const KEY='mouseMovieShakeLeavesV88';
+let listening=false,last={x:null,y:null,z:null},lastShake=0,hits=0;
+
+function leafLayer(){
+ let l=document.getElementById('v88-leaf-layer');
+ if(!l){l=document.createElement('div');l.id='v88-leaf-layer';l.setAttribute('aria-hidden','true');document.body.appendChild(l)}
+ return l;
+}
+function burst(){
+ const l=leafLayer(), glyphs=['🍂','🍁','🍂','🍁','🍂'];
+ const count=20+Math.floor(Math.random()*7);
+ for(let i=0;i<count;i++){
+  const e=document.createElement('span');e.className='v88-leaf';e.textContent=glyphs[Math.floor(Math.random()*glyphs.length)];
+  const x=Math.random()*100;
+  e.style.setProperty('--x0',x+'vw');
+  e.style.setProperty('--sway1',(Math.random()*30-15)+'vw');
+  e.style.setProperty('--sway2',(Math.random()*40-20)+'vw');
+  e.style.setProperty('--sway3',(Math.random()*50-25)+'vw');
+  e.style.setProperty('--r1',(90+Math.random()*220)+'deg');
+  e.style.setProperty('--r2',(280+Math.random()*420)+'deg');
+  e.style.setProperty('--r3',(650+Math.random()*760)+'deg');
+  e.style.setProperty('--dur',(3.0+Math.random()*2.0)+'s');
+  e.style.animationDelay=(Math.random()*.35)+'s';
+  e.style.fontSize=(22+Math.random()*24)+'px';
+  l.appendChild(e);setTimeout(()=>e.remove(),6000);
+ }
+}
+function motion(ev){
+ const a=ev.accelerationIncludingGravity||ev.acceleration;if(!a)return;
+ const x=a.x||0,y=a.y||0,z=a.z||0;
+ if(last.x!==null){
+  const delta=Math.abs(x-last.x)+Math.abs(y-last.y)+Math.abs(z-last.z);
+  if(delta>18) hits++; else hits=Math.max(0,hits-1);
+  const now=Date.now();
+  if(hits>=2 && now-lastShake>2600){lastShake=now;hits=0;burst()}
+ }
+ last={x,y,z};
+}
+function listen(){if(listening)return;window.addEventListener('devicemotion',motion,{passive:true});listening=true}
+async function enable(){
+ try{
+  if(typeof DeviceMotionEvent==='undefined')return;
+  if(typeof DeviceMotionEvent.requestPermission==='function'){
+   const r=await DeviceMotionEvent.requestPermission();if(r!=='granted')return;
+  }
+  localStorage.setItem(KEY,'1');listen();
+  // Deliberately no visible explanation; a tiny immediate burst confirms that permission worked.
+  burst();
+ }catch(e){}
+}
+function menu(){
+ if(document.getElementById('v891-shake-btn'))return;
+ // Prefer the real settings/side-menu content; avoid film/action menus.
+ const candidates=[
+  '#v47-settings-overlay .v47-settings-card',
+  '#v47-settings-overlay .settings-card',
+  '#v47-settings-overlay [class*="panel"]',
+  '#v47-settings-overlay [class*="card"]',
+  '#v47-settings-overlay',
+  '[id*="settings"][class*="overlay"] [class*="card"]',
+  '[id*="settings"][class*="overlay"]'
+ ];
+ let host=null;for(const q of candidates){host=document.querySelector(q);if(host)break}
+ if(!host)return;
+ const row=document.createElement('div');row.id='v891-shake-row';
+ const b=document.createElement('button');b.id='v891-shake-btn';b.type='button';b.textContent='Schüttel mich';
+ b.addEventListener('click',enable);row.appendChild(b);host.appendChild(row);
+}
+function init(){
+ menu();
+ new MutationObserver(menu).observe(document.body,{childList:true,subtree:true});
+ // On platforms not requiring explicit permission, restore automatically.
+ if(localStorage.getItem(KEY)==='1' && typeof DeviceMotionEvent!=='undefined' &&
+    typeof DeviceMotionEvent.requestPermission!=='function') listen();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

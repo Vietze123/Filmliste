@@ -6651,5 +6651,201 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="v87-smart-search-style">
+#v87-search-help{font-size:.82rem;opacity:.82;margin-top:6px}
+#v87-search-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+#v87-search-chips button{border:0;border-radius:999px;padding:6px 9px;font:inherit;font-size:.78rem;cursor:pointer}
+#v87-search-info{font-size:.78rem;margin-top:5px;opacity:.78}
+</style>
+<script id="v87-smart-search">
+(function(){
+'use strict';
+const SYN={
+  lustig:['komödie','comedy','humor','witzig','lustig'],
+  komisch:['komödie','comedy','humor','witzig','lustig'],
+  lachen:['komödie','comedy','humor','witzig'],
+  liebe:['romantik','romance','liebesfilm','romantische komödie','romantisches drama'],
+  romantisch:['romantik','romance','liebesfilm','romantische komödie'],
+  traurig:['drama','romantisches drama','gefühlvoll'],
+  emotional:['drama','romantik','liebesfilm','gefühlvoll'],
+  spannend:['thriller','krimi','crime','mystery','action'],
+  spannung:['thriller','krimi','crime','mystery','action'],
+  rätsel:['mystery','krimi','crime','thriller'],
+  raetsel:['mystery','krimi','crime','thriller'],
+  gruselig:['horror','thriller','mystery'],
+  horror:['horror','thriller'],
+  action:['action','abenteuer','adventure'],
+  abenteuer:['abenteuer','adventure','action','fantasy'],
+  fantasie:['fantasy','animation','abenteuer'],
+  fantasy:['fantasy','animation','abenteuer'],
+  sci:['sci-fi','science-fiction'],
+  zukunft:['sci-fi','science-fiction'],
+  familie:['familie','family','animation'],
+  kinder:['familie','family','animation'],
+  süß:['animation','familie','romantik','romantische komödie','fantasy'],
+  suess:['animation','familie','romantik','romantische komödie','fantasy'],
+  mausig:['animation','familie','romantik','romantische komödie','komödie','fantasy'],
+  gemütlich:['komödie','romantik','familie','animation','feel-good'],
+  gemuetlich:['komödie','romantik','familie','animation','feel-good'],
+  leicht:['komödie','comedy','animation','abenteuer','romantik'],
+  nachtschicht:['action','komödie','comedy','abenteuer','krimi','heist'],
+  heist:['heist','crime','krimi','action'],
+  gangster:['crime','krimi','action'],
+  deutsch:['deutsch','german'],
+  netflix:['netflix'],
+  prime:['prime','amazon']
+};
+const STOP=new Set('ich wir mir mich etwas was für fuer einen eine ein der die das den dem des und oder mit ohne zum zur von gerne heute jetzt mal wieder bisschen film filme suche such zeig zeige möchte moechte will hätte haette bitte eher'.split(' '));
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9äöüß -]/g,' ');
+function terms(q){
+ const raw=norm(q).split(/\s+/).filter(Boolean).filter(x=>!STOP.has(x));
+ let out=[...raw];
+ raw.forEach(w=>{const hit=SYN[w]||SYN[w.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue')];if(hit)out.push(...hit)});
+ return [...new Set(out.map(norm))];
+}
+function score(card,ts,q){
+ const title=norm(card.querySelector('h2')?.textContent);
+ const genre=norm(card.querySelector('.genre')?.textContent);
+ const platform=norm(card.dataset.platform||card.querySelector('.platform')?.textContent);
+ const all=norm((card.dataset.search||'')+' '+card.textContent);
+ let s=0;
+ ts.forEach(t=>{
+   if(title.includes(t))s+=12;
+   if(genre.includes(t))s+=7;
+   if(platform.includes(t))s+=6;
+   if(all.includes(t))s+=3;
+ });
+ if(title.includes(norm(q)))s+=25;
+ return s;
+}
+function searchInput(){
+ const candidates=[...document.querySelectorAll('input[type="search"],input[placeholder*="uch" i],input[id*="search" i]')];
+ return candidates.find(x=>!x.closest('#v85-mood-overlay'))||candidates[0];
+}
+function cards(){return [...document.querySelectorAll('article.movie')]}
+function enhance(){
+ const inp=searchInput(); if(!inp||inp.dataset.v87Ready)return;
+ inp.dataset.v87Ready='1';
+ inp.placeholder='Titel, Genre oder Wunsch suchen … z. B. „etwas Lustiges für die Nachtschicht“';
+ const help=document.createElement('div');help.id='v87-search-help';help.textContent='✨ Intelligente Suche versteht auch Wünsche wie „mausig“, „etwas Romantisches“ oder „spannend, aber nicht zu schwer“.';
+ const chips=document.createElement('div');chips.id='v87-search-chips';
+ ['🌸 mausig','😂 etwas Lustiges','💜 romantisch','🕵️ spannend','🌙 Nachtschicht'].forEach(label=>{
+   const b=document.createElement('button');b.type='button';b.textContent=label;
+   b.onclick=()=>{inp.value=label.replace(/^[^\s]+\s/,'');inp.dispatchEvent(new Event('input',{bubbles:true}));};
+   chips.appendChild(b);
+ });
+ const info=document.createElement('div');info.id='v87-search-info';
+ inp.insertAdjacentElement('afterend',help);help.insertAdjacentElement('afterend',chips);chips.insertAdjacentElement('afterend',info);
+
+ let timer;
+ inp.addEventListener('input',()=>{
+   clearTimeout(timer);
+   timer=setTimeout(()=>{
+     const q=inp.value.trim();
+     if(!q){info.textContent='';return}
+     const ts=terms(q);
+     const ranked=cards().map((c,i)=>({c,i,s:score(c,ts,q)}));
+     const hits=ranked.filter(x=>x.s>0).sort((a,b)=>b.s-a.s||a.i-b.i);
+     // Existing search/filter code remains responsible for visibility. We only
+     // reorder matching currently visible cards by relevance after its handler ran.
+     const parent=hits[0]?.c.parentElement;
+     if(parent)hits.forEach(x=>parent.appendChild(x.c));
+     info.textContent=hits.length?`✨ ${hits.length} passende Treffer – die besten stehen zuerst.`:'Keine passenden Begriffe erkannt – die normale Textsuche bleibt aktiv.';
+   },40);
+ },true);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance,{once:true});else enhance();
+})();
+</script>
+
+
+<style id="v87-1-mood-unification-style">
+/* All mood choices share one layout */
+#v85-mood-overlay .v862-extra-moods{
+  display:contents!important;
+}
+#v85-mood-overlay [data-v862-mood]{
+  flex:initial!important;
+  width:auto!important;
+  margin:0!important;
+}
+/* the surprise action is an action, not a selectable mood */
+#v85-mood-overlay .v862-extra-moods > button:not([data-v862-mood]){
+  flex:initial!important;
+}
+</style>
+<script id="v87-1-mood-unification">
+(function(){
+'use strict';
+function overlay(){return document.getElementById('v85-mood-overlay')}
+function legacyMoodButtons(o){
+ return [...o.querySelectorAll('button')].filter(b=>{
+   const t=(b.textContent||'').trim();
+   return /^(Spannend|Gemütlich|Lustig|Romantisch|Fantastisch|Ernst)$/i.test(t);
+ });
+}
+function extraMoodButtons(o){return [...o.querySelectorAll('[data-v862-mood]')]}
+function showButton(o){
+ return [...o.querySelectorAll('button')].find(b=>/Passende Filme anzeigen/i.test(b.textContent||''));
+}
+function normalizeSelection(o){
+ const all=[...legacyMoodButtons(o),...extraMoodButtons(o)];
+ all.forEach(b=>{
+   if(!b.dataset.v871Bound){
+     b.dataset.v871Bound='1';
+     b.addEventListener('click',function(ev){
+       all.forEach(x=>x.classList.remove('active','selected','is-active'));
+       b.classList.add('active');
+       o.dataset.v871Mood=b.dataset.v862Mood||((b.textContent||'').trim());
+       // New categories no longer render immediately. Any v86.2 result created by
+       // its older click listener is cleared; rendering happens only via the
+       // established "Passende Filme anzeigen" action below.
+       setTimeout(()=>{
+         const host=o.querySelector('#v85-mood-results,.v85-mood-results,[data-v85-results]');
+         if(host && b.dataset.v862Mood) host.innerHTML='';
+       },0);
+     },true);
+   }
+ });
+}
+function bridgeToLegacyRenderer(o){
+ const go=showButton(o); if(!go||go.dataset.v871Bound)return;
+ go.dataset.v871Bound='1';
+ go.addEventListener('click',function(){
+   const selected=o.querySelector('[data-v862-mood].active');
+   if(!selected)return;
+   // Let the original v85 button perform its normal rendering first, then replace
+   // only the candidate set by temporarily mapping the new mood to a legacy mood
+   // that uses the exact same established result-card layout.
+   const map={
+     mausig:'Romantisch',
+     nachtschicht:'Lustig',
+     abschalten:'Lustig',
+     raetseln:'Spannend',
+     zuviel:'Ernst',
+     abenteuer:'Fantastisch',
+     gruselig:'Spannend'
+   };
+   const target=legacyMoodButtons(o).find(b=>(b.textContent||'').trim().toLowerCase()===(map[selected.dataset.v862Mood]||'').toLowerCase());
+   if(target){
+     // invoke only the old selection semantics; v87.1 capture listener will then
+     // restore the visible new selection so there is still exactly one active mood.
+     target.click();
+     legacyMoodButtons(o).forEach(x=>x.classList.remove('active','selected','is-active'));
+     selected.classList.add('active');
+   }
+ },true);
+}
+function init(){
+ const o=overlay(); if(!o)return;
+ normalizeSelection(o);bridgeToLegacyRenderer(o);
+ const mo=new MutationObserver(()=>{normalizeSelection(o);bridgeToLegacyRenderer(o)});
+ mo.observe(o,{childList:true,subtree:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>

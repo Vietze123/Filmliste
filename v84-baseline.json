@@ -1,0 +1,12 @@
+{
+  "baseline": "v83",
+  "release": "v84",
+  "purpose": "stable baseline before new features",
+  "planned_features": [
+    "Was passt gerade?",
+    "Intelligentere Suche",
+    "Filmabend-Modus",
+    "Sichere Datensicherung",
+    "PWA-Verbesserungen"
+  ]
+}

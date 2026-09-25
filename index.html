@@ -6453,7 +6453,38 @@ function render(){
     '🌙 Für den heutigen Filmabend ist der definitiv einen Blick wert.',
     '✨ Der könnte dich heute angenehm überraschen.',
     '🍿 Noch ein Kandidat, der ziemlich gut in deine Auswahl hineinpasst.',
-    '💜 Der wäre ebenfalls eine schöne Richtung für heute.'
+    '💜 Der wäre ebenfalls eine schöne Richtung für heute.',
+
+    '🌙 Vielleicht ist genau das heute dein kleiner Ausflug aus dem Alltag.',
+    '🎞️ Der klingt nach einem Film, dem man ruhig eine Chance geben darf.',
+    '💜 Vielleicht versteckt sich hier dein persönlicher Treffer für heute.',
+    '🍿 Sofa bereit? Dieser Kandidat hätte jedenfalls Lust auf einen Filmabend.',
+    '✨ Der passt auf seine ganz eigene Art ziemlich gut zu deiner Auswahl.',
+    '🌸 Vielleicht ist das genau die kleine Überraschung, die heute noch gefehlt hat.',
+    '🎬 Den würde ich nicht zu schnell wegwischen – der könnte gut passen.',
+    '🥰 Der hat gute Chancen, sich heute einen Platz auf deinem Bildschirm zu verdienen.',
+    '💫 Noch so ein Kandidat, bei dem deine Auswahl ziemlich deutlich genickt hat.',
+    '🍿 Könnte gut sein, dass du bei diesem hier etwas länger hängenbleibst.',
+    '💜 Der passt nicht zufällig hier hinein – einiges spricht heute für ihn.',
+    '✨ Vielleicht wird aus „nur mal kurz anschauen“ bei dem hier ja doch ein ganzer Film.',
+    '🌷 Ein weiterer Film, der ziemlich freundlich zu deinen heutigen Wünschen aussieht.',
+    '🎥 Der könnte heute genau das richtige Tempo für dich haben.',
+    '🐭 Die kleine Filmmaus würde den hier zumindest nicht vom Sofa schubsen.',
+    '🌙 Vielleicht einer für genau diesen Abend und genau diese Stimmung.',
+    '🍿 Der sieht nach einer ziemlich vernünftigen Ausrede aus, es sich gemütlich zu machen.',
+    '💫 Deine Auswahl und dieser Film verstehen sich offenbar ziemlich gut.',
+    '🎬 Der hat genug passende Zutaten gesammelt, um hier aufzutauchen.',
+    '💜 Vielleicht nicht der offensichtlichste Kandidat – aber gerade deshalb interessant.',
+    '✨ Auch dieser Film hat sich ziemlich überzeugend in deine Auswahl geschlichen.',
+    '🌸 Könnte ein schöner Treffer sein, wenn du dich einfach überraschen lassen möchtest.',
+    '🥰 Der wirkt wie ein Kandidat, dem man heute ruhig ein bisschen Zeit schenken kann.',
+    '🍿 Vielleicht genau richtig für Decke, Sofa und ein bisschen Ruhe.',
+    '🎞️ Der gehört heute definitiv in die engere Auswahl.',
+    '💜 Deine Stimmung sagt zumindest: Den hier nicht übersehen.',
+    '✨ Ein weiterer kleiner Filmfund für deinen heutigen Abend.',
+    '🌙 Der könnte den Abend ziemlich angenehm in die richtige Richtung schubsen.',
+    '🐭 Maus-Empfehlung mit vorsichtigem Pfötchenstempel: anschauen lohnt sich vielleicht.',
+    '🍿 Noch einer, bei dem Popcorn jedenfalls keine schlechte Begleitung wäre.'
    ],
    mausig:[
     '🌸 Süß, verspielt und mit genau der richtigen Portion Mausigkeit.',
@@ -7008,6 +7039,157 @@ function init(){
  }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<style id="v88-shake-leaves-style">
+#v88-leaf-layer{position:fixed;inset:0;z-index:2147483646;pointer-events:none;overflow:hidden}
+.v88-leaf{position:absolute;top:-12vh;left:0;will-change:transform,opacity;
+ font-size:clamp(22px,7vw,42px);filter:drop-shadow(0 3px 3px rgba(55,20,0,.16));
+ animation:v88-fall var(--dur) cubic-bezier(.2,.55,.45,1) forwards}
+@keyframes v88-fall{
+  0%{transform:translate3d(var(--x0),-12vh,0) rotate(0deg);opacity:0}
+  8%{opacity:1}
+  35%{transform:translate3d(calc(var(--x0) + var(--sway1)),32vh,0) rotate(var(--r1))}
+  68%{transform:translate3d(calc(var(--x0) + var(--sway2)),68vh,0) rotate(var(--r2))}
+  100%{transform:translate3d(calc(var(--x0) + var(--sway3)),112vh,0) rotate(var(--r3));opacity:.15}
+}
+#v88-shake-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+#v88-shake-btn{min-height:44px;padding:9px 14px;border-radius:13px;font:inherit;font-weight:800;cursor:pointer}
+#v88-shake-status{font-size:.78rem;opacity:.78;line-height:1.25}
+@media (prefers-reduced-motion:reduce){.v88-leaf{animation-duration:.8s!important}}
+</style>
+
+<script id="v88-shake-leaves">
+(function(){
+'use strict';
+const KEY='mouseMovieShakeLeavesV88';
+let enabled=localStorage.getItem(KEY)==='1', lastShake=0, lastMotion=0, listening=false;
+const threshold=17, cooldown=2800;
+
+function layer(){
+ let l=document.getElementById('v88-leaf-layer');
+ if(!l){l=document.createElement('div');l.id='v88-leaf-layer';l.setAttribute('aria-hidden','true');document.body.appendChild(l)}
+ return l;
+}
+function leaves(){
+ const l=layer(), glyphs=['🍂','🍁','🍂','🍁','🍂'];
+ const count=18+Math.floor(Math.random()*8);
+ for(let i=0;i<count;i++){
+   const e=document.createElement('span');e.className='v88-leaf';e.textContent=glyphs[Math.floor(Math.random()*glyphs.length)];
+   const x=Math.random()*100, s1=(Math.random()*28-14), s2=(Math.random()*38-19), s3=(Math.random()*48-24);
+   e.style.setProperty('--x0',x+'vw');e.style.setProperty('--sway1',s1+'vw');e.style.setProperty('--sway2',s2+'vw');e.style.setProperty('--sway3',s3+'vw');
+   e.style.setProperty('--r1',(80+Math.random()*220)+'deg');e.style.setProperty('--r2',(260+Math.random()*420)+'deg');e.style.setProperty('--r3',(620+Math.random()*760)+'deg');
+   e.style.setProperty('--dur',(3.1+Math.random()*2.0)+'s');e.style.animationDelay=(Math.random()*.45)+'s';
+   e.style.fontSize=(22+Math.random()*24)+'px';
+   l.appendChild(e);setTimeout(()=>e.remove(),6200);
+ }
+}
+function onMotion(ev){
+ if(!enabled)return;
+ const a=ev.accelerationIncludingGravity||ev.acceleration;if(!a)return;
+ const mag=Math.sqrt((a.x||0)**2+(a.y||0)**2+(a.z||0)**2);
+ const now=Date.now();
+ if(lastMotion && Math.abs(mag-lastMotion)>threshold && now-lastShake>cooldown){lastShake=now;leaves()}
+ lastMotion=mag;
+}
+function listen(){
+ if(listening)return;window.addEventListener('devicemotion',onMotion,{passive:true});listening=true;
+}
+function status(msg){
+ const s=document.getElementById('v88-shake-status');if(s)s.textContent=msg;
+}
+async function request(){
+ try{
+   if(typeof DeviceMotionEvent==='undefined'){status('Bewegungssensor ist auf diesem Gerät nicht verfügbar.');return}
+   if(typeof DeviceMotionEvent.requestPermission==='function'){
+     const r=await DeviceMotionEvent.requestPermission();
+     if(r!=='granted'){enabled=false;localStorage.setItem(KEY,'0');status('Bewegungszugriff wurde nicht erlaubt.');return}
+   }
+   enabled=true;localStorage.setItem(KEY,'1');listen();status('Aktiv 💜 Jetzt darf geschüttelt werden.');leaves();
+ }catch(e){status('Der Bewegungszugriff konnte nicht aktiviert werden.')}
+}
+function installButton(){
+ if(document.getElementById('v88-shake-btn'))return;
+ const settings=document.querySelector('#v47-settings-overlay .v47-settings-card,#v47-settings-overlay .settings-card,#v47-settings-overlay [class*="card"]')
+   || document.querySelector('#v47-settings-overlay')
+   || document.querySelector('[id*="settings"][class*="overlay"]');
+ if(!settings)return;
+ const row=document.createElement('div');row.id='v88-shake-row';
+ const b=document.createElement('button');b.id='v88-shake-btn';b.type='button';b.textContent='🍂 Schüttel mich';b.addEventListener('click',request);
+ const s=document.createElement('div');s.id='v88-shake-status';s.textContent=enabled?'Aktiv 💜':'Einmal antippen, um den Bewegungssensor freizugeben.';
+ row.append(b,s);settings.appendChild(row);
+}
+function init(){installButton();if(enabled)listen();new MutationObserver(installButton).observe(document.body,{childList:true,subtree:true})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<style id="v88-1-mood-final-style">
+#v85-mood-overlay .v881-mood-grid{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:9px!important;
+ width:100%!important;
+ margin:8px 0 12px!important;
+}
+#v85-mood-overlay .v881-mood-button{
+ appearance:none!important;-webkit-appearance:none!important;
+ box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;
+ min-height:52px!important;height:100%!important;margin:0!important;padding:10px 10px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ text-align:center!important;white-space:normal!important;
+ border-radius:14px!important;font:inherit!important;font-size:.92rem!important;
+ font-weight:750!important;line-height:1.18!important;
+ flex:none!important;
+}
+#v85-mood-overlay .v881-mood-button.active,
+#v85-mood-overlay .v881-mood-button.selected,
+#v85-mood-overlay .v881-mood-button.is-active{
+ transform:none!important;
+}
+#v85-mood-overlay .v881-surprise{
+ grid-column:1/-1!important;width:100%!important;min-height:48px!important;margin-top:1px!important;
+}
+@media(max-width:350px){
+ #v85-mood-overlay .v881-mood-grid{grid-template-columns:1fr!important}
+ #v85-mood-overlay .v881-surprise{grid-column:1!important}
+}
+</style>
+<script id="v88-1-mood-final-normalizer">
+(function(){
+'use strict';
+const oldRx=/^(?:⚡\s*)?Spannend$|^(?:🛋️\s*)?Gemütlich$|^(?:😄\s*)?Lustig$|^(?:💜\s*)?Romantisch$|^(?:✨\s*)?Fantastisch$|^(?:🎭\s*)?Ernst$/i;
+function run(){
+ const o=document.getElementById('v85-mood-overlay');if(!o)return;
+ const old=[...o.querySelectorAll('button')].filter(b=>oldRx.test((b.textContent||'').trim()));
+ const extra=[...o.querySelectorAll('[data-v862-mood]')];
+ const moods=[...new Set([...old,...extra])];
+ if(!moods.length)return;
+ let grid=o.querySelector('.v881-mood-grid');
+ if(!grid){
+   grid=document.createElement('div');grid.className='v881-mood-grid';
+   moods[0].parentNode.insertBefore(grid,moods[0]);
+ }
+ moods.forEach(b=>{
+   b.classList.add('v881-mood-button');
+   // remove historical layout classes that could keep old/new buttons visually different
+   b.style.width='';b.style.flex='';b.style.margin='';
+   grid.appendChild(b);
+ });
+ const surprise=[...o.querySelectorAll('button')].find(b=>/Überrasch mich nach Stimmung/i.test(b.textContent||''));
+ if(surprise){
+   surprise.classList.add('v881-mood-button','v881-surprise');
+   grid.appendChild(surprise);
+ }
+ // Old wrappers no longer participate in layout.
+ [...o.querySelectorAll('.v862-extra-moods')].forEach(w=>{
+   if(!w.querySelector('button'))w.style.display='none';
+ });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 })();
 </script>
 

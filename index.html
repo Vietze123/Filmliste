@@ -6542,5 +6542,114 @@ window.addEventListener('pageshow',apply);
 })();
 </script>
 
+
+<style id="v86-2-mood-styles">
+#v85-mood-overlay .v862-extra-moods{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+#v85-mood-overlay .v862-extra-moods button{flex:1 1 145px}
+#v85-mood-overlay .v862-stream{display:inline-flex;align-items:center;justify-content:center;
+  margin-top:8px;padding:9px 12px;border-radius:12px;text-decoration:none;font-weight:800}
+#v85-mood-overlay .v862-result-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+</style>
+<script id="v86-2-mood-extension">
+(function(){
+'use strict';
+const configs={
+ mausig:{label:'🌸 Mausig', plus:['animation','familie','family','romantik','romance','liebesfilm','romantische komödie','komödie','comedy','fantasy'], minus:['horror','krimi','crime'], light:true},
+ nachtschicht:{label:'🌙 Für die Nachtschicht', plus:['action','komödie','comedy','abenteuer','adventure','krimi','crime','heist'], minus:['drama','biografie','history','historie'], light:true},
+ abschalten:{label:'🍿 Einfach abschalten', plus:['komödie','comedy','familie','family','animation','abenteuer','adventure','romantik'], minus:['horror','drama'], light:true},
+ raetseln:{label:'🕵️ Rätseln & Mitfiebern', plus:['mystery','krimi','crime','thriller','heist'], minus:['romantik','romance'], light:false},
+ zuviel:{label:'🥹 Heute ist alles mal wieder ein bisschen zu viel', plus:['romantik','romance','liebesfilm','drama','romantisches drama','familie'], minus:['horror','action'], light:false},
+ abenteuer:{label:'🚀 Lust auf Abenteuer', plus:['abenteuer','adventure','action','sci-fi','science-fiction','fantasy','animation'], minus:[], light:false},
+ gruselig:{label:'👻 Ein bisschen gruselig', plus:['horror','thriller','mystery'], minus:['romantik','romance','familie'], light:false}
+};
+function norm(s){return (s||'').toLowerCase()}
+function platformOf(card){return card.dataset.platform||card.querySelector('.platform')?.textContent||''}
+function streamLink(card){return card.querySelector('a.watch[href],a[href*="netflix"],a[href*="primevideo"],a[href*="amazon"]')}
+function titleOf(card){return card.querySelector('h2')?.textContent?.trim()||'Film'}
+function watched(card){return card.classList.contains('is-watched')||card.dataset.watched==='true'||card.querySelector('.watched-btn')?.classList.contains('active')}
+function score(card,cfg){
+ const t=norm(card.textContent+' '+(card.dataset.search||''));
+ let s=0;
+ cfg.plus.forEach((x,i)=>{if(t.includes(x))s+=Math.max(2,6-Math.floor(i/2))});
+ cfg.minus.forEach(x=>{if(t.includes(x))s-=4});
+ if(!watched(card))s+=2;
+ if(cfg.light && /komödie|comedy|animation|abenteuer|adventure/.test(t))s+=2;
+ return s;
+}
+function chosenPlatform(){
+ const active=document.querySelector('#v85-mood-overlay [data-v85-platform].active,#v85-mood-overlay [data-platform].active');
+ return norm(active?.dataset.v85Platform||active?.dataset.platform||active?.textContent||'alle');
+}
+function eligibleCards(cfg){
+ const pf=chosenPlatform();
+ return [...document.querySelectorAll('article.movie')].filter(c=>{
+   const cp=norm(platformOf(c));
+   return (pf.includes('alle')||!pf||cp.includes(pf));
+ }).map(c=>({c,s:score(c,cfg)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+}
+function resultHost(){
+ return document.querySelector('#v85-mood-overlay #v85-mood-results,#v85-mood-overlay .v85-mood-results,#v85-mood-overlay [data-v85-results]');
+}
+function render(cfg, surprise){
+ const ranked=eligibleCards(cfg);
+ const host=resultHost();
+ if(!host) return false;
+ host.innerHTML='';
+ const picks=surprise ? (ranked.length?[ranked[Math.floor(Math.random()*Math.min(12,ranked.length))]]:[]) : ranked.slice(0,5);
+ if(!picks.length){host.innerHTML='<p>Gerade habe ich dafür keinen passenden Film gefunden. Probier eine andere Kombination 💜</p>';return true}
+ picks.forEach(({c})=>{
+   const box=document.createElement('div'); box.className='v862-result';
+   const h3=document.createElement('h3'); h3.textContent=titleOf(c); box.appendChild(h3);
+   const meta=document.createElement('div'); meta.textContent=(c.querySelector('.genre')?.textContent||'').trim(); box.appendChild(meta);
+   const actions=document.createElement('div'); actions.className='v862-result-actions';
+   const link=streamLink(c);
+   if(link){
+     const a=document.createElement('a'); a.className='v862-stream watch'; a.href=link.href; a.target='_blank'; a.rel='noopener';
+     const pf=norm(platformOf(c)); a.textContent=pf.includes('prime')?'▶ Auf Prime öffnen':'▶ Auf Netflix öffnen';
+     actions.appendChild(a);
+   }
+   box.appendChild(actions); host.appendChild(box);
+ });
+ return true;
+}
+function addButtons(){
+ const overlay=document.getElementById('v85-mood-overlay'); if(!overlay||overlay.dataset.v862Ready)return;
+ const anchor=[...overlay.querySelectorAll('button')].find(b=>/Ernst/i.test(b.textContent));
+ if(!anchor)return;
+ const parent=anchor.parentElement;
+ const wrap=document.createElement('div'); wrap.className='v862-extra-moods';
+ Object.entries(configs).forEach(([key,cfg])=>{
+   const b=document.createElement('button'); b.type='button'; b.textContent=cfg.label; b.dataset.v862Mood=key;
+   b.addEventListener('click',()=>{overlay.querySelectorAll('[data-v862-mood]').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(cfg,false)});
+   wrap.appendChild(b);
+ });
+ const surprise=document.createElement('button'); surprise.type='button'; surprise.textContent='🎲 Überrasch mich nach Stimmung';
+ surprise.addEventListener('click',()=>{
+   const active=overlay.querySelector('[data-v862-mood].active');
+   const cfg=active?configs[active.dataset.v862Mood]:configs.mausig; render(cfg,true);
+ });
+ wrap.appendChild(surprise);
+ parent.insertAdjacentElement('afterend',wrap);
+ overlay.dataset.v862Ready='1';
+}
+function addLinksToLegacyResults(){
+ const overlay=document.getElementById('v85-mood-overlay'); if(!overlay)return;
+ const host=resultHost(); if(!host)return;
+ [...host.children].forEach(box=>{
+   if(box.querySelector('.v862-stream'))return;
+   const title=(box.querySelector('h3,h4,strong')?.textContent||box.textContent||'').trim();
+   if(!title)return;
+   const card=[...document.querySelectorAll('article.movie')].find(c=>title.includes(titleOf(c))||titleOf(c).includes(title));
+   const link=card&&streamLink(card); if(!link)return;
+   const a=document.createElement('a'); a.className='v862-stream watch'; a.href=link.href;a.target='_blank';a.rel='noopener';
+   a.textContent=norm(platformOf(card)).includes('prime')?'▶ Auf Prime öffnen':'▶ Auf Netflix öffnen'; box.appendChild(a);
+ });
+}
+const mo=new MutationObserver(()=>{addButtons();addLinksToLegacyResults()});
+function init(){addButtons();addLinksToLegacyResults();const o=document.getElementById('v85-mood-overlay');if(o)mo.observe(o,{childList:true,subtree:true})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>

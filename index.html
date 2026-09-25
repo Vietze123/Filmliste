@@ -6430,8 +6430,61 @@ function render(){
  if(sel.mood) ranked=ranked.filter(d=>d.score>0);
  ranked=ranked.slice(0,5);
  if(!ranked.length){results.innerHTML='<div class="v85-empty">Dazu habe ich gerade keinen passenden, noch nicht angesehenen Film gefunden. Probiere eine andere Kombination.</div>';return}
+ const msgPools={
+   top:[
+    '💜 Der könnte heute ziemlich genau deine Richtung treffen.',
+    '✨ Der fühlt sich für deine Auswahl gerade besonders passend an.',
+    '🍿 Mein erster Gedanke für deinen Filmabend wäre dieser hier.',
+    '🌸 Der hat sich bei deiner Auswahl ziemlich weit nach vorne gemogelt.',
+    '🎬 Wenn ich mit einem anfangen müsste, würde ich dir den hier zuerst zeigen.',
+    '🥰 Der könnte genau die richtige Mischung für heute mitbringen.',
+    '💫 Bei deinen Wünschen hat dieser Film besonders viele Treffer gesammelt.',
+    '🐭 Kleiner Maus-Tipp: Den würde ich heute ganz oben auf den Stapel legen.'
+   ],
+   more:[
+    '✨ Der passt ebenfalls sehr schön zu dem, wonach dir gerade ist.',
+    '🍿 Auch der könnte heute richtig gut funktionieren.',
+    '💜 Den würde ich für deine aktuelle Stimmung auf jeden Fall mitnehmen.',
+    '🎬 Ebenfalls ein ziemlich guter Kandidat für heute.',
+    '🌷 Der bringt einiges von dem mit, was du gerade ausgewählt hast.',
+    '🥰 Vielleicht genau der Film, bei dem du heute hängenbleibst.',
+    '💫 Der hat sich ebenfalls einen Platz in deiner kleinen Auswahl verdient.',
+    '🐭 Auch den würde die Maus nicht einfach vorbeihuschen lassen.',
+    '🌙 Für den heutigen Filmabend ist der definitiv einen Blick wert.',
+    '✨ Der könnte dich heute angenehm überraschen.',
+    '🍿 Noch ein Kandidat, der ziemlich gut in deine Auswahl hineinpasst.',
+    '💜 Der wäre ebenfalls eine schöne Richtung für heute.'
+   ],
+   mausig:[
+    '🌸 Süß, verspielt und mit genau der richtigen Portion Mausigkeit.',
+    '💜 Der könnte heute wunderbar in einen besonders mausigen Filmabend passen.',
+    '✨ Ein kleiner Wohlfühl-Kandidat mit Charme für die Maus.',
+    '🥰 Der sieht nach einer ziemlich guten Portion Herz und Gemütlichkeit aus.'
+   ],
+   night:[
+    '🌙 Genau die Art Film, die eine Nachtschicht ein bisschen unterhaltsamer machen kann.',
+    '☕ Genug Tempo zum Wachbleiben, aber hoffentlich ohne unnötig anstrengend zu werden.',
+    '🍿 Ein ziemlich guter Kandidat für leichte Unterhaltung zu später Stunde.',
+    '✨ Der könnte sich gut machen, wenn die Nacht noch ein bisschen länger wird.'
+   ],
+   tooMuch:[
+    '💜 Vielleicht ein Film, bei dem der Rest der Welt für eine Weile etwas leiser werden darf.',
+    '🌷 Der könnte gerade gut passen, wenn heute einfach schon genug los war.',
+    '🥰 Vielleicht genau richtig, um sich für eine Weile in einen Film zu verkriechen.',
+    '✨ Für einen Abend, an dem nicht noch mehr von dir verlangt werden soll.'
+   ]
+ };
+ function moodMessage(i,d){
+   let pool=i===0?msgPools.top:msgPools.more;
+   if(sel.mood==='mausig') pool=msgPools.mausig.concat(pool);
+   if(sel.mood==='nachtschicht') pool=msgPools.night.concat(pool);
+   if(sel.mood==='zuviel') pool=msgPools.tooMuch.concat(pool);
+   const seed=(d.title+'|'+String(sel.mood)+'|'+String(sel.tone)+'|'+String(sel.platform)+'|'+new Date().toDateString());
+   let n=0;for(let x=0;x<seed.length;x++)n=(Math.imul(n,31)+seed.charCodeAt(x))>>>0;
+   return pool[n%pool.length];
+ }
  results.innerHTML=ranked.map((d,i)=>'<article class="v85-result"><h3>'+esc(d.title)+'</h3><p>'+
-   (i===0?'Passt besonders gut zu deiner Auswahl.':'Ebenfalls eine gute Möglichkeit für heute.')+
+   esc(moodMessage(i,d))+
    '</p></article>').join('');
 }
 $('v85-mood-go').addEventListener('click',render);
@@ -6842,6 +6895,117 @@ function init(){
  normalizeSelection(o);bridgeToLegacyRenderer(o);
  const mo=new MutationObserver(()=>{normalizeSelection(o);bridgeToLegacyRenderer(o)});
  mo.observe(o,{childList:true,subtree:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<script id="v87-2-selection-message-note">
+/* v87.2: recommendation copy now varies by film, selection, mood and calendar day. */
+</script>
+
+<style id="v87-3-mood-button-layout-fix">
+/* v87.3 — one visual system for every selectable mood */
+#v85-mood-overlay .v862-extra-moods{display:contents!important}
+
+/* Original v85 moods + added v86.2 moods */
+#v85-mood-overlay button[data-v85-mood],
+#v85-mood-overlay [data-v862-mood]{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  white-space:normal!important;
+  min-height:48px!important;
+  height:auto!important;
+  padding:10px 12px!important;
+  margin:0!important;
+  border-radius:14px!important;
+  font:inherit!important;
+  font-weight:700!important;
+  line-height:1.18!important;
+  flex:1 1 calc(50% - 5px)!important;
+  width:calc(50% - 5px)!important;
+  max-width:none!important;
+}
+
+/* Some historical v85 buttons do not carry data-v85-mood; JS marks them below. */
+#v85-mood-overlay .v873-mood-choice{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  white-space:normal!important;
+  min-height:48px!important;
+  height:auto!important;
+  padding:10px 12px!important;
+  margin:0!important;
+  border-radius:14px!important;
+  font:inherit!important;
+  font-weight:700!important;
+  line-height:1.18!important;
+  flex:1 1 calc(50% - 5px)!important;
+  width:calc(50% - 5px)!important;
+  max-width:none!important;
+}
+
+/* Force the containing mood area itself to use one two-column grid-like flex flow. */
+#v85-mood-overlay .v873-mood-container{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px 10px!important;
+  align-items:stretch!important;
+}
+
+/* Selected state identical for old and new mood choices. */
+#v85-mood-overlay .v873-mood-choice.active,
+#v85-mood-overlay [data-v862-mood].active,
+#v85-mood-overlay button[data-v85-mood].active{
+  transform:none!important;
+}
+
+/* Surprise is deliberately a separate full-width action, not another selectable mood. */
+#v85-mood-overlay .v873-surprise-mood{
+  width:100%!important;
+  flex:1 0 100%!important;
+  min-height:46px!important;
+  margin-top:2px!important;
+}
+
+@media (max-width:380px){
+ #v85-mood-overlay .v873-mood-choice,
+ #v85-mood-overlay [data-v862-mood],
+ #v85-mood-overlay button[data-v85-mood]{
+   flex-basis:100%!important;
+   width:100%!important;
+ }
+}
+</style>
+<script id="v87-3-mood-button-layout">
+(function(){
+'use strict';
+function init(){
+ const o=document.getElementById('v85-mood-overlay'); if(!o)return;
+ const old=[...o.querySelectorAll('button')].filter(b=>/^(Spannend|Gemütlich|Lustig|Romantisch|Fantastisch|Ernst)$/i.test((b.textContent||'').trim()));
+ const extra=[...o.querySelectorAll('[data-v862-mood]')];
+ const all=[...old,...extra];
+ all.forEach(b=>b.classList.add('v873-mood-choice'));
+
+ // Move all selectable moods into exactly one visual container while preserving
+ // the actual button nodes and therefore all existing event handlers.
+ let box=o.querySelector('.v873-mood-container');
+ if(!box && old.length){
+   box=document.createElement('div'); box.className='v873-mood-container';
+   old[0].parentElement.insertBefore(box,old[0]);
+ }
+ if(box){
+   all.forEach(b=>box.appendChild(b));
+   const surprise=[...o.querySelectorAll('button')].find(b=>/Überrasch mich nach Stimmung/i.test(b.textContent||''));
+   if(surprise){surprise.classList.add('v873-surprise-mood');box.appendChild(surprise)}
+ }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

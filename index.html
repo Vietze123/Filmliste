@@ -7097,9 +7097,7 @@ function onMotion(ev){
 function listen(){
  if(listening)return;window.addEventListener('devicemotion',onMotion,{passive:true});listening=true;
 }
-function status(msg){
- const s=document.getElementById('v88-shake-status');if(s)s.textContent=msg;
-}
+function status(msg){}
 async function request(){
  try{
    if(typeof DeviceMotionEvent==='undefined'){status('Bewegungssensor ist auf diesem Gerät nicht verfügbar.');return}
@@ -7117,8 +7115,8 @@ function installButton(){
    || document.querySelector('[id*="settings"][class*="overlay"]');
  if(!settings)return;
  const row=document.createElement('div');row.id='v88-shake-row';
- const b=document.createElement('button');b.id='v88-shake-btn';b.type='button';b.textContent='🍂 Schüttel mich';b.addEventListener('click',request);
- const s=document.createElement('div');s.id='v88-shake-status';s.textContent=enabled?'Aktiv 💜':'Einmal antippen, um den Bewegungssensor freizugeben.';
+ const b=document.createElement('button');b.id='v88-shake-btn';b.type='button';b.textContent='Schüttel mich';b.addEventListener('click',request);
+ const s=document.createElement('div');s.id='v88-shake-status';s.textContent='';s.hidden=true;
  row.append(b,s);settings.appendChild(row);
 }
 function init(){installButton();if(enabled)listen();new MutationObserver(installButton).observe(document.body,{childList:true,subtree:true})}
@@ -7190,6 +7188,45 @@ function run(){
  });
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+})();
+</script>
+
+
+<style id="v88-2-shake-visible-style">
+#v88-shake-visible-wrap{width:100%;display:flex;justify-content:center;margin:8px 0 4px}
+#v88-shake-visible-btn{
+ appearance:none;-webkit-appearance:none;min-height:46px;padding:10px 17px;border-radius:15px;
+ border:1px solid rgba(118,66,145,.24);font:inherit;font-weight:800;cursor:pointer;
+ box-shadow:0 5px 18px rgba(82,42,105,.10)
+}
+</style>
+<script id="v88-3-shake-easteregg-control">
+(function(){
+'use strict';
+function place(){
+ if(document.getElementById('v88-shake-visible-btn'))return;
+ const anchor=document.querySelector('.v44-main-actions') ||
+              document.getElementById('v85-mood-open')?.parentElement ||
+              document.getElementById('v6-surprise')?.parentElement;
+ if(!anchor)return;
+ const outer=document.createElement('div');
+ outer.innerHTML='<div id="v88-shake-visible-wrap"><button id="v88-shake-visible-btn" type="button">Schüttel mich</button></div>';
+ anchor.appendChild(outer);
+ document.getElementById('v88-shake-visible-btn').addEventListener('click',async()=>{
+   const hidden=document.getElementById('v88-shake-btn');
+   if(hidden){hidden.click();return}
+   try{
+     if(typeof DeviceMotionEvent==='undefined')return;
+     if(typeof DeviceMotionEvent.requestPermission==='function'){
+       const r=await DeviceMotionEvent.requestPermission();
+       if(r!=='granted')return;
+     }
+     localStorage.setItem('mouseMovieShakeLeavesV88','1');
+     location.reload();
+   }catch(e){}
+ });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place,{once:true});else place();
 })();
 </script>
 

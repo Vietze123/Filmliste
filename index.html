@@ -7519,5 +7519,207 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="v90-filmabend-style">
+#v90-overlay{display:none;position:fixed;inset:0;z-index:2147483647;overflow:auto;padding:14px;background:radial-gradient(circle at 50% 0%,rgba(242,178,226,.28),transparent 42%),linear-gradient(180deg,rgba(40,16,48,.93),rgba(72,29,72,.96));backdrop-filter:blur(8px)}
+#v90-overlay.open{display:block}
+#v90-shell{width:min(620px,100%);margin:8px auto 30px;color:#4e2558;background:linear-gradient(155deg,#fff5fc,#fbe7f7 55%,#f3e7ff);border:1px solid rgba(255,255,255,.7);border-radius:28px;padding:17px;box-shadow:0 24px 80px rgba(22,4,31,.38);position:relative;overflow:hidden}
+#v90-shell:before{content:"✦  ♡  ✦";position:absolute;right:18px;top:11px;color:#c36ab0;opacity:.35;letter-spacing:7px}
+#v90-close{float:right;border:0;background:rgba(120,65,135,.09);border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;position:relative;z-index:2}
+.v90-kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.13em;font-weight:900;color:#a45299}.v90-title{margin:3px 42px 4px 0;font-size:1.55rem}.v90-copy{margin:0 0 15px;color:#76567d;line-height:1.4}
+.v90-progress{display:flex;gap:6px;margin:12px 0 16px}.v90-dot{height:6px;flex:1;border-radius:99px;background:#ead3e8}.v90-dot.on{background:#b65aa6}
+.v90-panel{display:none}.v90-panel.on{display:block;animation:v90in .25s ease}@keyframes v90in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.v90-section{margin:15px 0}.v90-section h3{font-size:.96rem;margin:0 0 8px}.v90-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.v90-choice{min-height:49px;padding:9px 10px;border:1px solid rgba(139,76,145,.18);border-radius:15px;background:rgba(255,255,255,.67);color:#58295e;font:inherit;font-weight:800;cursor:pointer}
+.v90-choice.active{background:#f1c9e8;outline:3px solid rgba(181,87,163,.17)}
+.v90-primary,.v90-secondary{width:100%;min-height:50px;border-radius:15px;font:inherit;font-weight:900;cursor:pointer;margin-top:10px}.v90-primary{border:0;background:linear-gradient(135deg,#b957a5,#8853b6);color:white}.v90-secondary{border:1px solid rgba(126,70,135,.22);background:rgba(255,255,255,.62);color:#5b2e64}
+.v90-ticket{padding:10px 12px;border:1px dashed rgba(139,76,145,.35);border-radius:15px;background:rgba(255,255,255,.5);margin:10px 0}.v90-ticket-row{display:flex;gap:8px;align-items:center;font-size:.88rem;margin:4px 0}.v90-slot{font-weight:900;color:#a54d94}
+.v90-duel{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v90-film{border:1px solid rgba(139,76,145,.2);border-radius:19px;background:rgba(255,255,255,.64);padding:12px;display:flex;flex-direction:column;min-height:210px}.v90-film h3{margin:0 0 6px;font-size:1.02rem}.v90-meta{font-size:.78rem;color:#806486;margin-bottom:7px}.v90-desc{font-size:.85rem;line-height:1.35;flex:1;color:#684d6d}.v90-pick{margin-top:10px;border:0;border-radius:13px;min-height:43px;background:#edd0e8;color:#5a285f;font:inherit;font-weight:900;cursor:pointer}
+.v90-wild{margin:5px 0 10px;text-align:center;font-weight:900;color:#a64c91;animation:v90pulse .8s ease}@keyframes v90pulse{50%{transform:scale(1.035)}}
+.v90-program{display:grid;gap:10px}.v90-program-card{padding:13px;border-radius:17px;background:rgba(255,255,255,.62);border:1px solid rgba(139,76,145,.18)}.v90-program-card h3{margin:0 0 5px}.v90-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.v90-actions a,.v90-actions button{padding:8px 10px;border-radius:11px;border:1px solid rgba(120,70,130,.2);background:#fff7fd;color:#5b2e64;text-decoration:none;font:inherit;font-weight:800;cursor:pointer}
+.v90-final{font-size:1.02rem;font-weight:850;margin:7px 0 13px}.v90-spark{position:absolute;pointer-events:none;animation:v90spark 1.7s ease-out forwards}@keyframes v90spark{to{transform:translateY(-80px) rotate(120deg);opacity:0}}
+@media(max-width:410px){.v90-duel{grid-template-columns:1fr}.v90-film{min-height:0}.v90-grid{grid-template-columns:1fr 1fr}}
+html[data-theme="mausig"] body.v53 > #v90-overlay:not(#v66-mobile-bg){position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;margin:0!important;z-index:2147483647!important;transform:none!important}
+</style>
+
+<script id="v90-filmabend-mode">
+(function(){
+'use strict';
+const STORE='mouseMovieAppV6', SESSION='mouseMovieNightV90';
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const key=s=>norm(s).replace(/[^a-z0-9äöüß]+/gi,'_');
+const $=q=>document.querySelector(q);
+const cards=()=>[...document.querySelectorAll('article.movie')];
+function title(c){return c?.querySelector('h2,h3,.title,.movie-title')?.textContent?.trim()||''}
+function state(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return {}}}
+function watched(c){let s=state(),id=key(title(c));return !!(s.watched&&s.watched[id])||c.classList.contains('v6-watched')||c.classList.contains('is-watched')||c.classList.contains('watched')||c.dataset.watched==='true'}
+function provider(c){return /prime/i.test(c?.textContent||'')?'Prime':'Netflix'}
+function stream(c){return [...(c?.querySelectorAll('a[href]')||[])].find(a=>/netflix|primevideo|amazon/i.test(a.href))?.href||''}
+function genre(c){let t=norm(c?.textContent),a=[];[['Komödie','komö'],['Romantik','romant'],['Drama','drama'],['Thriller','thriller'],['Krimi','krimi'],['Action','action'],['Fantasy','fantasy'],['Sci-Fi','sci-fi'],['Horror','horror'],['Animation','animation'],['Abenteuer','abenteuer']].forEach(x=>{if(t.includes(x[1]))a.push(x[0])});return a.slice(0,2).join(' · ')}
+function desc(c){let p=[...c.querySelectorAll('p')].map(x=>x.textContent.trim()).find(x=>x.length>35);return p||'Vielleicht genau der richtige Kandidat für euren gemeinsamen Filmabend.'}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+const pools={
+ welcome:[
+ 'Mach es dir gemütlich, Maus 💜 Heute bauen wir deinen Filmabend gemeinsam zusammen.',
+ 'Kinoabend-Zeit, kleine Maus ✨ Diesmal entscheidest nicht ein Filter – sondern du.',
+ 'Sofa bereit, Maus? 🍿 Dann stellen wir jetzt deinen ganz eigenen Filmabend zusammen.',
+ 'Heute gibt es kein endloses Suchen, Maus 💕 Wir spielen uns einfach zum Filmabend.',
+ 'Licht aus, Snacks bereit? 🎬 Dann darf die Maus heute ihre Favoriten ins Programm wählen.',
+ 'Ein kleiner Kinoabend nur für dich, Maus 💜 Mal sehen, welche Filme sich durchsetzen.'
+ ],
+ duel:[
+ 'Welcher darf für dich eine Runde weiter, Maus? 💜','Zwei Kandidaten, eine Entscheidung – wem gibst du die nächste Runde? 🍿',
+ 'Was sagt dein Bauchgefühl, kleine Maus? ✨','Wer bekommt deinen Punkt, Maus? 🎬','Welcher von beiden macht dich gerade neugieriger? 💕',
+ 'Nicht zu lange grübeln, Maus – der erste Impuls zählt. 🌸','Wer darf im Rennen bleiben? 🍿','Maus, welcher Kandidat hat gerade die Nase vorn? 💜',
+ 'Zeit fürs nächste kleine Filmduell ✨','Welcher Film darf sich gegen den nächsten Herausforderer behaupten? 🎬',
+ 'Einer von beiden darf weiter – du entscheidest, Maus. 💕','Wer bekommt heute dein kleines Kino-Votum? 🍿'
+ ],
+ chosen:[
+ 'Der darf bleiben, Maus 💜','Gute Wahl, Kleine ✨','Okay Maus, der Kandidat ist noch im Rennen 🎬','Der hat dich also überzeugt 💕',
+ 'Eine Runde weiter – mal sehen, ob der nächste ihn schlagen kann 🍿','Punkt für diesen Kandidaten, Maus 🌸','Der verteidigt seinen Platz erst einmal 💜',
+ 'Notiert, kleine Maus – weiter geht’s ✨','Der bekommt deine Stimme 🎬','Das war eindeutig genug für die nächste Runde 💕',
+ 'Sehr schön, Maus – jetzt kommt der nächste Herausforderer 🍿','Der bleibt im Scheinwerferlicht ✨','Eine kleine Stimme, ein großer Schritt Richtung Filmabend 💜',
+ 'Der Kandidat darf weiterträumen, Maus 🌙','Ausgewählt! Mal sehen, wie lange er sich halten kann 🎬'
+ ],
+ slot:[
+ 'Geschafft, Maus! 💜 Der erste Platz auf deinem Filmabend-Ticket ist vergeben.',
+ 'Der hat sich seinen Platz verdient 🍿 Ab aufs Filmabend-Ticket!',
+ 'Ein Film steht fest, kleine Maus ✨ Jetzt suchen wir den nächsten.',
+ 'Der kommt mit auf den Sofa-Abend 💕 Ein Platz weniger ist noch frei.',
+ 'Ticket abgestempelt, Maus 🎟️ Dieser Film ist dabei.',
+ 'Der hat die Duelle überstanden 🎬 Willkommen in deinem Filmabend-Programm!',
+ 'Sehr schön, Maus 💜 Einer ist sicher – weiter zum nächsten Platz.',
+ 'Ein Kandidat hat es geschafft ✨ Der Filmabend nimmt Form an.'
+ ],
+ wildcard:[
+ '🎲 Wildcard, Maus! Jetzt kommt ein kleiner Überraschungsgast.',
+ '✨ Überraschungsrunde! Dieser Kandidat schleicht sich einfach ins Duell.',
+ '🎲 Kleine Maus, Zeit für etwas Unerwartetes – Wildcard!',
+ '🍿 Plot Twist: Ein Außenseiter möchte auch noch mitspielen.',
+ '💜 Wildcard-Runde! Vielleicht versteckt sich hier ja dein Überraschungsfavorit.',
+ '🎬 Ein spontaner Herausforderer betritt die Bühne!'
+ ],
+ final:[
+ 'Dein Filmabend steht, Maus! 🍿💜','Geschafft, kleine Maus – das ist dein heutiges Kinoprogramm ✨',
+ 'Vorhang auf für deinen Filmabend, Maus 🎬','Die Duelle sind vorbei – jetzt darf gekuschelt und geschaut werden 💕',
+ 'Maus, dein persönliches Filmabend-Ticket ist fertig 🎟️','Ausgesucht! Jetzt fehlen eigentlich nur noch Snacks 🍿',
+ 'Das Programm steht, kleine Maus 💜 Viel Spaß bei deinem Filmabend!','Finale! Diese Filme haben sich heute bei dir durchgesetzt ✨'
+ ],
+ shuffle:[
+ 'Einmal durchgemischt, Maus 🔀','Neue Reihenfolge – vielleicht fühlt es sich so noch besser an 💜',
+ 'Kleine Maus, das Programm wurde einmal neu sortiert ✨','Mischen, mischen… fertig! 🍿','Neue Reihenfolge, gleicher schöner Filmabend 🎬'
+ ]
+};
+let lastMsg={};
+function msg(type){
+ let a=pools[type],prev=lastMsg[type],choices=a.filter(x=>x!==prev),v=choices[Math.floor(Math.random()*choices.length)]||a[0];lastMsg[type]=v;return v;
+}
+let S={count:2,platform:'all',wins:0,needed:3,champ:null,challenger:null,selected:[],used:[],round:0,wild:false};
+function saveSession(){try{sessionStorage.setItem(SESSION,JSON.stringify(S))}catch(e){}}
+function eligible(){
+ return cards().filter(c=>!watched(c)&&!S.selected.includes(title(c))&&(S.platform==='all'||norm(provider(c))===S.platform));
+}
+function randomCard(exclude=[]){
+ let a=eligible().filter(c=>!exclude.includes(title(c)));
+ if(!a.length)return null;
+ // avoid repeating recent duel cards until necessary
+ let fresh=a.filter(c=>!S.used.includes(title(c)));if(fresh.length) a=fresh;
+ return a[Math.floor(Math.random()*a.length)];
+}
+function progress(step){document.querySelectorAll('.v90-dot').forEach((d,i)=>d.classList.toggle('on',i<=step))}
+function panel(id){document.querySelectorAll('.v90-panel').forEach(x=>x.classList.remove('on'));$('#'+id).classList.add('on')}
+function ticket(){
+ let e=$('#v90-ticket');if(!e)return;
+ e.innerHTML=Array.from({length:S.count},(_,i)=>`<div class="v90-ticket-row"><span class="v90-slot">${i+1}.</span><span>${S.selected[i]?esc(S.selected[i]):'Noch offen ✨'}</span></div>`).join('');
+}
+function startDuels(){
+ if(eligible().length<S.count){$('#v90-plan-note').textContent='Für diese Auswahl sind nicht genug ungesehene Filme verfügbar, Maus. 💜';return}
+ S.wins=0;S.champ=randomCard();S.used=[];S.selected=[];S.round=0;S.wild=false;
+ if(!S.champ)return;
+ S.used.push(title(S.champ));S.challenger=randomCard([title(S.champ)]);if(S.challenger)S.used.push(title(S.challenger));
+ ticket();progress(1);panel('v90-duels');renderDuel();saveSession();
+}
+function filmHTML(c,side){
+ if(!c)return '';
+ return `<div class="v90-film"><h3>${esc(title(c))}</h3><div class="v90-meta">${provider(c)}${genre(c)?' · '+esc(genre(c)):''}</div><div class="v90-desc">${esc(desc(c))}</div><button class="v90-pick" data-v90-pick="${side}">💜 Den nehme ich</button></div>`;
+}
+function renderDuel(){
+ if(!S.champ||!S.challenger){finishSlot();return}
+ S.round++;
+ let wild=S.round>2&&Math.random()<.18;
+ $('#v90-duel-message').textContent=msg('duel');
+ $('#v90-wild').textContent=wild?msg('wildcard'):'';
+ $('#v90-duel-box').innerHTML=filmHTML(S.champ,'champ')+filmHTML(S.challenger,'challenger');
+ $('#v90-duel-box').querySelectorAll('[data-v90-pick]').forEach(b=>b.onclick=()=>pick(b.dataset.v90Pick));
+ ticket();saveSession();
+}
+function pick(side){
+ let winner=side==='champ'?S.champ:S.challenger;
+ if(side==='challenger')S.champ=S.challenger;
+ S.wins++;
+ $('#v90-duel-message').textContent=msg('chosen');
+ sparkle();
+ if(S.wins>=S.needed){setTimeout(finishSlot,420);return}
+ S.challenger=randomCard([title(S.champ)]);
+ if(S.challenger)S.used.push(title(S.challenger));
+ setTimeout(renderDuel,420);
+}
+function finishSlot(){
+ if(S.champ&&!S.selected.includes(title(S.champ)))S.selected.push(title(S.champ));
+ $('#v90-duel-message').textContent=msg('slot');ticket();sparkle();
+ if(S.selected.length>=S.count){setTimeout(showFinal,650);return}
+ S.wins=0;S.champ=randomCard();if(S.champ)S.used.push(title(S.champ));
+ S.challenger=randomCard(S.champ?[title(S.champ)]:[]);if(S.challenger)S.used.push(title(S.challenger));
+ setTimeout(renderDuel,650);
+}
+function showFinal(){
+ progress(2);panel('v90-final-panel');$('#v90-final-msg').textContent=msg('final');renderProgram();sparkle(12);saveSession();
+}
+function findCard(n){return cards().find(c=>title(c)===n)}
+function renderProgram(){
+ $('#v90-program').innerHTML=S.selected.map((n,i)=>{let c=findCard(n),u=stream(c),p=provider(c);
+ return `<div class="v90-program-card"><h3>${i+1}. ${esc(n)}</h3><div class="v90-meta">${p}${genre(c)?' · '+esc(genre(c)):''}</div><div class="v90-actions">${u?`<a href="${esc(u)}" target="_blank" rel="noopener">▶ Auf ${p} öffnen</a>`:''}<button data-v90-seen="${encodeURIComponent(n)}">✓ Angeschaut</button><button data-v90-swap="${encodeURIComponent(n)}">↻ Austauschen</button></div></div>`}).join('');
+ $('#v90-program').querySelectorAll('[data-v90-seen]').forEach(b=>b.onclick=()=>markSeen(decodeURIComponent(b.dataset.v90Seen)));
+ $('#v90-program').querySelectorAll('[data-v90-swap]').forEach(b=>b.onclick=()=>swap(decodeURIComponent(b.dataset.v90Swap)));
+}
+function markSeen(n){
+ let c=findCard(n);if(!c)return;
+ let b=[...c.querySelectorAll('button')].find(x=>/angesehen|gesehen|watched/i.test((x.textContent||'')+' '+(x.title||'')));
+ if(b)b.click();else{let s=state();s.watched=s.watched||{};s.watched[key(n)]=true;localStorage.setItem(STORE,JSON.stringify(s))}
+ renderProgram();
+}
+function swap(n){
+ let idx=S.selected.indexOf(n),c=randomCard(S.selected);if(!c)return;
+ S.selected[idx]=title(c);$('#v90-final-msg').textContent='Ein frischer Kandidat für dich, Maus ✨';renderProgram();saveSession();
+}
+function shuffle(){
+ for(let i=S.selected.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[S.selected[i],S.selected[j]]=[S.selected[j],S.selected[i]]}
+ $('#v90-final-msg').textContent=msg('shuffle');renderProgram();saveSession();
+}
+function sparkle(n=6){
+ let shell=$('#v90-shell');for(let i=0;i<n;i++){let e=document.createElement('span');e.className='v90-spark';e.textContent=['✨','💜','✦'][i%3];e.style.left=(15+Math.random()*70)+'%';e.style.top=(35+Math.random()*45)+'%';shell.appendChild(e);setTimeout(()=>e.remove(),1800)}
+}
+function open(){S={count:2,platform:'all',wins:0,needed:3,champ:null,challenger:null,selected:[],used:[],round:0,wild:false};$('#v90-welcome').textContent=msg('welcome');progress(0);panel('v90-plan');$('#v90-overlay').classList.add('open');document.body.style.overflow='hidden'}
+function close(){$('#v90-overlay').classList.remove('open');document.body.style.overflow=''}
+function init(){
+ let actions=$('.v44-main-actions')||$('#v85-mood-open')?.parentElement||$('#v6-surprise')?.parentElement;
+ if(actions&&!$('#v90-open')){let b=document.createElement('button');b.id='v90-open';b.type='button';b.textContent='🎬 Filmabend';b.onclick=open;actions.appendChild(b)}
+ let o=document.createElement('div');o.id='v90-overlay';o.innerHTML=`<div id="v90-shell"><button id="v90-close" aria-label="Schließen">✕</button><div class="v90-kicker">Mausiges Kino für zuhause</div><h2 class="v90-title">🎬 Filmabend</h2><div class="v90-progress"><i class="v90-dot on"></i><i class="v90-dot"></i><i class="v90-dot"></i></div>
+ <section id="v90-plan" class="v90-panel on"><p id="v90-welcome" class="v90-copy"></p><div class="v90-section"><h3>Wie viele Filme sollen heute aufs Ticket, Maus?</h3><div class="v90-grid">${[1,2,3,4].map(n=>`<button class="v90-choice${n===2?' active':''}" data-v90-count="${n}">${n} Film${n>1?'e':''}</button>`).join('')}</div></div>
+ <div class="v90-section"><h3>Oder planst du lieber nach Dauer?</h3><div class="v90-grid"><button class="v90-choice" data-v90-duration="1">ca. 2 Stunden</button><button class="v90-choice" data-v90-duration="2">ca. 4 Stunden</button><button class="v90-choice" data-v90-duration="3">ca. 6 Stunden</button><button class="v90-choice" data-v90-duration="4">Open End ✨</button></div></div>
+ <div class="v90-section"><h3>Wo schaut die Maus heute?</h3><div class="v90-grid"><button class="v90-choice active" data-v90-platform="all">Netflix & Prime</button><button class="v90-choice" data-v90-platform="netflix">Netflix</button><button class="v90-choice" data-v90-platform="prime">Prime</button></div></div><p id="v90-plan-note" class="v90-copy"></p><button id="v90-start" class="v90-primary">🍿 Duelle starten</button></section>
+ <section id="v90-duels" class="v90-panel"><p id="v90-duel-message" class="v90-copy"></p><div id="v90-wild" class="v90-wild"></div><div id="v90-ticket" class="v90-ticket"></div><div id="v90-duel-box" class="v90-duel"></div></section>
+ <section id="v90-final-panel" class="v90-panel"><p id="v90-final-msg" class="v90-final"></p><div id="v90-program" class="v90-program"></div><button id="v90-shuffle" class="v90-secondary">🔀 Reihenfolge mischen</button><button id="v90-again" class="v90-primary">🎬 Neuen Filmabend planen</button></section></div>`;
+ document.body.appendChild(o);
+ o.querySelectorAll('[data-v90-count]').forEach(b=>b.onclick=()=>{S.count=+b.dataset.v90Count;o.querySelectorAll('[data-v90-count],[data-v90-duration]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ o.querySelectorAll('[data-v90-duration]').forEach(b=>b.onclick=()=>{S.count=+b.dataset.v90Duration;o.querySelectorAll('[data-v90-count],[data-v90-duration]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ o.querySelectorAll('[data-v90-platform]').forEach(b=>b.onclick=()=>{S.platform=b.dataset.v90Platform;o.querySelectorAll('[data-v90-platform]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ $('#v90-start').onclick=startDuels;$('#v90-close').onclick=close;$('#v90-shuffle').onclick=shuffle;$('#v90-again').onclick=open;o.addEventListener('click',e=>{if(e.target===o)close()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>

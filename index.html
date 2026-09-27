@@ -6411,8 +6411,11 @@ function cardData(card){
  return {card,text,title:title.trim(),platform:String(platform),genres:String(genres).toLowerCase()};
 }
 function watched(card){
- return card.classList.contains('watched')||card.dataset.watched==='true'||
-        card.getAttribute('aria-label')?.toLowerCase().includes('angesehen');
+ const title=(card.querySelector('h2,h3,.title,.movie-title')?.textContent||'').trim();
+ const id=title.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+ let persisted=false;try{persisted=!!(JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}').watched||{})[id]}catch(e){}
+ return persisted||card.classList.contains('v6-watched')||card.classList.contains('is-watched')||
+        card.classList.contains('watched')||card.dataset.watched==='true';
 }
 function score(d){
  let n=0;
@@ -6650,7 +6653,13 @@ function norm(s){return (s||'').toLowerCase()}
 function platformOf(card){return card.dataset.platform||card.querySelector('.platform')?.textContent||''}
 function streamLink(card){return card.querySelector('a.watch[href],a[href*="netflix"],a[href*="primevideo"],a[href*="amazon"]')}
 function titleOf(card){return card.querySelector('h2')?.textContent?.trim()||'Film'}
-function watched(card){return card.classList.contains('is-watched')||card.dataset.watched==='true'||card.querySelector('.watched-btn')?.classList.contains('active')}
+function watched(card){
+ const title=(card.querySelector('h2,h3,.title,.movie-title')?.textContent||'').trim();
+ const id=title.toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+ let persisted=false;try{persisted=!!(JSON.parse(localStorage.getItem('mouseMovieAppV6')||'{}').watched||{})[id]}catch(e){}
+ return persisted||card.classList.contains('v6-watched')||card.classList.contains('is-watched')||
+        card.dataset.watched==='true'||card.querySelector('.watched-btn')?.classList.contains('active');
+}
 function score(card,cfg){
  const t=norm(card.textContent+' '+(card.dataset.search||''));
  let s=0;
@@ -6668,7 +6677,7 @@ function eligibleCards(cfg){
  const pf=chosenPlatform();
  return [...document.querySelectorAll('article.movie')].filter(c=>{
    const cp=norm(platformOf(c));
-   return (pf.includes('alle')||!pf||cp.includes(pf));
+   return !watched(c) && (pf.includes('alle')||!pf||cp.includes(pf));
  }).map(c=>({c,s:score(c,cfg)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
 }
 function resultHost(){
@@ -7383,6 +7392,49 @@ function init(){
     typeof DeviceMotionEvent.requestPermission!=='function') listen();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<script id="v89-2-mood-watched-hard-filter">
+(function(){
+'use strict';
+const STORE='mouseMovieAppV6';
+const key=t=>String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/gi,'_');
+function title(card){return card?.querySelector('h2,h3,.title,.movie-title')?.textContent?.trim()||''}
+function state(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return {}}}
+function isWatched(card){
+ const s=state(), id=key(title(card));
+ return !!(s.watched&&s.watched[id]) ||
+        card.classList.contains('v6-watched') ||
+        card.classList.contains('is-watched') ||
+        card.classList.contains('watched') ||
+        card.dataset.watched==='true';
+}
+function purge(){
+ const host=document.getElementById('v85-mood-results'); if(!host)return;
+ [...host.children].forEach(result=>{
+   const rt=result.querySelector('h3,h4,strong')?.textContent?.trim()||'';
+   if(!rt)return;
+   const card=[...document.querySelectorAll('article.movie')].find(c=>title(c)===rt);
+   if(card&&isWatched(card))result.remove();
+ });
+ if(!host.children.length && host.textContent.trim()===''){
+   host.innerHTML='<div class="v85-empty">Dazu habe ich gerade keinen passenden, noch nicht angesehenen Film gefunden. Probiere eine andere Kombination.</div>';
+ }
+}
+function patchRuntime(){
+ // The historical v85/v86.2 renderers run first. We enforce the canonical persisted
+ // watched state after every mood result render, so old cards can never leak through.
+ const host=document.getElementById('v85-mood-results');
+ if(host&&!host.dataset.v892Watch){
+   new MutationObserver(()=>queueMicrotask(purge)).observe(host,{childList:true,subtree:true});
+   host.dataset.v892Watch='1';
+ }
+ const go=document.getElementById('v85-mood-go');
+ if(go&&!go.dataset.v892Watch){go.addEventListener('click',()=>setTimeout(purge,0));go.dataset.v892Watch='1'}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',patchRuntime,{once:true});else patchRuntime();
 })();
 </script>
 

@@ -7438,5 +7438,86 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="v89-3-watched-library-style">
+/* Angesehene Filme gehören nicht mehr in die normale Filmliste. */
+article.movie.v893-watched-hidden{display:none!important}
+#v893-watched-list{display:grid;gap:10px;margin-top:12px}
+.v893-watched-item{padding:12px;border-radius:15px;border:1px solid rgba(130,80,150,.18);background:rgba(255,255,255,.48)}
+.v893-watched-item h3{margin:0 0 5px;font-size:1rem}
+.v893-watched-meta{font-size:.82rem;opacity:.72;margin-bottom:8px}
+.v893-watched-actions{display:flex;gap:7px;flex-wrap:wrap}
+.v893-watched-actions a,.v893-watched-actions button{padding:7px 10px;border-radius:10px;font:inherit;font-weight:750;text-decoration:none;cursor:pointer}
+.v893-empty{padding:14px;text-align:center;opacity:.72}
+</style>
+<script id="v89-3-watched-to-recent-library">
+(function(){
+'use strict';
+const STORE='mouseMovieAppV6';
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const idFor=s=>norm(s).replace(/[^a-z0-9äöüß]+/gi,'_');
+function getState(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){return {}}}
+function save(s){localStorage.setItem(STORE,JSON.stringify(s))}
+function title(c){return c?.querySelector('h2,h3,.title,.movie-title')?.textContent?.trim()||''}
+function provider(c){return /prime/i.test(c?.textContent||'')?'Prime':'Netflix'}
+function link(c){return [...(c?.querySelectorAll('a[href]')||[])].find(a=>/netflix|primevideo|amazon/i.test(a.href))?.href||''}
+function isWatched(c){
+ const s=getState(),id=idFor(title(c));
+ return !!(s.watched&&s.watched[id])||c.classList.contains('v6-watched')||c.classList.contains('is-watched')||c.classList.contains('watched')||c.dataset.watched==='true';
+}
+function syncMainList(){
+ document.querySelectorAll('article.movie').forEach(c=>c.classList.toggle('v893-watched-hidden',isWatched(c)));
+}
+function watchedCards(){
+ const s=getState(), w=s.watched||{};
+ return [...document.querySelectorAll('article.movie')].filter(c=>w[idFor(title(c))]||isWatched(c));
+}
+function unwatch(c){
+ const s=getState(),id=idFor(title(c)); if(s.watched)delete s.watched[id];
+ c.classList.remove('v6-watched','is-watched','watched');c.dataset.watched='false';
+ if(Array.isArray(s.lastViewed))s.lastViewed=s.lastViewed.filter(x=>idFor(typeof x==='string'?x:(x?.title||''))!==id);
+ save(s);syncMainList();renderRecent();
+ // refresh existing app UI if it listens to storage/change events
+ window.dispatchEvent(new Event('storage'));document.dispatchEvent(new CustomEvent('v893-watched-change'));
+}
+function renderRecent(){
+ const overlay=document.getElementById('v35-recent-overlay');if(!overlay)return;
+ let host=document.getElementById('v893-watched-list');
+ if(!host){
+   host=document.createElement('div');host.id='v893-watched-list';
+   const candidates=[...overlay.querySelectorAll('[id*="recent"],[class*="recent"]')].filter(x=>x!==overlay && !/close/i.test(x.id+' '+x.className));
+   const target=candidates.find(x=>x.children.length===0)||overlay.querySelector('.v35-recent-card,[class*="card"]')||overlay;
+   target.appendChild(host);
+ }
+ const cards=watchedCards();
+ if(!cards.length){host.innerHTML='<div class="v893-empty">Noch keine angesehenen Filme.</div>';return}
+ host.innerHTML=cards.map(c=>{
+   const n=title(c),p=provider(c),u=link(c);
+   return `<div class="v893-watched-item"><h3>${n}</h3><div class="v893-watched-meta">${p}</div><div class="v893-watched-actions">${u?`<a href="${u}" target="_blank" rel="noopener">▶ Auf ${p} öffnen</a>`:''}<button type="button" data-v893-unwatch="${encodeURIComponent(n)}">↩ Wieder ungesehen</button></div></div>`;
+ }).join('');
+ host.querySelectorAll('[data-v893-unwatch]').forEach(b=>b.onclick=()=>{
+   const n=decodeURIComponent(b.dataset.v893Unwatch),c=[...document.querySelectorAll('article.movie')].find(x=>title(x)===n);if(c)unwatch(c);
+ });
+}
+function afterWatchedAction(){
+ setTimeout(()=>{syncMainList();renderRecent()},0);
+}
+function init(){
+ syncMainList();renderRecent();
+ const recent=document.getElementById('v35-open-recent');if(recent)recent.addEventListener('click',()=>setTimeout(renderRecent,0));
+ // Catch all existing watched controls without replacing their canonical handlers.
+ document.addEventListener('click',e=>{
+   const b=e.target.closest?.('button');if(!b)return;
+   const hint=(b.textContent+' '+(b.title||'')+' '+(b.getAttribute('aria-label')||'')).toLowerCase();
+   if(/angesehen|gesehen|watched/.test(hint))afterWatchedAction();
+ },true);
+ // Observe class/data changes made by legacy watched handlers.
+ new MutationObserver(()=>syncMainList()).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','data-watched']});
+ window.addEventListener('storage',()=>{syncMainList();renderRecent()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>

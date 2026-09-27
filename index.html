@@ -7904,5 +7904,175 @@ document.addEventListener('pointerup', function(e){
 })();
 </script>
 
+
+<script id="v91-1-core-cleanup">
+(function(){
+'use strict';
+/* Zentrale, vorberechnete Filmdaten für neue/modernisierte Funktionen.
+   Bestehende stabile Features bleiben kompatibel. */
+const STORE='mouseMovieAppV6';
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const id=s=>norm(s).replace(/[^a-z0-9äöüß]+/gi,'_');
+let stateCache=null, stateRaw=null;
+function state(){
+  const raw=localStorage.getItem(STORE)||'{}';
+  if(raw===stateRaw&&stateCache)return stateCache;
+  stateRaw=raw;
+  try{stateCache=JSON.parse(raw)||{}}catch(e){stateCache={}}
+  return stateCache;
+}
+function buildIndex(){
+  const source=window.v91GetMovies?window.v91GetMovies():Array.from(document.querySelectorAll('article.movie'));
+  return source.map((el,i)=>{
+    const title=el.querySelector('h2,h3,.title,.movie-title')?.textContent?.trim()||'';
+    const text=el.textContent||'';
+    const n=norm(text);
+    const provider=/prime/i.test(text)?'prime':(/netflix/i.test(text)?'netflix':'');
+    const link=[...el.querySelectorAll('a[href]')].find(a=>/netflix|primevideo|amazon/i.test(a.href))?.href||'';
+    return {i,el,title,id:id(title),text,n,provider,link};
+  });
+}
+let index=buildIndex();
+window.v911Core={
+  movies:()=>index,
+  state,
+  refresh:()=>{index=buildIndex();stateRaw=null;stateCache=null;return index},
+  watched:m=>{const s=state();return !!(s.watched&&s.watched[m.id])||m.el.classList.contains('v6-watched')||m.el.classList.contains('is-watched')||m.el.classList.contains('watched')||m.el.dataset.watched==='true'},
+  byTitle:t=>index.find(m=>m.title===t),
+  search:q=>{const terms=norm(q).trim().split(/\s+/).filter(Boolean);return !terms.length?index:index.filter(m=>terms.every(x=>m.n.includes(x)))}
+};
+/* State-Cache nur bei echten Speicheränderungen invalidieren. */
+window.addEventListener('storage',e=>{if(e.key===STORE){stateRaw=null;stateCache=null}});
+document.addEventListener('v91:statechanged',()=>{stateRaw=null;stateCache=null});
+/* Passive Scroll-Pfad: vermeidet zusätzliche Main-Thread-Arbeit durch v91.1 selbst. */
+window.addEventListener('scroll',()=>{}, {passive:true});
+})();
+</script>
+
+
+<style id="v91-2-unified-ux-style">
+:root{--v912-fast:150ms;--v912-normal:240ms}
+#v6-surprise,#v35-open-recent,#v42-open-suggestions,#v85-mood-open,#v90-open,
+button,.v90-pick{touch-action:manipulation}
+#v6-surprise,#v35-open-recent,#v42-open-suggestions,#v85-mood-open,#v90-open{
+ transition:transform var(--v912-fast) ease,opacity var(--v912-fast) ease,box-shadow var(--v912-normal) ease!important;
+}
+#v6-surprise:active,#v35-open-recent:active,#v42-open-suggestions:active,#v85-mood-open:active,#v90-open:active{transform:scale(.975)}
+#v6-surprise.v912-drawing{pointer-events:none!important;transform:scale(.965)!important;opacity:.82!important}
+#v7-overlay.v912-opening,#v35-recent-overlay.v912-opening,#v42-overlay.v912-opening,#v85-mood-overlay.v912-opening,#v90-overlay.v912-opening{animation:v912fade var(--v912-normal) ease both}
+@keyframes v912fade{from{opacity:0}to{opacity:1}}
+.v912-feedback{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translate(-50%,12px);z-index:2147483647;padding:9px 13px;border-radius:999px;background:rgba(67,30,73,.92);color:#fff;font-size:.84rem;font-weight:800;opacity:0;pointer-events:none;transition:opacity 180ms ease,transform 180ms ease}
+.v912-feedback.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important}.v912-feedback,#v6-surprise,#v35-open-recent,#v42-open-suggestions,#v85-mood-open,#v90-open{transition:none!important}#v7-overlay.v912-opening,#v35-recent-overlay.v912-opening,#v42-overlay.v912-opening,#v85-mood-overlay.v912-opening,#v90-overlay.v912-opening{animation:none!important}}
+</style>
+<script id="v91-2-unified-ux">
+(function(){
+'use strict';
+const $=q=>document.querySelector(q);
+let feedback;
+function say(t){
+ if(!feedback){feedback=document.createElement('div');feedback.className='v912-feedback';document.body.appendChild(feedback)}
+ feedback.textContent=t;feedback.classList.add('on');clearTimeout(say.t);say.t=setTimeout(()=>feedback.classList.remove('on'),1100);
+}
+window.v912Feedback=say;
+/* Einheitliche, kurze Öffnungsanimation ohne die Overlay-Implementierungen umzubauen. */
+const map={'v6-surprise':'v7-overlay','v35-open-recent':'v35-recent-overlay','v42-open-suggestions':'v42-overlay','v85-mood-open':'v85-mood-overlay','v90-open':'v90-overlay'};
+document.addEventListener('click',e=>{
+ const b=e.target.closest?.('#v6-surprise,#v35-open-recent,#v42-open-suggestions,#v85-mood-open,#v90-open');
+ if(!b)return;
+ const oid=map[b.id];if(!oid)return;
+ requestAnimationFrame(()=>{const o=document.getElementById(oid);if(!o)return;o.classList.remove('v912-opening');void o.offsetWidth;o.classList.add('v912-opening');setTimeout(()=>o.classList.remove('v912-opening'),280)});
+},false);
+/* Überraschung bekommt eine bewusst wahrnehmbare Zieh-Reaktion,
+   ohne den bestehenden Auswahlalgorithmus künstlich zu blockieren. */
+document.addEventListener('click',e=>{
+ const b=e.target.closest?.('#v6-surprise');if(!b)return;
+ b.classList.add('v912-drawing');
+ setTimeout(()=>b.classList.remove('v912-drawing'),560);
+},false);
+/* Tastatur/Accessibility: Escape schließt das oberste sichtbare moderne Overlay
+   über dessen vorhandenen Schließen-Button. */
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Escape')return;
+ const candidates=[
+  ['v90-overlay','v90-close'],['v85-mood-overlay','v85-mood-close'],
+  ['v42-overlay','v42-close'],['v35-recent-overlay','v35-recent-close'],
+  ['v7-overlay','v7-close']
+ ];
+ for(const [oid,cid] of candidates){
+   const o=document.getElementById(oid);
+   if(o&&getComputedStyle(o).display!=='none'&&(o.classList.contains('open')||o.getAttribute('aria-hidden')!=='true')){
+     document.getElementById(cid)?.click();break;
+   }
+ }
+});
+})();
+</script>
+
+
+<style id="v92-backup-update-style">
+#v92-update{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:2147483646;display:none;max-width:560px;margin:auto;padding:12px;border-radius:17px;background:rgba(255,246,253,.97);color:#54285d;border:1px solid rgba(145,79,145,.2);box-shadow:0 12px 38px rgba(40,13,48,.24)}
+#v92-update.on{display:flex;align-items:center;gap:10px}
+#v92-update span{flex:1;font-size:.86rem;font-weight:800}
+#v92-update button{border:0;border-radius:12px;padding:9px 11px;background:#a9589e;color:white;font:inherit;font-weight:900}
+</style>
+<script id="v92-safe-backup-pwa">
+(function(){
+'use strict';
+const STORE='mouseMovieAppV6', BK='mouseMovieBackupsV92', MAX=5;
+function valid(v){return v&&typeof v==='object'&&!Array.isArray(v)}
+function read(){try{let v=JSON.parse(localStorage.getItem(STORE)||'{}');return valid(v)?v:null}catch(e){return null}}
+function backups(){try{let v=JSON.parse(localStorage.getItem(BK)||'[]');return Array.isArray(v)?v:[]}catch(e){return []}}
+function snapshot(reason){
+ const v=read();if(!v)return false;
+ let list=backups(), raw=JSON.stringify(v);
+ if(list[0]?.data===raw)return true;
+ list.unshift({at:new Date().toISOString(),reason:reason||'auto',data:raw});
+ try{localStorage.setItem(BK,JSON.stringify(list.slice(0,MAX)));return true}catch(e){return false}
+}
+function recoverIfNeeded(){
+ if(read())return;
+ const b=backups().find(x=>{try{return valid(JSON.parse(x.data))}catch(e){return false}});
+ if(b){try{localStorage.setItem(STORE,b.data);sessionStorage.setItem('v92Recovered','1')}catch(e){}}
+}
+recoverIfNeeded();
+snapshot('start');
+let last=localStorage.getItem(STORE)||'';
+/* Schonend prüfen: nur sichern, wenn sich der kanonische Zustand geändert hat. */
+setInterval(()=>{
+ const cur=localStorage.getItem(STORE)||'';
+ if(cur!==last){last=cur;snapshot('change')}
+},5000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')snapshot('leave')});
+window.addEventListener('pagehide',()=>snapshot('leave'));
+window.v92Backup={create:()=>snapshot('manual'),list:()=>backups().map(({at,reason})=>({at,reason})),restoreLatest:()=>{
+ const b=backups()[0];if(!b)return false;try{localStorage.setItem(STORE,b.data);location.reload();return true}catch(e){return false}
+}};
+/* Kontrolliertes PWA-Update statt überraschendem Reload. */
+if('serviceWorker' in navigator){
+ navigator.serviceWorker.ready.then(reg=>{
+   function offer(worker){
+    if(!worker)return;
+    let box=document.getElementById('v92-update');
+    if(!box){box=document.createElement('div');box.id='v92-update';box.innerHTML='<span>✨ Für deine Filmliste gibt es etwas Neues, Maus.</span><button type="button">Aktualisieren</button>';document.body.appendChild(box)}
+    box.classList.add('on');
+    box.querySelector('button').onclick=()=>{snapshot('before-update');worker.postMessage({type:'SKIP_WAITING'})};
+   }
+   if(reg.waiting)offer(reg.waiting);
+   reg.addEventListener('updatefound',()=>{
+     const nw=reg.installing;if(!nw)return;
+     nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)offer(nw)});
+   });
+   /* Nicht bei jedem Fokus: einmal pro Sitzung nach einer neuen Version fragen. */
+   if(!sessionStorage.getItem('v92UpdateChecked')){
+     sessionStorage.setItem('v92UpdateChecked','1');reg.update().catch(()=>{});
+   }
+ });
+ let refreshing=false;
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload()});
+}
+})();
+</script>
+
 </body>
 </html>

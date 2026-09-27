@@ -7721,5 +7721,188 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+<style id="v90-1-filmabend-scroll-stability">
+#v90-overlay{background:radial-gradient(circle at 50% 0%,rgba(242,178,226,.28),transparent 42%),linear-gradient(180deg,#32163b 0%,#482048 100%)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch;box-sizing:border-box!important}
+#v90-shell{box-sizing:border-box!important;background:linear-gradient(155deg,#fff5fc 0%,#fbe7f7 55%,#f3e7ff 100%)!important;color:#4e2558!important;border:1px solid rgba(255,255,255,.70)!important;border-radius:28px!important;box-shadow:0 24px 80px rgba(22,4,31,.38)!important;isolation:isolate!important;transform:translateZ(0);-webkit-transform:translateZ(0);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#v90-shell,#v90-shell .v90-panel,#v90-shell .v90-section,#v90-shell .v90-grid,#v90-shell .v90-ticket,#v90-shell .v90-film,#v90-shell .v90-program-card{filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+#v90-shell .v90-choice{background:rgba(255,255,255,.67)!important;color:#58295e!important;border:1px solid rgba(139,76,145,.18)!important;box-shadow:none!important}
+#v90-shell .v90-choice.active{background:#f1c9e8!important;color:#58295e!important;border-color:rgba(139,76,145,.26)!important;outline:3px solid rgba(181,87,163,.17)!important}
+#v90-shell .v90-film,#v90-shell .v90-program-card{background:rgba(255,255,255,.64)!important;color:#4e2558!important;border-color:rgba(139,76,145,.20)!important}
+#v90-shell .v90-ticket{background:rgba(255,255,255,.50)!important;color:#4e2558!important}
+#v90-shell .v90-primary{background:linear-gradient(135deg,#b957a5,#8853b6)!important;color:#fff!important}
+#v90-shell .v90-secondary{background:rgba(255,255,255,.62)!important;color:#5b2e64!important}
+html[data-theme="mausig"] body.v53>#v90-overlay:not(#v66-mobile-bg),html[data-theme="dark"] body.v53>#v90-overlay:not(#v66-mobile-bg),body.v6-dark>#v90-overlay:not(#v66-mobile-bg){position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:2147483647!important;transform:none!important}
+</style>
+
+<style id="v91-performance-ux-style">
+/* Einheitliches Touch-Feedback und versehentliche Doppeltaps vermeiden */
+button, [role="button"], .btn, a.v90-actions {
+  -webkit-tap-highlight-color: transparent;
+}
+#v6-surprise, #v35-open-recent, #v42-open-suggestions, #v85-mood-open, #v90-open {
+  touch-action: manipulation !important;
+  min-height: 44px;
+}
+#v6-surprise.v91-pressing {
+  transform: scale(.975);
+  transition: transform 120ms ease !important;
+}
+#v6-surprise.v91-cooldown {
+  pointer-events: none !important;
+  opacity: .78;
+}
+@media (prefers-reduced-motion: reduce) {
+  #v6-surprise.v91-pressing { transform:none !important; }
+}
+</style>
+
+<script id="v91-performance-ux">
+(function(){
+'use strict';
+
+/* ---------------------------------------------------------
+   v91: zentrale, additive UX-/Performance-Schicht.
+   Die bewährten Feature-Handler bleiben erhalten.
+   --------------------------------------------------------- */
+
+const SURPRISE_ID = 'v6-surprise';
+const COOLDOWN_MS = 720;
+const PRESS_CONFIRM_MS = 105;
+let surpriseBusy = false;
+let surpriseLastRun = 0;
+let surprisePointerId = null;
+let surpriseTimer = null;
+
+/* 1) Filmkarten einmal cachen.
+      Mutation des gesamten DOMs invalidiert den Cache NICHT; nur wenn Karten
+      tatsächlich hinzugefügt/entfernt werden. */
+let movieCache = null;
+function getMovies(){
+  if (!movieCache) movieCache = Array.from(document.querySelectorAll('article.movie'));
+  return movieCache;
+}
+window.v91GetMovies = getMovies;
+
+const movieRoot = document.querySelector('main') || document.body;
+if (movieRoot && window.MutationObserver) {
+  const cardObserver = new MutationObserver(records => {
+    for (const r of records) {
+      if (r.type !== 'childList') continue;
+      const nodes = [...r.addedNodes, ...r.removedNodes];
+      if (nodes.some(n => n && n.nodeType === 1 &&
+          (n.matches?.('article.movie') || n.querySelector?.('article.movie')))) {
+        movieCache = null;
+        break;
+      }
+    }
+  });
+  cardObserver.observe(movieRoot, {childList:true, subtree:true});
+}
+
+/* 2) Kleine gemeinsame Scroll-Lock-Hilfe für neue/modernisierte Overlays.
+      Bestehende Overlay-Logik wird nicht überschrieben. */
+let lockCount = 0;
+const originalOverflow = document.body.style.overflow;
+window.v91ScrollLock = function(on){
+  lockCount = Math.max(0, lockCount + (on ? 1 : -1));
+  document.body.style.overflow = lockCount ? 'hidden' : originalOverflow;
+};
+
+/* 3) "Überrasche mich" bewusst auslösen.
+      Wichtig: Die alten Click-Handler bleiben die Quelle der eigentlichen
+      Filmauswahl. Wir filtern lediglich ungewollte Touch-/Click-Duplikate. */
+function surpriseButton(){ return document.getElementById(SURPRISE_ID); }
+
+function clearPress(btn){
+  clearTimeout(surpriseTimer);
+  surpriseTimer = null;
+  btn?.classList.remove('v91-pressing');
+}
+
+function enterCooldown(btn){
+  surpriseBusy = true;
+  surpriseLastRun = performance.now();
+  btn.classList.remove('v91-pressing');
+  btn.classList.add('v91-cooldown');
+  window.setTimeout(() => {
+    surpriseBusy = false;
+    btn.classList.remove('v91-cooldown');
+  }, COOLDOWN_MS);
+}
+
+/* Capture-Phase: verhindert zweite synthetische Clicks / zu schnelle Folge-Taps,
+   ohne den ersten legitimen Click von den bestehenden App-Handlern fernzuhalten. */
+document.addEventListener('click', function(e){
+  const btn = e.target.closest?.('#' + SURPRISE_ID);
+  if (!btn) return;
+
+  const now = performance.now();
+  if (surpriseBusy || (now - surpriseLastRun) < COOLDOWN_MS) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  enterCooldown(btn);
+}, true);
+
+/* Pointer-Feedback: Auswahl fühlt sich nicht mehr "instant" an.
+   Die Aktion selbst bleibt ein normaler Tap/Click, also iOS-kompatibel. */
+document.addEventListener('pointerdown', function(e){
+  const btn = e.target.closest?.('#' + SURPRISE_ID);
+  if (!btn || surpriseBusy) return;
+  surprisePointerId = e.pointerId;
+  clearPress(btn);
+  surpriseTimer = window.setTimeout(() => {
+    if (surprisePointerId === e.pointerId) btn.classList.add('v91-pressing');
+  }, PRESS_CONFIRM_MS);
+}, {passive:true, capture:true});
+
+document.addEventListener('pointerup', function(e){
+  const btn = e.target.closest?.('#' + SURPRISE_ID);
+  if (!btn || surprisePointerId !== e.pointerId) return;
+  clearPress(btn);
+  surprisePointerId = null;
+}, {passive:true, capture:true});
+
+document.addEventListener('pointercancel', function(e){
+  const btn = surpriseButton();
+  if (surprisePointerId === e.pointerId) {
+    clearPress(btn);
+    surprisePointerId = null;
+  }
+}, {passive:true, capture:true});
+
+/* 4) Touchend-Duplikate aus historischen Bridges speziell für den
+      Überraschungsbutton neutralisieren. Ein echter Click bleibt maßgeblich. */
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(e){
+  const btn = e.target.closest?.('#' + SURPRISE_ID);
+  if (!btn) return;
+  const now = performance.now();
+  if (now - lastTouchEnd < 500) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+  lastTouchEnd = now;
+}, {capture:true, passive:false});
+
+/* 5) Wiederholte schnelle Pointer-Aktionen auf Hauptaktionen allgemein dämpfen,
+      ohne Tastaturbedienung oder normale Clicks zu verändern. */
+const guarded = new Map();
+document.addEventListener('pointerup', function(e){
+  const btn = e.target.closest?.('#v35-open-recent,#v42-open-suggestions,#v85-mood-open,#v90-open');
+  if (!btn) return;
+  const now = performance.now(), last = guarded.get(btn.id) || 0;
+  if (now-last < 350) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  } else guarded.set(btn.id, now);
+}, {capture:true, passive:false});
+
+})();
+</script>
+
 </body>
 </html>

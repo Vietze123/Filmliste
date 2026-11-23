@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T13:46:33.958568+00:00",
+  "updated": "2026-11-23T16:09:04.880546+00:00",
   "movies": [
     {
       "id": "tmdb-1560520",
@@ -10,7 +10,7 @@
         "Drama"
       ],
       "description": "Der übernatürlich starke und hochintelligente Superschurke Bane will dafür sorgen, dass Batman in Gotham City nie wieder für Recht und Ordnung sorgen kann. Um den Dunklen Ritter zu schwächen, befreit er dessen gefährlichste Gegner wie Joker, Scarecrow, Mad Hatter und Poison Ivy aus dem Hochsicherheitsgefängnis Arkham Asylum. Bei seinen Bemühungen, die wahnsinnigen Kriminellen wiedereinzufangen, stößt Batman an seine physischen und psychischen Grenzen – exakt so, wie von Bane beabsichtigt, der zwischenzeitlich Batmans wahre Identität als Millionär Bruce Wayne enttarnt hat und weiß, wo er seinen Gegner finden kann.",
-      "rating": 9.075,
+      "rating": 9.093,
       "source": "TMDB"
     },
     {
@@ -21,7 +21,7 @@
         "Action"
       ],
       "description": "Der Avatar Aang, der letzte Luftbändiger der Welt, erfährt von einer uralten Kraft, die seine Kultur vor dem Aussterben bewahren könnte. Gemeinsam mit seinen Freunden begibt er sich auf eine weltweite Suche, um diese Kraft zu finden, bevor sie in die falschen Hände gerät und den mühsam erkämpften Frieden gefährdet.",
-      "rating": 8.991,
+      "rating": 8.975,
       "source": "TMDB"
     },
     {
@@ -32,7 +32,19 @@
         "Action"
       ],
       "description": "Während die Mitglieder des Dämonentöter-Korps und die Hashira in Vorbereitung auf den bevorstehenden Kampf gegen die Dämonen ein gemeinsames Krafttrainingsprogramm, das Hashira-Training, absolvieren, taucht Muzan Kibutsuji in der Ubuyashiki-Villa auf. Da der Leiter des Dämonenkorps in Gefahr ist, eilen Tanjiro und die Hashira zum Hauptquartier, werden aber von Muzan Kibutsuji in einen tiefen Abstieg in einen mysteriösen Raum gestürzt. Das Ziel, in das Tanjiro und das Dämonentöter-Korps gestürzt sind, ist die Festung der Dämonen - die Unendlichkeitsburg. Und so ist das Schlachtfeld für die finale Schlacht zwischen dem Dämonentöterkorps und den Dämonen bereitet.",
-      "rating": 8.798,
+      "rating": 8.8,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-278",
+      "title": "Die Verurteilten",
+      "year": "1994",
+      "genres": [
+        "Drama",
+        "Krimi"
+      ],
+      "description": "Das Shawshank Gefängnis in den 30ern: der wegen Mordes an seiner Frau verurteilte Andy Dufresne kommt als Neuling lebenslänglich hinter Gittern. Zurückhaltend wie er ist, ist er ständig das Ziel sexueller Angriffe, doch als er als Banker durchblicken läßt, daß er finanziell für den Direktor und die Wärter eine Menge tun kann, ist für seine Sicherheit gesorgt. Langsam aber sicher freundet er sich mit dem Langzeitinsassen Red an, baut die Gefängnisbibliothek auf und rückt nie von seiner Überzeugung ab, unschuldig zu sein. Viele Jahre vergehen, bis etwas geschieht, was sogar Reds Leben für immer verändern wird...",
+      "rating": 8.735,
       "source": "TMDB"
     },
     {
@@ -45,19 +57,7 @@
         "Thriller"
       ],
       "description": "Basierend auf wahren Begebenheiten: Der international gesuchte Drogenkartellboss Joaquin „El Chapo“ Guzmán flüchtet am 8. Januar 2016 vor dem Zugriff der mexikanischen Marine durch die Kanalisation aus seinem Anwesen. Anschließend bringt er ein Auto in seine Gewalt und wähnt sich bald in Sicherheit. Doch dann gerät er in eine Routinekontrolle durch zwei ganz normale Polizisten, die ihn jedoch direkt erkennen. Nachdem der Gangster bei ihnen mit Bestechungsversuchen auf Granit beißt, droht er ihnen unverhohlen mit dem Tod durch seine Leute, sollten sie ihn nicht freilassen. Für die beiden braven Gesetzeshüter beginnen die härtesten Stunden ihres bisherigen Lebens.",
-      "rating": 8.735,
-      "source": "TMDB"
-    },
-    {
-      "id": "tmdb-278",
-      "title": "Die Verurteilten",
-      "year": "1994",
-      "genres": [
-        "Drama",
-        "Krimi"
-      ],
-      "description": "Das Shawshank Gefängnis in den 30ern: der wegen Mordes an seiner Frau verurteilte Andy Dufresne kommt als Neuling lebenslänglich hinter Gittern. Zurückhaltend wie er ist, ist er ständig das Ziel sexueller Angriffe, doch als er als Banker durchblicken läßt, daß er finanziell für den Direktor und die Wärter eine Menge tun kann, ist für seine Sicherheit gesorgt. Langsam aber sicher freundet er sich mit dem Langzeitinsassen Red an, baut die Gefängnisbibliothek auf und rückt nie von seiner Überzeugung ab, unschuldig zu sein. Viele Jahre vergehen, bis etwas geschieht, was sogar Reds Leben für immer verändern wird...",
-      "rating": 8.734,
+      "rating": 8.732,
       "source": "TMDB"
     },
     {
@@ -69,7 +69,7 @@
         "Drama"
       ],
       "description": "Die Menschheit lebte ruhig im Schatten riesiger Mauern, als Schutz vor den Titanen - riesigen menschenfressenden Kreaturen. Doch dann fand das Jahrhundert des Friedens durch einen Titanenangriff ein Ende, der dem Jungen Eren auch seine Mutter raubte und ihn Rache an den Titanen schwören ließ. Jahre später, nachdem Eren dem Aufklärungstrupp beigetreten war, stand er einem tödlichen Feind gegenüber und erlangte eine besondere Fähigkeit, die ihm eine neue Wahrheit über die Welt, wie er sie bisher kannte, enthüllte. Nach Erkundungstouren hinter den Mauern und mittlerweile getrennt von seinen alten Kameraden plant Eren, getrieben von dieser neuen Wahrheit, das \"Erdrumoren\": ein furchterregendes Vorhaben, bei dem alles, was auf dieser Welt lebt, ausgelöscht werden soll. Das Schicksal der Welt steht auf Messers Schneide und ein zusammengewürfelter Haufen von Erens ehemaligen Kameraden und auch Feinden muss versuchen, ihn auf seiner todbringenden Mission aufzuhalten. Kann ihnen das gelingen?",
-      "rating": 8.7,
+      "rating": 8.722,
       "source": "TMDB"
     },
     {
@@ -81,7 +81,7 @@
         "Krimi"
       ],
       "description": "Don Vito Corleone ist der Kopf einer der einflußreichsten Mafia-Familien New Yorks. Als die anderen Familien der Stadt beschließen, neben Glücksspiel und Schutzgelderpressungen nun auch den Handel mit Drogen als Erwerbsquelle zu nutzen und sich Don Corleone diesem Vorhaben nicht anschließen möchte, wird er zum Ziel eines hinterhältigen Mordanschlags. Nun steht Vitos Sohn Michael in der Verantwortung, in die Fußstapfen seines Vaters zu treten, obwohl er mit den Geschäften der Familie bis dato nichts zu tun haben wollte.",
-      "rating": 8.688,
+      "rating": 8.7,
       "source": "TMDB"
     },
     {
@@ -107,17 +107,6 @@
       "source": "TMDB"
     },
     {
-      "id": "tmdb-936075",
-      "title": "Michael",
-      "year": "2026",
-      "genres": [
-        "Drama"
-      ],
-      "description": "Der junge Michael Jackson wird als achtes von zehn Kindern unter der strengen Führung seines Vaters Joe früh für eine Musikkarriere gedrillt wird. Mit der Familienband Jackson Five feiert er erste Erfolge, im Alter von 13 Jahren startet er bereits die Solokarriere. Auch im Erwachsenenalter ist sein Leben von der Musik dominiert. Ende der 1970er-Jahre lernt er bei Filmarbeiten Diana Ross und den Produzenten Quincy Jones kennen, was seine musikalische Ausrichtung grundlegend verändert. Das von Jones produzierte Album \"Off the Wall\" (1979) wird ein großer Erfolg, der 1982 durch die bahnbrechende und meistverkaufte Platte \"Thriller\" noch übertroffen wird. Parallel zu diesem Aufstieg kommt es zum Bruch mit seinem Vater Joe, den Jackson als Manager entlässt und durch den Anwalt John Branca ersetzt.",
-      "rating": 8.577,
-      "source": "TMDB"
-    },
-    {
       "id": "tmdb-389",
       "title": "Die zwölf Geschworenen",
       "year": "1957",
@@ -125,7 +114,7 @@
         "Drama"
       ],
       "description": "Zwölf Geschworene verhandeln im Juryraum in brütender Hitze über das Schicksal eines Jungen, der angeklagt ist, seinen Vater getötet zu haben. Als das Urteil \"Schuldig\" beinahe feststeht, formuliert der Geschworene Nr. 8 seine Zweifel. Gegen den teils erbitterten Widerstand der Mehrheit entwickelt er nach und nach mit ruhiger Logik seine Argumente. Der Kampf der Meinungen setzt unerwartete Vorurteile und Charakterzüge der zwölf Männer frei, deren Gewissensprüfungen für den Angeklagten ausfallen.",
-      "rating": 8.577,
+      "rating": 8.578,
       "source": "TMDB"
     },
     {
@@ -137,7 +126,7 @@
         "Krimi"
       ],
       "description": "Michael Corleone ist jetzt der Pate seiner Familie und führt diese Aufgabe mit der nötigen Gnadenlosigkeit aus. Als er in Las Vegas und auf Kuba expandieren will, weil ihm die alten Geschäftsideen nichts mehr einbringen, treten Schwierigkeiten auf. Um diese zu klären, veranlaßt Michael eine große Säuberungsaktion, die auch vor den Familienmitgliedern nicht halt macht.",
-      "rating": 8.573,
+      "rating": 8.6,
       "source": "TMDB"
     },
     {
@@ -152,15 +141,25 @@
       "source": "TMDB"
     },
     {
-      "id": "tmdb-1630423",
-      "title": "My Dearest Assassin",
+      "id": "tmdb-936075",
+      "title": "Michael",
       "year": "2026",
       "genres": [
-        "Action",
         "Drama"
       ],
-      "description": "Lhan, eine junge vietnamesische Frau, wird wegen der Seltenheit ihrer Blutgruppe von einem rachsüchtigen Feind gejagt, der bereits ihre Eltern auf dem Gewissen hat. Eine Familie von Attentätern nimmt sie auf, und so wächst sie mit dem Sohn des Anführers Pran auf. Als ihr Feind sie jedoch wieder aufspürt, muss Lhan sich ihrer Vergangenheit stellen und an der Seite des Mannes, den sie liebt, kämpfen.",
-      "rating": 8.542,
+      "description": "Der junge Michael Jackson wird als achtes von zehn Kindern unter der strengen Führung seines Vaters Joe früh für eine Musikkarriere gedrillt wird. Mit der Familienband Jackson Five feiert er erste Erfolge, im Alter von 13 Jahren startet er bereits die Solokarriere. Auch im Erwachsenenalter ist sein Leben von der Musik dominiert. Ende der 1970er-Jahre lernt er bei Filmarbeiten Diana Ross und den Produzenten Quincy Jones kennen, was seine musikalische Ausrichtung grundlegend verändert. Das von Jones produzierte Album \"Off the Wall\" (1979) wird ein großer Erfolg, der 1982 durch die bahnbrechende und meistverkaufte Platte \"Thriller\" noch übertroffen wird. Parallel zu diesem Aufstieg kommt es zum Bruch mit seinem Vater Joe, den Jackson als Manager entlässt und durch den Anwalt John Branca ersetzt.",
+      "rating": 8.568,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1218925",
+      "title": "Chainsaw Man – The Movie: Reze Arc",
+      "year": "2025",
+      "genres": [
+        "Action"
+      ],
+      "description": "Denji wurde zum „Kettensägenmann“, einem Jungen mit dem Herzen eines Teufels, und gehört nun zu den Teufelsjägern der Spezialabteilung 4. Nach einer Verabredung mit Makima, der Frau seiner Träume, sucht Denji Schutz vor dem Regen. Dort lernt er Reze kennen, ein Mädchen, das in einem Café arbeitet.",
+      "rating": 8.5,
       "source": "TMDB"
     },
     {
@@ -177,17 +176,6 @@
       "source": "TMDB"
     },
     {
-      "id": "tmdb-1218925",
-      "title": "Chainsaw Man – The Movie: Reze Arc",
-      "year": "2025",
-      "genres": [
-        "Action"
-      ],
-      "description": "Denji wurde zum „Kettensägenmann“, einem Jungen mit dem Herzen eines Teufels, und gehört nun zu den Teufelsjägern der Spezialabteilung 4. Nach einer Verabredung mit Makima, der Frau seiner Träume, sucht Denji Schutz vor dem Regen. Dort lernt er Reze kennen, ein Mädchen, das in einem Café arbeitet.",
-      "rating": 8.535,
-      "source": "TMDB"
-    },
-    {
       "id": "tmdb-1466115",
       "title": "Even If This Love Disappears Tonight",
       "year": "2025",
@@ -195,7 +183,19 @@
         "Drama"
       ],
       "description": "Ein Mädchen wacht jeden Morgen ohne jegliche Erinnerung an den vorherigen Tag auf. Hat ihre Liebe zu einem schüchternen Klassenkameraden eine Chance mit jedem Neuanfang?",
-      "rating": 8.5,
+      "rating": 8.537,
+      "source": "TMDB"
+    },
+    {
+      "id": "tmdb-1630423",
+      "title": "My Dearest Assassin",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Drama"
+      ],
+      "description": "Lhan, eine junge vietnamesische Frau, wird wegen der Seltenheit ihrer Blutgruppe von einem rachsüchtigen Feind gejagt, der bereits ihre Eltern auf dem Gewissen hat. Eine Familie von Attentätern nimmt sie auf, und so wächst sie mit dem Sohn des Anführers Pran auf. Als ihr Feind sie jedoch wieder aufspürt, muss Lhan sich ihrer Vergangenheit stellen und an der Seite des Mannes, den sie liebt, kämpfen.",
+      "rating": 8.527,
       "source": "TMDB"
     },
     {
